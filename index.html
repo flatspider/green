@@ -1,468 +1,517 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Conor McManamon</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Bowlby+One&family=Crimson+Pro:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Bowlby+One&family=Crimson+Pro:ital,wght@0,400;0,500;1,400&display=swap"
+      rel="stylesheet"
+    />
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
-        :root {
-            --green: #3A8B37;
-            --green-dark: #2C6E29;
-            --green-bright: #44A03F;
-            --ink: #1a1a1a;
-            --cream: #f0ece3;
-        }
+      :root {
+        --green: #3a8b37;
+        --green-dark: #2c6e29;
+        --green-bright: #44a03f;
+        --ink: #1a1a1a;
+        --cream: #f0ece3;
+      }
 
-        html {
-            scroll-behavior: smooth;
-        }
+      html {
+        scroll-behavior: smooth;
+      }
 
-        body {
-            background: var(--cream);
-            color: var(--ink);
-            min-height: 100vh;
-            overflow-x: hidden;
-            font-family: 'Crimson Pro', Georgia, serif;
-        }
+      body {
+        background: var(--cream);
+        color: var(--ink);
+        min-height: 100vh;
+        overflow-x: hidden;
+        font-family: "Crimson Pro", Georgia, serif;
+      }
 
-        /* Paper grain texture — sits above everything */
-        .grain {
-            position: fixed;
-            inset: -50%;
-            width: 200%;
-            height: 200%;
-            pointer-events: none;
-            z-index: 100;
-            opacity: 0.04;
-        }
+      /* Paper grain texture — sits above everything */
+      .grain {
+        position: fixed;
+        inset: -50%;
+        width: 200%;
+        height: 200%;
+        pointer-events: none;
+        z-index: 100;
+        opacity: 0.04;
+      }
 
-        /* Edge vignette for that aged pamphlet feel */
-        .vignette {
-            position: fixed;
-            inset: 0;
-            pointer-events: none;
-            z-index: 60;
-            box-shadow: inset 0 0 150px rgba(0, 0, 0, 0.18);
-        }
+      /* Edge vignette for that aged pamphlet feel */
+      .vignette {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 60;
+        box-shadow: inset 0 0 150px rgba(0, 0, 0, 0.18);
+      }
 
-        /* ================= HERO ================= */
+      /* ================= HERO ================= */
+      .hero {
+        min-height: 100vh;
+        min-height: 100dvh;
+        background: radial-gradient(
+          ellipse 120% 100% at 50% 45%,
+          var(--green-bright) 0%,
+          var(--green) 40%,
+          var(--green-dark) 100%
+        );
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem;
+        position: relative;
+      }
+
+      .name-block {
+        text-align: center;
+        position: relative;
+        z-index: 1;
+      }
+
+      .name-block h1 {
+        font-family: "Bowlby One", "Arial Black", "Helvetica Neue", sans-serif;
+        color: var(--cream);
+        line-height: 0.95;
+        letter-spacing: 0;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+
+      .first-name {
+        font-size: clamp(3rem, 9vw, 6.5rem);
+        display: block;
+        text-shadow:
+          1px 1px 0 var(--ink),
+          2px 2px 0 var(--ink),
+          3px 3px 0 var(--ink),
+          4px 4px 0 var(--ink),
+          5px 5px 0 var(--ink),
+          6px 6px 0 var(--ink),
+          7px 7px 0 var(--ink),
+          8px 8px 0 var(--ink);
+        animation: stamp 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+      }
+
+      .last-name {
+        font-size: clamp(2rem, 6vw, 4.5rem);
+        display: block;
+        text-shadow:
+          1px 1px 0 var(--ink),
+          2px 2px 0 var(--ink),
+          3px 3px 0 var(--ink),
+          4px 4px 0 var(--ink),
+          5px 5px 0 var(--ink),
+          6px 6px 0 var(--ink),
+          7px 7px 0 var(--ink);
+        animation: stamp 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s both;
+      }
+
+      .subtitle {
+        margin-top: 2rem;
+        font-family: "Crimson Pro", Georgia, serif;
+        font-style: italic;
+        font-size: clamp(1.15rem, 2vw, 1.5rem);
+        color: var(--cream);
+        letter-spacing: 0.02em;
+        opacity: 0;
+        animation: fadeUp 0.6s ease 0.5s forwards;
+      }
+
+      .subtitle a {
+        color: var(--cream);
+        font-weight: 500;
+        text-decoration: none;
+        border-bottom: 1.5px solid rgba(240, 236, 227, 0.45);
+        padding-bottom: 1px;
+        transition: border-color 0.2s;
+      }
+
+      .subtitle a:hover {
+        border-bottom-color: var(--cream);
+      }
+
+      @keyframes stamp {
+        0% {
+          opacity: 0;
+          transform: translateY(-25px) scaleY(1.08);
+        }
+        60% {
+          opacity: 1;
+          transform: translateY(2px) scaleY(0.98);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0) scaleY(1);
+        }
+      }
+
+      @keyframes fadeUp {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Scroll indicator */
+      .scroll-indicator {
+        position: absolute;
+        bottom: 2.25rem;
+        left: 50%;
+        color: var(--cream);
+        font-family: "Bebas Neue", sans-serif;
+        letter-spacing: 0.32em;
+        font-size: 0.8rem;
+        text-decoration: none;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.6rem;
+        opacity: 0;
+        transform: translateX(-50%);
+        animation:
+          fadeUp 0.6s ease 0.9s forwards,
+          bob 2.2s ease-in-out 1.6s infinite;
+      }
+
+      .scroll-indicator svg {
+        display: block;
+      }
+
+      @keyframes bob {
+        0%,
+        100% {
+          transform: translateX(-50%) translateY(0);
+        }
+        50% {
+          transform: translateX(-50%) translateY(6px);
+        }
+      }
+
+      /* Mobile: name as a banner anchored near the top */
+      @media (max-width: 768px) {
         .hero {
-            min-height: 100vh;
-            min-height: 100dvh;
-            background: radial-gradient(
-                ellipse 120% 100% at 50% 45%,
-                var(--green-bright) 0%,
-                var(--green) 40%,
-                var(--green-dark) 100%
-            );
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 2rem;
-            position: relative;
-        }
-
-        .name-block {
-            text-align: center;
-            position: relative;
-            z-index: 1;
-        }
-
-        .name-block h1 {
-            font-family: 'Bowlby One', 'Arial Black', 'Helvetica Neue', sans-serif;
-            color: var(--cream);
-            line-height: 0.95;
-            letter-spacing: 0;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
+          justify-content: flex-start;
+          padding-top: 13vh;
+          padding-bottom: 6rem;
         }
 
         .first-name {
-            font-size: clamp(3rem, 9vw, 6.5rem);
-            display: block;
-            text-shadow:
-                1px 1px 0 var(--ink),
-                2px 2px 0 var(--ink),
-                3px 3px 0 var(--ink),
-                4px 4px 0 var(--ink),
-                5px 5px 0 var(--ink),
-                6px 6px 0 var(--ink),
-                7px 7px 0 var(--ink),
-                8px 8px 0 var(--ink);
-            animation: stamp 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+          font-size: 13vw;
+          text-shadow:
+            1px 1px 0 var(--ink),
+            2px 2px 0 var(--ink),
+            3px 3px 0 var(--ink),
+            4px 4px 0 var(--ink),
+            5px 5px 0 var(--ink),
+            6px 6px 0 var(--ink);
         }
 
         .last-name {
-            font-size: clamp(2rem, 6vw, 4.5rem);
-            display: block;
-            text-shadow:
-                1px 1px 0 var(--ink),
-                2px 2px 0 var(--ink),
-                3px 3px 0 var(--ink),
-                4px 4px 0 var(--ink),
-                5px 5px 0 var(--ink),
-                6px 6px 0 var(--ink),
-                7px 7px 0 var(--ink);
-            animation: stamp 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s both;
+          font-size: 8.5vw;
+          text-shadow:
+            1px 1px 0 var(--ink),
+            2px 2px 0 var(--ink),
+            3px 3px 0 var(--ink),
+            4px 4px 0 var(--ink),
+            5px 5px 0 var(--ink);
         }
 
         .subtitle {
-            margin-top: 2rem;
-            font-family: 'Crimson Pro', Georgia, serif;
-            font-style: italic;
-            font-size: clamp(1.15rem, 2vw, 1.5rem);
-            color: var(--cream);
-            letter-spacing: 0.02em;
-            opacity: 0;
-            animation: fadeUp 0.6s ease 0.5s forwards;
+          margin-top: 1.5rem;
+          font-size: 1.15rem;
         }
+      }
 
-        .subtitle a {
-            color: var(--cream);
-            font-weight: 500;
-            text-decoration: none;
-            border-bottom: 1.5px solid rgba(240, 236, 227, 0.45);
-            padding-bottom: 1px;
-            transition: border-color 0.2s;
-        }
+      /* ================= PROJECTS ================= */
+      .projects {
+        padding: 6rem 2rem 8rem;
+        max-width: 1100px;
+        margin: 0 auto;
+        position: relative;
+      }
 
-        .subtitle a:hover {
-            border-bottom-color: var(--cream);
-        }
+      .section-header {
+        display: flex;
+        align-items: baseline;
+        gap: 1.5rem;
+        margin-bottom: 3.5rem;
+        padding-bottom: 1.25rem;
+        border-bottom: 2px solid var(--ink);
+      }
 
-        @keyframes stamp {
-            0%   { opacity: 0; transform: translateY(-25px) scaleY(1.08); }
-            60%  { opacity: 1; transform: translateY(2px) scaleY(0.98); }
-            100% { opacity: 1; transform: translateY(0) scaleY(1); }
-        }
+      .section-tag {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: 0.85rem;
+        letter-spacing: 0.32em;
+        color: var(--green-dark);
+        white-space: nowrap;
+      }
 
-        @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(10px); }
-            to   { opacity: 1; transform: translateY(0); }
-        }
+      .section-header h2 {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: clamp(2.4rem, 5.5vw, 4rem);
+        letter-spacing: 0.02em;
+        color: var(--ink);
+        line-height: 1;
+      }
 
-        /* Scroll indicator */
-        .scroll-indicator {
-            position: absolute;
-            bottom: 2.25rem;
-            left: 50%;
-            color: var(--cream);
-            font-family: 'Bebas Neue', sans-serif;
-            letter-spacing: 0.32em;
-            font-size: 0.8rem;
-            text-decoration: none;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.6rem;
-            opacity: 0;
-            transform: translateX(-50%);
-            animation:
-                fadeUp 0.6s ease 0.9s forwards,
-                bob 2.2s ease-in-out 1.6s infinite;
-        }
+      .project-grid {
+        display: grid;
+        gap: 0;
+      }
 
-        .scroll-indicator svg {
-            display: block;
-        }
+      .project {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 2rem;
+        align-items: start;
+        padding: 2rem 0.5rem;
+        border-bottom: 1px solid rgba(26, 26, 26, 0.18);
+        transition:
+          background 0.25s ease,
+          padding 0.25s ease;
+      }
 
-        @keyframes bob {
-            0%, 100% { transform: translateX(-50%) translateY(0); }
-            50%      { transform: translateX(-50%) translateY(6px); }
-        }
+      .project:first-child {
+        border-top: 1px solid rgba(26, 26, 26, 0.18);
+      }
 
-        /* Mobile: name as a banner anchored near the top */
-        @media (max-width: 768px) {
-            .hero {
-                justify-content: flex-start;
-                padding-top: 13vh;
-                padding-bottom: 6rem;
-            }
+      .project:hover {
+        background: rgba(58, 139, 55, 0.05);
+        padding-left: 1rem;
+      }
 
-            .first-name {
-                font-size: 13vw;
-                text-shadow:
-                    1px 1px 0 var(--ink),
-                    2px 2px 0 var(--ink),
-                    3px 3px 0 var(--ink),
-                    4px 4px 0 var(--ink),
-                    5px 5px 0 var(--ink),
-                    6px 6px 0 var(--ink);
-            }
+      .project-body h3 {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: clamp(1.75rem, 3vw, 2.4rem);
+        letter-spacing: 0.03em;
+        margin-bottom: 0.5rem;
+        color: var(--green-dark);
+        line-height: 1;
+      }
 
-            .last-name {
-                font-size: 8.5vw;
-                text-shadow:
-                    1px 1px 0 var(--ink),
-                    2px 2px 0 var(--ink),
-                    3px 3px 0 var(--ink),
-                    4px 4px 0 var(--ink),
-                    5px 5px 0 var(--ink);
-            }
+      .project-desc {
+        font-size: 1.08rem;
+        line-height: 1.5;
+        color: rgba(26, 26, 26, 0.8);
+        max-width: 55ch;
+      }
 
-            .subtitle {
-                margin-top: 1.5rem;
-                font-size: 1.15rem;
-            }
-        }
+      .project-meta {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 0.75rem;
+        font-family: "Bebas Neue", sans-serif;
+        letter-spacing: 0.18em;
+        font-size: 0.82rem;
+        padding-top: 0.75rem;
+      }
 
-        /* ================= PROJECTS ================= */
+      .project-meta a {
+        color: var(--ink);
+        text-decoration: none;
+        border-bottom: 1.5px solid var(--ink);
+        padding-bottom: 2px;
+        transition:
+          color 0.2s,
+          border-color 0.2s;
+      }
+
+      .project-meta a:hover {
+        color: var(--green-dark);
+        border-bottom-color: var(--green-dark);
+      }
+
+      @media (max-width: 700px) {
         .projects {
-            padding: 6rem 2rem 8rem;
-            max-width: 1100px;
-            margin: 0 auto;
-            position: relative;
-        }
-
-        .section-header {
-            display: flex;
-            align-items: baseline;
-            gap: 1.5rem;
-            margin-bottom: 3.5rem;
-            padding-bottom: 1.25rem;
-            border-bottom: 2px solid var(--ink);
-        }
-
-        .section-tag {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 0.85rem;
-            letter-spacing: 0.32em;
-            color: var(--green-dark);
-            white-space: nowrap;
-        }
-
-        .section-header h2 {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: clamp(2.4rem, 5.5vw, 4rem);
-            letter-spacing: 0.02em;
-            color: var(--ink);
-            line-height: 1;
-        }
-
-        .project-grid {
-            display: grid;
-            gap: 0;
+          padding: 4.5rem 1.5rem 5rem;
         }
 
         .project {
-            display: grid;
-            grid-template-columns: 70px 1fr auto;
-            gap: 2rem;
-            align-items: start;
-            padding: 2rem 0.5rem;
-            border-bottom: 1px solid rgba(26, 26, 26, 0.18);
-            transition: background 0.25s ease, padding 0.25s ease;
-        }
-
-        .project:first-child {
-            border-top: 1px solid rgba(26, 26, 26, 0.18);
+          grid-template-columns: 1fr;
+          grid-template-rows: auto auto;
+          gap: 0.5rem;
+          padding: 1.75rem 0.25rem;
         }
 
         .project:hover {
-            background: rgba(58, 139, 55, 0.05);
-            padding-left: 1rem;
+          padding-left: 0.25rem;
         }
 
-        .project-index {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 2.25rem;
-            color: var(--green-dark);
-            letter-spacing: 0.05em;
-            line-height: 1;
-            padding-top: 0.25rem;
+        .project-body {
+          grid-row: 1;
         }
 
         .project-body h3 {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: clamp(1.75rem, 3vw, 2.4rem);
-            letter-spacing: 0.03em;
-            margin-bottom: 0.5rem;
-            color: var(--ink);
-            line-height: 1;
-        }
-
-        .project-desc {
-            font-size: 1.08rem;
-            line-height: 1.5;
-            color: rgba(26, 26, 26, 0.8);
-            max-width: 55ch;
+          margin-bottom: 0.4rem;
         }
 
         .project-meta {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-            gap: 0.75rem;
-            font-family: 'Bebas Neue', sans-serif;
-            letter-spacing: 0.18em;
-            font-size: 0.82rem;
-            padding-top: 0.5rem;
+          grid-row: 2;
+          flex-direction: row;
+          align-items: center;
+          justify-content: flex-start;
+          padding-top: 0.5rem;
         }
+      }
 
-        .project-meta .tag {
-            color: var(--green-dark);
-        }
-
-        .project-meta a {
-            color: var(--ink);
-            text-decoration: none;
-            border-bottom: 1.5px solid var(--ink);
-            padding-bottom: 2px;
-            transition: color 0.2s, border-color 0.2s;
-        }
-
-        .project-meta a:hover {
-            color: var(--green-dark);
-            border-bottom-color: var(--green-dark);
-        }
-
-        @media (max-width: 700px) {
-            .projects {
-                padding: 4.5rem 1.5rem 5rem;
-            }
-
-            .project {
-                grid-template-columns: auto 1fr;
-                grid-template-rows: auto auto;
-                gap: 0.5rem 1rem;
-                padding: 1.75rem 0.25rem;
-            }
-
-            .project:hover {
-                padding-left: 0.25rem;
-            }
-
-            .project-index {
-                font-size: 1.75rem;
-                grid-row: 1;
-                padding-top: 0;
-            }
-
-            .project-body {
-                grid-row: 1;
-            }
-
-            .project-body h3 {
-                margin-bottom: 0.4rem;
-            }
-
-            .project-meta {
-                grid-column: 1 / -1;
-                grid-row: 2;
-                flex-direction: row;
-                align-items: center;
-                justify-content: space-between;
-                padding-top: 0.5rem;
-            }
-        }
-
-        /* Footer */
-        .site-footer {
-            padding: 2rem;
-            text-align: center;
-            font-family: 'Bebas Neue', sans-serif;
-            letter-spacing: 0.28em;
-            font-size: 0.8rem;
-            color: rgba(26, 26, 26, 0.45);
-        }
+      /* Footer */
+      .site-footer {
+        padding: 2rem;
+        text-align: center;
+        font-family: "Bebas Neue", sans-serif;
+        letter-spacing: 0.28em;
+        font-size: 0.8rem;
+        color: rgba(26, 26, 26, 0.45);
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <!-- SVG noise for paper grain texture -->
     <svg class="grain" xmlns="http://www.w3.org/2000/svg">
-        <filter id="noise">
-            <feTurbulence type="fractalNoise" baseFrequency="0.7" numOctaves="4" stitchTiles="stitch" />
-            <feColorMatrix type="saturate" values="0" />
-        </filter>
-        <rect width="100%" height="100%" filter="url(#noise)" />
+      <filter id="noise">
+        <feTurbulence
+          type="fractalNoise"
+          baseFrequency="0.7"
+          numOctaves="4"
+          stitchTiles="stitch"
+        />
+        <feColorMatrix type="saturate" values="0" />
+      </filter>
+      <rect width="100%" height="100%" filter="url(#noise)" />
     </svg>
 
     <div class="vignette"></div>
 
     <section class="hero">
-        <div class="name-block">
-            <h1>
-                <span class="first-name">CONOR</span>
-                <span class="last-name">McMANAMON</span>
-            </h1>
-            <p class="subtitle">
-                Building software in
-                <a href="#" target="_blank" rel="noopener">NYC</a>.
-                <!-- TODO: set href to Fractal Tech URL -->
-            </p>
-        </div>
+      <div class="name-block">
+        <h1>
+          <span class="first-name">CONOR</span>
+          <span class="last-name">McMANAMON</span>
+        </h1>
+        <p class="subtitle">
+          Building software in
+          <a href="#" target="_blank" rel="noopener">NYC</a>.
+          <!-- TODO: set href to Fractal Tech URL -->
+        </p>
+      </div>
 
-        <a href="#projects" class="scroll-indicator" aria-label="Scroll to projects">
-            <span>Work</span>
-            <svg width="22" height="12" viewBox="0 0 22 12" fill="none" aria-hidden="true">
-                <polyline points="2,2 11,10 20,2" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-        </a>
+      <a
+        href="#projects"
+        class="scroll-indicator"
+        aria-label="Scroll to projects"
+      >
+        <span>Work</span>
+        <svg
+          width="22"
+          height="12"
+          viewBox="0 0 22 12"
+          fill="none"
+          aria-hidden="true"
+        >
+          <polyline
+            points="2,2 11,10 20,2"
+            stroke="currentColor"
+            stroke-width="2.2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </a>
     </section>
 
     <main class="projects" id="projects">
-        <div class="section-header">
-            <span class="section-tag">No. 01</span>
-            <h2>Selected Works</h2>
-        </div>
+      <div class="section-header">
+        <span class="section-tag">No. 01</span>
+        <h2>Selected Works</h2>
+      </div>
 
-        <div class="project-grid">
-            <article class="project">
-                <span class="project-index">01</span>
-                <div class="project-body">
-                    <h3>Harbor Watch</h3>
-                    <p class="project-desc">
-                        A real-time animated visualization of New York Harbor with live AIS ship tracking, rendered in a Ghibli-leaning aesthetic. Built solo in a week.
-                    </p>
-                </div>
-                <div class="project-meta">
-                    <span class="tag">Fractal / Wk 3</span>
-                    <a href="#">View →</a>
-                </div>
-            </article>
+      <div class="project-grid">
+        <article class="project">
+          <div class="project-body">
+            <h3>Harbor Watch</h3>
+            <p class="project-desc">
+              A real-time animated visualization of New York Harbor with live
+              AIS ship tracking, rendered in a Ghibli-leaning aesthetic. Built
+              solo in a week.
+            </p>
+          </div>
+          <div class="project-meta">
+            <a
+              href="https://github.com/flatspider/harbor-view"
+              target="_blank"
+              rel="noopener"
+              >Code →</a
+            >
+          </div>
+        </article>
 
-            <article class="project">
-                <span class="project-index">02</span>
-                <div class="project-body">
-                    <h3>Project Two</h3>
-                    <p class="project-desc">
-                        Short, punchy description of the second project. What it does, what makes it worth a look.
-                    </p>
-                </div>
-                <div class="project-meta">
-                    <span class="tag">Fractal / Wk 2</span>
-                    <a href="#">View →</a>
-                </div>
-            </article>
+        <article class="project">
+          <div class="project-body">
+            <h3>Bauhaus Bus</h3>
+            <p class="project-desc">
+              A bus stop display app that treats arrival times like a poster —
+              disciplined typography, primary-color geometry, no
+              transit-dashboard clutter.
+            </p>
+          </div>
+          <div class="project-meta">
+            <a
+              href="https://bauhausbus.com/stop/402854"
+              target="_blank"
+              rel="noopener"
+              >View live →</a
+            >
+            <a
+              href="https://github.com/flatspider/my-bus-stop"
+              target="_blank"
+              rel="noopener"
+              >Code →</a
+            >
+          </div>
+        </article>
 
-            <article class="project">
-                <span class="project-index">03</span>
-                <div class="project-body">
-                    <h3>Project Three</h3>
-                    <p class="project-desc">
-                        Short, punchy description of the third project. What it does, what makes it worth a look.
-                    </p>
-                </div>
-                <div class="project-meta">
-                    <span class="tag">Fractal / Wk 1</span>
-                    <a href="#">View →</a>
-                </div>
-            </article>
-        </div>
+        <article class="project">
+          <div class="project-body">
+            <h3>Weekly Update</h3>
+            <p class="project-desc">
+              An automated weekly digest that pulls activity into a single
+              readable email. Frontend + backend, designed to be opened on a
+              Sunday morning.
+            </p>
+          </div>
+          <div class="project-meta">
+            <a
+              href="https://www.getaweeklyupdate.com/"
+              target="_blank"
+              rel="noopener"
+              >View live →</a
+            >
+          </div>
+        </article>
+      </div>
     </main>
 
     <footer class="site-footer">
-        <p>© 2026 Conor McManamon</p>
+      <p>© 2026 Conor McManamon</p>
     </footer>
-</body>
+  </body>
 </html>
