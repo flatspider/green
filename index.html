@@ -186,12 +186,23 @@
         opacity: 0;
         transform: translateX(-50%);
         animation:
-          fadeUp 0.6s ease 0.9s forwards,
+          fadeUpCentered 0.6s ease 0.9s forwards,
           bob 2.2s ease-in-out 1.6s infinite;
       }
 
       .scroll-indicator svg {
         display: block;
+      }
+
+      @keyframes fadeUpCentered {
+        from {
+          opacity: 0;
+          transform: translateX(-50%) translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(-50%) translateY(0);
+        }
       }
 
       @keyframes bob {
@@ -236,6 +247,46 @@
         .subtitle {
           margin-top: 1.5rem;
           font-size: 1.15rem;
+        }
+
+        /* On mobile, pull the caret out of absolute positioning so it
+           sits directly under the subtitle, and scale it up so it reads
+           clearly as a tap target / scroll affordance. */
+        .scroll-indicator {
+          position: static;
+          left: auto;
+          bottom: auto;
+          margin-top: 2rem;
+          transform: none;
+          animation:
+            fadeUpStatic 0.6s ease 0.9s forwards,
+            bobStatic 2.2s ease-in-out 1.6s infinite;
+        }
+
+        .scroll-indicator svg {
+          width: 52px;
+          height: 28px;
+        }
+
+        @keyframes fadeUpStatic {
+          from {
+            opacity: 0;
+            transform: translateY(10px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        @keyframes bobStatic {
+          0%,
+          100% {
+            transform: translateY(0);
+          }
+          50% {
+            transform: translateY(8px);
+          }
         }
       }
 
@@ -286,24 +337,37 @@
         outline-offset: 4px;
       }
 
+      /* Stack panels in a single grid cell so the container
+         always reserves the height of the tallest panel (Work).
+         Only the active panel is visible; the others are laid
+         out but hidden, so switching tabs doesn't shift layout. */
+      .panels {
+        display: grid;
+        grid-template-columns: 1fr;
+      }
+
       .panel {
-        display: none;
-        animation: panelFade 0.25s ease;
+        grid-column: 1;
+        grid-row: 1;
+        visibility: hidden;
+        opacity: 0;
+        transform: translateY(4px);
+        pointer-events: none;
+        transition:
+          opacity 0.25s ease,
+          transform 0.25s ease,
+          visibility 0s linear 0.25s;
       }
 
       .panel.active {
-        display: block;
-      }
-
-      @keyframes panelFade {
-        from {
-          opacity: 0;
-          transform: translateY(4px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
+        visibility: visible;
+        opacity: 1;
+        transform: translateY(0);
+        pointer-events: auto;
+        transition:
+          opacity 0.25s ease,
+          transform 0.25s ease,
+          visibility 0s linear 0s;
       }
 
       .project-grid {
@@ -542,7 +606,8 @@
         </button>
       </div>
 
-      <section
+      <div class="panels">
+        <section
         class="panel active"
         id="panel-work"
         role="tabpanel"
@@ -639,6 +704,7 @@
           <a href="#" target="_blank" rel="noopener">X / Twitter →</a>
         </div>
       </section>
+      </div>
     </main>
 
     <footer class="site-footer">
