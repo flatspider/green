@@ -239,37 +239,71 @@
         }
       }
 
-      /* ================= PROJECTS ================= */
-      .projects {
+      /* ================= CONTENT (tabs + panels) ================= */
+      .content {
         padding: 6rem 2rem 8rem;
         max-width: 1100px;
         margin: 0 auto;
         position: relative;
       }
 
-      .section-header {
+      .tabs {
         display: flex;
+        flex-wrap: wrap;
         align-items: baseline;
-        gap: 1.5rem;
+        gap: 0.75rem 2.5rem;
         margin-bottom: 3.5rem;
         padding-bottom: 1.25rem;
         border-bottom: 2px solid var(--ink);
       }
 
-      .section-tag {
+      .tab {
+        appearance: none;
+        background: none;
+        border: none;
+        padding: 0;
+        cursor: pointer;
         font-family: "Bebas Neue", sans-serif;
-        font-size: 0.85rem;
-        letter-spacing: 0.32em;
-        color: var(--green-dark);
-        white-space: nowrap;
+        font-size: clamp(2rem, 5vw, 3.5rem);
+        letter-spacing: 0.02em;
+        line-height: 1;
+        color: rgba(26, 26, 26, 0.28);
+        transition:
+          color 0.2s ease,
+          transform 0.2s ease;
       }
 
-      .section-header h2 {
-        font-family: "Bebas Neue", sans-serif;
-        font-size: clamp(2.4rem, 5.5vw, 4rem);
-        letter-spacing: 0.02em;
+      .tab:hover {
+        color: var(--green-dark);
+      }
+
+      .tab.active {
         color: var(--ink);
-        line-height: 1;
+      }
+
+      .tab:focus-visible {
+        outline: 2px solid var(--green-dark);
+        outline-offset: 4px;
+      }
+
+      .panel {
+        display: none;
+        animation: panelFade 0.25s ease;
+      }
+
+      .panel.active {
+        display: block;
+      }
+
+      @keyframes panelFade {
+        from {
+          opacity: 0;
+          transform: translateY(4px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
       }
 
       .project-grid {
@@ -340,8 +374,45 @@
         border-bottom-color: var(--green-dark);
       }
 
+      /* ================= ABOUT PANEL ================= */
+      .about-body {
+        font-size: 1.15rem;
+        line-height: 1.65;
+        color: rgba(26, 26, 26, 0.85);
+        max-width: 60ch;
+      }
+
+      .about-body p + p {
+        margin-top: 1.1rem;
+      }
+
+      /* ================= MEET PANEL ================= */
+      .meet-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2rem 3rem;
+        font-family: "Bebas Neue", sans-serif;
+        letter-spacing: 0.22em;
+        font-size: 1rem;
+      }
+
+      .meet-links a {
+        color: var(--ink);
+        text-decoration: none;
+        border-bottom: 1.5px solid var(--ink);
+        padding-bottom: 3px;
+        transition:
+          color 0.2s,
+          border-color 0.2s;
+      }
+
+      .meet-links a:hover {
+        color: var(--green-dark);
+        border-bottom-color: var(--green-dark);
+      }
+
       @media (max-width: 700px) {
-        .projects {
+        .content {
           padding: 4.5rem 1.5rem 5rem;
         }
 
@@ -415,11 +486,10 @@
       </div>
 
       <a
-        href="#projects"
+        href="#content"
         class="scroll-indicator"
-        aria-label="Scroll to projects"
+        aria-label="Scroll to content"
       >
-        <span>Work</span>
         <svg
           width="22"
           height="12"
@@ -438,80 +508,164 @@
       </a>
     </section>
 
-    <main class="projects" id="projects">
-      <div class="section-header">
-        <span class="section-tag">No. 01</span>
-        <h2>Selected Works</h2>
+    <main class="content" id="content">
+      <div class="tabs" role="tablist" aria-label="Sections">
+        <button
+          type="button"
+          class="tab active"
+          role="tab"
+          aria-selected="true"
+          aria-controls="panel-work"
+          data-target="work"
+        >
+          Work
+        </button>
+        <button
+          type="button"
+          class="tab"
+          role="tab"
+          aria-selected="false"
+          aria-controls="panel-about"
+          data-target="about"
+        >
+          About
+        </button>
+        <button
+          type="button"
+          class="tab"
+          role="tab"
+          aria-selected="false"
+          aria-controls="panel-meet"
+          data-target="meet"
+        >
+          Meet
+        </button>
       </div>
 
-      <div class="project-grid">
-        <article class="project">
-          <div class="project-body">
-            <h3>Harbor Watch</h3>
-            <p class="project-desc">
-              A real-time animated visualization of New York Harbor with live
-              AIS ship tracking, rendered in a Ghibli-leaning aesthetic. Built
-              solo in a week.
-            </p>
-          </div>
-          <div class="project-meta">
-            <a
-              href="https://github.com/flatspider/harbor-view"
-              target="_blank"
-              rel="noopener"
-              >Code →</a
-            >
-          </div>
-        </article>
+      <section
+        class="panel active"
+        id="panel-work"
+        role="tabpanel"
+        aria-labelledby="tab-work"
+      >
+        <div class="project-grid">
+          <article class="project">
+            <div class="project-body">
+              <h3>Harbor Watch</h3>
+              <p class="project-desc">
+                A real-time animated visualization of the New York Harbor with
+                live AIS ship tracking, rendered in Three.js.
+              </p>
+            </div>
+            <div class="project-meta">
+              <a
+                href="https://github.com/flatspider/harbor-view"
+                target="_blank"
+                rel="noopener"
+                >Code →</a
+              >
+            </div>
+          </article>
 
-        <article class="project">
-          <div class="project-body">
-            <h3>Bauhaus Bus</h3>
-            <p class="project-desc">
-              A bus stop display app that treats arrival times like a poster —
-              disciplined typography, primary-color geometry, no
-              transit-dashboard clutter.
-            </p>
-          </div>
-          <div class="project-meta">
-            <a
-              href="https://bauhausbus.com/stop/402854"
-              target="_blank"
-              rel="noopener"
-              >View live →</a
-            >
-            <a
-              href="https://github.com/flatspider/my-bus-stop"
-              target="_blank"
-              rel="noopener"
-              >Code →</a
-            >
-          </div>
-        </article>
+          <article class="project">
+            <div class="project-body">
+              <h3>Bauhaus Bus</h3>
+              <p class="project-desc">
+                A bus stop display app that treats arrival times like a poster.
+                No transit-dashboard clutter.
+              </p>
+            </div>
+            <div class="project-meta">
+              <a
+                href="https://bauhausbus.com/stop/402854"
+                target="_blank"
+                rel="noopener"
+                >View live →</a
+              >
+              <a
+                href="https://github.com/flatspider/my-bus-stop"
+                target="_blank"
+                rel="noopener"
+                >Code →</a
+              >
+            </div>
+          </article>
 
-        <article class="project">
-          <div class="project-body">
-            <h3>Weekly Update</h3>
-            <p class="project-desc">
-              An automated weekly digest that pulls activity into a single
-              readable email. Frontend + backend, designed to be opened on a
-              Sunday morning.
-            </p>
-          </div>
-          <div class="project-meta">
-            <a
-              href="https://www.getaweeklyupdate.com/"
-              target="_blank"
-              rel="noopener"
-              >View live →</a
-            >
-          </div>
-        </article>
-      </div>
+          <article class="project">
+            <div class="project-body">
+              <h3>Weekly Update</h3>
+              <p class="project-desc">
+                An automated weekly digest that pulls calendar activity into a
+                single readable email. Frontend + backend, designed to be
+                opened on Monday morning.
+              </p>
+            </div>
+            <div class="project-meta">
+              <a
+                href="https://www.getaweeklyupdate.com/"
+                target="_blank"
+                rel="noopener"
+                >View live →</a
+              >
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="panel" id="panel-about" role="tabpanel">
+        <div class="about-body">
+          <!-- TODO: replace placeholder copy -->
+          <p>
+            I'm a software engineer in New York, currently in the Fractal Tech
+            accelerator. Before software, I spent years as a quality engineer
+            scaling medical devices from prototype to production.
+          </p>
+          <p>
+            I like the 0-to-1 phase — the ambiguous part where nobody has the
+            answer yet. Manufacturing taught me to stop the line and find root
+            causes; I try to bring the same instinct to code.
+          </p>
+        </div>
+      </section>
+
+      <section class="panel" id="panel-meet" role="tabpanel">
+        <div class="meet-links">
+          <!-- TODO: fill in real hrefs -->
+          <a href="mailto:you@example.com">Email →</a>
+          <a href="https://github.com/flatspider" target="_blank" rel="noopener"
+            >GitHub →</a
+          >
+          <a href="#" target="_blank" rel="noopener">LinkedIn →</a>
+          <a href="#" target="_blank" rel="noopener">X / Twitter →</a>
+        </div>
+      </section>
     </main>
 
     <footer class="site-footer">
       <p>© 2026 Conor McManamon</p>
     </footer>
+
+    <script>
+      (function () {
+        const tabs = document.querySelectorAll(".tab");
+        const panels = document.querySelectorAll(".panel");
+
+        function activate(target) {
+          tabs.forEach((t) => {
+            const isActive = t.dataset.target === target;
+            t.classList.toggle("active", isActive);
+            t.setAttribute("aria-selected", isActive ? "true" : "false");
+          });
+          panels.forEach((p) => {
+            const isActive = p.id === "panel-" + target;
+            p.classList.toggle("active", isActive);
+          });
+        }
+
+        tabs.forEach((tab) => {
+          tab.addEventListener("click", () => activate(tab.dataset.target));
+        });
+      })();
+    </script>
   </body>
 </html>

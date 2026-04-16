@@ -9,7 +9,11 @@ Working doc. Check off as we go. Top = most urgent.
 - [ ] Remove the "WORK" label from the scroll-down indicator — keep only the chevron
 - [ ] Replace placeholder `href="#"` on the **NYC** subtitle link with the real Fractal Tech URL
 - [ ] Replace each project card's `href="#"` with real project URLs
-- [ ] Decide: buy Ultinoid webfont ($20 one-time) and wire it in, or stay on Bowlby One
+- [ ] **Font decision — leaning toward Thorowgood Sans Shaded ($8)**
+  - Found a cheaper, better match than Ultinoid — built-in shadow on each letter mirrors the stamped pamphlet effect we're hand-faking with `text-shadow` stacks
+  - When wired in: drop the multi-layer `text-shadow` on `.first-name` / `.last-name` (the font has the depth baked in — they'll fight each other)
+  - Apply only to hero name. Keep Bebas Neue (section headers) and Crimson Pro (body) — Thorowgood Shaded is display-only, brutal at small sizes
+  - Need to: purchase, drop `.otf`/`.woff2` into `/fonts/`, add `@font-face` block
 
 ## Project content cleanup
 
@@ -170,7 +174,7 @@ Big project — do once, pays off for every future application.
 ## Open questions for Conor
 
 1. What's the Fractal Tech URL you want for the NYC link?
-2. Buy Ultinoid ($20 webfont) or stay on Bowlby One?
+2. Pull the trigger on Thorowgood Sans Shaded ($8) for the hero name?
 3. How many projects do you want to show on day 1 — just Harbor Watch, or pad to 3?
 4. Social link placement preference — hero / subtitle / footer?
 5. What are your GitHub / LinkedIn / Twitter handles?
