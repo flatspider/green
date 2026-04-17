@@ -220,15 +220,26 @@
         html,
         body {
           scroll-snap-type: y mandatory;
-          scroll-behavior: auto;  /* kill the smooth glide — snap should be instant */
-          -webkit-overflow-scrolling: touch;
+          scroll-behavior: auto;
+          overscroll-behavior: none;   /* kill iOS rubber-band bounce */
+        }
+
+        /* The SVG noise filter is a compositor nightmare on mobile —
+           feTurbulence repaints every scroll frame. Hide it. */
+        .grain {
+          display: none;
+        }
+
+        .vignette {
+          will-change: transform;      /* promote to own GPU layer */
         }
 
         .hero {
           scroll-snap-align: start;
           height: 100dvh;
-          min-height: 0;     /* override base min-height */
+          min-height: 0;
           overflow: hidden;
+          will-change: transform;      /* GPU layer isolation */
           justify-content: flex-start;
           padding-top: 13vh;
           padding-bottom: 6rem;
@@ -236,6 +247,7 @@
 
         .content {
           scroll-snap-align: start;
+          will-change: transform;      /* GPU layer isolation */
         }
 
         .first-name {
