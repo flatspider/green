@@ -216,8 +216,18 @@
         outline-offset: 6px;
       }
 
+      .scroll-indicator span {
+        display: none;
+      }
+
       .scroll-indicator svg {
         display: block;
+        width: 28px;
+        height: 22px;
+      }
+
+      .scroll-indicator svg polyline:last-child {
+        display: none;
       }
 
       .details {
@@ -246,7 +256,7 @@
       .tabs {
         display: flex;
         flex-wrap: wrap;
-        gap: 0.7rem 1rem;
+        gap: 0.7rem clamp(1rem, 3vw, 2.5rem);
         align-items: center;
         border-bottom: 1px solid rgba(26, 26, 26, 0.14);
         padding-bottom: 0.9rem;
@@ -260,10 +270,10 @@
         color: rgba(26, 26, 26, 0.46);
         cursor: pointer;
         font-family: "Bebas Neue", sans-serif;
-        font-size: clamp(1.35rem, 2.8vw, 2rem);
-        letter-spacing: 0.05em;
+        font-size: clamp(1.35rem, 5vw, 3.5rem);
+        letter-spacing: 0.08em;
         line-height: 1;
-        padding: 0.25rem 0.35rem;
+        padding: 0.3rem 0.5rem;
         transition:
           color 0.2s ease,
           background-color 0.2s ease;
@@ -300,13 +310,14 @@
         display: grid;
         grid-template-columns: minmax(0, 1fr) auto;
         gap: 0.85rem 1rem;
-        align-items: start;
+        align-items: center;
         padding: 0.9rem 0;
         border-bottom: 1px solid rgba(26, 26, 26, 0.12);
       }
 
       .project:first-child {
-        border-top: 1px solid rgba(26, 26, 26, 0.12);
+        border-top: none;
+        padding-top: 0.4rem;
       }
 
       .project-body h3 {
@@ -340,6 +351,7 @@
       .project-meta {
         justify-content: flex-end;
         padding-top: 0.25rem;
+        padding-right: 4px;
       }
 
       .project-meta a,
@@ -356,6 +368,31 @@
       .meet-links a:hover {
         color: var(--green-dark);
         border-bottom-color: var(--green-dark);
+      }
+
+      .meet-links a {
+        border-bottom: none;
+        padding-bottom: 0;
+      }
+
+      .project-meta .icon-link {
+        border-bottom: none;
+        padding-bottom: 0;
+      }
+
+      .social-icon {
+        display: block;
+        width: 22px;
+        height: 22px;
+        transition:
+          opacity 0.2s ease,
+          transform 0.2s ease;
+      }
+
+      .meet-links a:hover .social-icon,
+      .project-meta .icon-link:hover .social-icon {
+        opacity: 0.7;
+        transform: scale(1.1);
       }
 
       .about-body,
@@ -459,12 +496,16 @@
         }
 
         .tabs {
-          gap: 0.35rem 0.75rem;
+          justify-content: space-between;
+          gap: 0.35rem 0;
           padding-bottom: 0.7rem;
         }
 
         .tab {
-          font-size: 1.2rem;
+          flex: 1;
+          text-align: center;
+          font-size: 1.5rem;
+          letter-spacing: 0.1em;
         }
 
         .project {
@@ -487,8 +528,18 @@
             bob-up 1.5s ease-in-out 1.6s infinite;
         }
 
+        .scroll-indicator span {
+          display: inline;
+        }
+
         .scroll-indicator svg {
+          width: 22px;
+          height: 18px;
           transform: rotate(180deg);
+        }
+
+        .scroll-indicator svg polyline:last-child {
+          display: inline;
         }
       }
 
@@ -622,6 +673,35 @@
                   <div class="project-grid">
                     <article class="project">
                       <div class="project-body">
+                        <h3>Bauhaus Bus</h3>
+                        <p class="project-desc">
+                          I was tired of getting ghosted at the bus stop, so I
+                          built a site wired directly into the GPS data from the
+                          MTA. Designed as simply as possible.
+                        </p>
+                      </div>
+                      <div class="project-meta">
+                        <a
+                          href="https://bauhausbus.com/stop/402854"
+                          target="_blank"
+                          rel="noopener"
+                          >Live</a
+                        >
+                        <a
+                          class="icon-link"
+                          href="https://github.com/flatspider/my-bus-stop"
+                          target="_blank"
+                          rel="noopener"
+                          aria-label="View code on GitHub"
+                          ><img
+                            class="social-icon"
+                            src="assets/icons/github.svg"
+                            alt="GitHub"
+                        /></a>
+                      </div>
+                    </article>
+                    <article class="project">
+                      <div class="project-body">
                         <h3>Harbor Watch</h3>
                         <p class="project-desc">
                           A real-time animated visualization of the New York
@@ -631,35 +711,22 @@
                       </div>
                       <div class="project-meta">
                         <a
+                          href="https://harbor-view-production.up.railway.app/"
+                          target="_blank"
+                          rel="noopener"
+                          >Live</a
+                        >
+                        <a
+                          class="icon-link"
                           href="https://github.com/flatspider/harbor-view"
                           target="_blank"
                           rel="noopener"
-                          >Code</a
-                        >
-                      </div>
-                    </article>
-
-                    <article class="project">
-                      <div class="project-body">
-                        <h3>Bauhaus Bus</h3>
-                        <p class="project-desc">
-                          A bus stop display app that treats arrival times like
-                          a poster, without transit-dashboard clutter.
-                        </p>
-                      </div>
-                      <div class="project-meta">
-                        <a
-                          href="https://bauhausbus.com/stop/402854"
-                          target="_blank"
-                          rel="noopener"
-                          >View Live</a
-                        >
-                        <a
-                          href="https://github.com/flatspider/my-bus-stop"
-                          target="_blank"
-                          rel="noopener"
-                          >Code</a
-                        >
+                          aria-label="View code on GitHub"
+                          ><img
+                            class="social-icon"
+                            src="assets/icons/github.svg"
+                            alt="GitHub"
+                        /></a>
                       </div>
                     </article>
 
@@ -667,8 +734,8 @@
                       <div class="project-body">
                         <h3>Weekly Update</h3>
                         <p class="project-desc">
-                          An automated weekly digest that turns calendar
-                          activity into a single readable Monday-morning email.
+                          An automated weekly digest that turns Google Calendar
+                          activities into a single Monday-morning email.
                         </p>
                       </div>
                       <div class="project-meta">
@@ -676,7 +743,7 @@
                           href="https://www.getaweeklyupdate.com/"
                           target="_blank"
                           rel="noopener"
-                          >View Live</a
+                          >Live</a
                         >
                       </div>
                     </article>
@@ -692,15 +759,20 @@
                 >
                   <div class="about-body">
                     <p>
-                      I'm a software engineer in New York, currently in the
-                      Fractal Tech accelerator. Before software, I spent years
-                      as a quality engineer scaling medical devices from
-                      prototype to production.
+                      I moved to NYC last year, and I'm currently in the Fractal
+                      Tech accelerator. I'm from all over the place. I was born
+                      in California, grew up in Maryland, and moved to NYC from
+                      South Carolina.
                     </p>
                     <p>
-                      I like the 0-to-1 phase: the ambiguous part where nobody
-                      has the answer yet. Manufacturing taught me to stop the
-                      line, find root causes, and carry that instinct into code.
+                      I like being in early on something. I have start-up
+                      experience in manufacturing (building the Kincise system),
+                      innovating in the agricultural industry, and founding a
+                      visual arts magazine.
+                    </p>
+                    <p>
+                      Along those same lines, I love meeting new people. Hit the
+                      Meet tab and send me a dm.
                     </p>
                   </div>
                 </section>
@@ -718,15 +790,54 @@
                       early-stage software in New York.
                     </p>
                     <div class="meet-links">
-                      <a href="mailto:you@example.com">Email</a>
+                      <a
+                        href="mailto:c.s.mcmanamon@gmail.com"
+                        aria-label="Email"
+                        ><img
+                          class="social-icon"
+                          src="assets/icons/email.svg"
+                          alt="Email"
+                      /></a>
                       <a
                         href="https://github.com/flatspider"
                         target="_blank"
                         rel="noopener"
-                        >GitHub</a
-                      >
-                      <a href="#" target="_blank" rel="noopener">LinkedIn</a>
-                      <a href="#" target="_blank" rel="noopener">X / Twitter</a>
+                        aria-label="GitHub"
+                        ><img
+                          class="social-icon"
+                          src="assets/icons/github.svg"
+                          alt="GitHub"
+                      /></a>
+                      <a
+                        href="https://www.linkedin.com/in/conor-s-mcmanamon/"
+                        target="_blank"
+                        rel="noopener"
+                        aria-label="LinkedIn"
+                        ><img
+                          class="social-icon"
+                          src="assets/icons/linkedin.svg"
+                          alt="LinkedIn"
+                      /></a>
+                      <a
+                        href="https://instagram.com/csmcmanamon"
+                        target="_blank"
+                        rel="noopener"
+                        aria-label="Instagram"
+                        ><img
+                          class="social-icon"
+                          src="assets/icons/instagram.svg"
+                          alt="Instagram"
+                      /></a>
+                      <a
+                        href="https://x.com/iamconormac"
+                        target="_blank"
+                        rel="noopener"
+                        aria-label="X"
+                        ><img
+                          class="social-icon"
+                          src="assets/icons/x.svg"
+                          alt="X"
+                      /></a>
                     </div>
                   </div>
                 </section>
