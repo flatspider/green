@@ -18,7 +18,6 @@
         --green-bright: #44a03f;
         --ink: #1a1a1a;
         --cream: #f0ece3;
-        --browser-chrome: #f0ece3;
       }
 
       * {
@@ -33,7 +32,7 @@
       }
 
       html {
-        background: var(--browser-chrome);
+        background: var(--cream);
         overflow: hidden;
         overscroll-behavior: none;
       }
@@ -770,9 +769,6 @@
         const sceneJumpButton = document.querySelector(
           "[data-scene-target='1']",
         );
-        const themeColorMeta = document.querySelector(
-          'meta[name="theme-color"]',
-        );
         const tabs = Array.from(document.querySelectorAll('[role="tab"]'));
         const panels = Array.from(
           document.querySelectorAll('[role="tabpanel"]'),
@@ -780,11 +776,6 @@
         const reduceMotionQuery = window.matchMedia(
           "(prefers-reduced-motion: reduce)",
         );
-        const rootStyles = getComputedStyle(document.documentElement);
-        const sceneChromeColors = [
-          rootStyles.getPropertyValue("--green").trim() || "#3a8b37",
-          rootStyles.getPropertyValue("--cream").trim() || "#f0ece3",
-        ];
 
         const config = {
           wheelNoisePx: 4,
@@ -1070,22 +1061,6 @@
           return null;
         }
 
-        function updateBrowserChrome(sceneIndex) {
-          const nextChromeColor =
-            sceneChromeColors[sceneIndex] ||
-            sceneChromeColors[sceneChromeColors.length - 1] ||
-            "#f0ece3";
-
-          document.documentElement.style.setProperty(
-            "--browser-chrome",
-            nextChromeColor,
-          );
-
-          if (themeColorMeta) {
-            themeColorMeta.setAttribute("content", nextChromeColor);
-          }
-        }
-
         function applySceneActivation(activeScene) {
           sceneRoots.forEach(function (scene, index) {
             const isActive = index === activeScene;
@@ -1098,8 +1073,6 @@
               scene.setAttribute("inert", "");
             }
           });
-
-          updateBrowserChrome(activeScene);
         }
 
         function finishTransition() {
@@ -1157,7 +1130,6 @@
           state.startY = state.currentY;
           state.targetY = -nextScene * state.sceneHeight;
           state.isTransitioning = true;
-          updateBrowserChrome(nextScene);
           debugState.lastTriggerSource = source;
           debugState.lastRequestedScene = nextScene;
           debugState.lastTransitionFrames = 0;
