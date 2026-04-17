@@ -310,7 +310,7 @@
         display: grid;
         grid-template-columns: minmax(0, 1fr) auto;
         gap: 0.85rem 1rem;
-        align-items: start;
+        align-items: center;
         padding: 0.9rem 0;
         border-bottom: 1px solid rgba(26, 26, 26, 0.12);
       }
@@ -351,6 +351,7 @@
       .project-meta {
         justify-content: flex-end;
         padding-top: 0.25rem;
+        padding-right: 4px;
       }
 
       .project-meta a,
@@ -672,30 +673,6 @@
                   <div class="project-grid">
                     <article class="project">
                       <div class="project-body">
-                        <h3>Harbor Watch</h3>
-                        <p class="project-desc">
-                          A real-time animated visualization of the New York
-                          Harbor with live AIS ship tracking, rendered in
-                          Three.js.
-                        </p>
-                      </div>
-                      <div class="project-meta">
-                        <a
-                          class="icon-link"
-                          href="https://github.com/flatspider/harbor-view"
-                          target="_blank"
-                          rel="noopener"
-                          aria-label="View code on GitHub"
-                          ><img
-                            class="social-icon"
-                            src="assets/icons/github.svg"
-                            alt="GitHub"
-                        /></a>
-                      </div>
-                    </article>
-
-                    <article class="project">
-                      <div class="project-body">
                         <h3>Bauhaus Bus</h3>
                         <p class="project-desc">
                           I was tired of getting ghosted at the bus stop, so I
@@ -708,11 +685,40 @@
                           href="https://bauhausbus.com/stop/402854"
                           target="_blank"
                           rel="noopener"
-                          >View Live</a
+                          >Live</a
                         >
                         <a
                           class="icon-link"
                           href="https://github.com/flatspider/my-bus-stop"
+                          target="_blank"
+                          rel="noopener"
+                          aria-label="View code on GitHub"
+                          ><img
+                            class="social-icon"
+                            src="assets/icons/github.svg"
+                            alt="GitHub"
+                        /></a>
+                      </div>
+                    </article>
+                    <article class="project">
+                      <div class="project-body">
+                        <h3>Harbor Watch</h3>
+                        <p class="project-desc">
+                          A real-time animated visualization of the New York
+                          Harbor with live AIS ship tracking, rendered in
+                          Three.js.
+                        </p>
+                      </div>
+                      <div class="project-meta">
+                        <a
+                          href="https://harbor-view-production.up.railway.app/"
+                          target="_blank"
+                          rel="noopener"
+                          >Live</a
+                        >
+                        <a
+                          class="icon-link"
+                          href="https://github.com/flatspider/harbor-view"
                           target="_blank"
                           rel="noopener"
                           aria-label="View code on GitHub"
@@ -737,7 +743,7 @@
                           href="https://www.getaweeklyupdate.com/"
                           target="_blank"
                           rel="noopener"
-                          >View Live</a
+                          >Live</a
                         >
                       </div>
                     </article>
