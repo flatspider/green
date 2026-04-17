@@ -32,12 +32,21 @@
 
       html {
         background: var(--cream);
+        overflow: hidden;
+        overscroll-behavior: none;
       }
 
       body {
+        min-block-size: 100vh;
+        min-block-size: 100dvh;
         overflow: hidden;
+        overscroll-behavior: none;
         background:
-          radial-gradient(circle at top, rgba(68, 160, 63, 0.2), transparent 38%),
+          radial-gradient(
+            circle at top,
+            rgba(68, 160, 63, 0.2),
+            transparent 38%
+          ),
           linear-gradient(180deg, #f7f3ea 0%, var(--cream) 100%);
         color: var(--ink);
         font-family: "Crimson Pro", Georgia, serif;
@@ -47,31 +56,61 @@
         color: inherit;
       }
 
-      .snap-shell {
+      button,
+      input,
+      textarea,
+      select {
+        font: inherit;
+      }
+
+      .site-shell {
+        block-size: 100%;
+      }
+
+      .site-viewport {
+        position: fixed;
+        inset: 0;
         block-size: 100vh;
         block-size: 100dvh;
-        overflow-y: auto;
-        overflow-x: hidden;
-        scroll-snap-type: y mandatory;
-        overscroll-behavior-y: none;
-        -webkit-overflow-scrolling: touch;
-        touch-action: pan-y;
+        overflow: hidden;
+        overscroll-behavior: none;
+      }
+
+      .scene-track {
+        display: flex;
+        flex-direction: column;
+        inline-size: 100%;
+        will-change: transform;
+        transform: translate3d(0, 0, 0);
+        backface-visibility: hidden;
+      }
+
+      .scene-track.is-transitioning {
+        pointer-events: none;
+      }
+
+      .scene {
+        outline: none;
       }
 
       .screen {
         position: relative;
         block-size: 100vh;
         block-size: 100dvh;
-        scroll-snap-align: start;
-        scroll-snap-stop: always;
+        min-block-size: 100vh;
+        min-block-size: 100dvh;
       }
 
       .hero {
         display: grid;
         place-items: center;
         padding: clamp(1.5rem, 3vw, 2.5rem);
-        background:
-          radial-gradient(ellipse 120% 100% at 50% 44%, var(--green-bright) 0%, var(--green) 40%, var(--green-dark) 100%);
+        background: radial-gradient(
+          ellipse 120% 100% at 50% 44%,
+          var(--green-bright) 0%,
+          var(--green) 40%,
+          var(--green-dark) 100%
+        );
         isolation: isolate;
       }
 
@@ -80,8 +119,16 @@
         position: absolute;
         inset: 0;
         background:
-          radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.2), transparent 28%),
-          radial-gradient(circle at 82% 18%, rgba(255, 255, 255, 0.12), transparent 22%),
+          radial-gradient(
+            circle at 20% 20%,
+            rgba(255, 255, 255, 0.2),
+            transparent 28%
+          ),
+          radial-gradient(
+            circle at 82% 18%,
+            rgba(255, 255, 255, 0.12),
+            transparent 22%
+          ),
           linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.08));
         pointer-events: none;
       }
@@ -164,12 +211,22 @@
         font-family: "Bebas Neue", sans-serif;
         font-size: 0.8rem;
         letter-spacing: 0.32em;
+        appearance: none;
+        border: none;
+        background: none;
+        padding: 0;
         text-decoration: none;
+        cursor: pointer;
         transform: translateX(-50%);
         opacity: 0;
         animation:
           fade-up-centered 0.6s ease 0.9s forwards,
           bob 2.2s ease-in-out 1.6s infinite;
+      }
+
+      .scroll-indicator:focus-visible {
+        outline: 2px solid rgba(240, 236, 227, 0.92);
+        outline-offset: 6px;
       }
 
       .scroll-indicator svg {
@@ -181,7 +238,11 @@
         align-items: center;
         padding: clamp(1.5rem, 3vw, 2.5rem);
         background:
-          linear-gradient(180deg, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0)),
+          linear-gradient(
+            180deg,
+            rgba(255, 255, 255, 0.25),
+            rgba(255, 255, 255, 0)
+          ),
           linear-gradient(180deg, #f7f3ea 0%, var(--cream) 100%);
       }
 
@@ -457,10 +518,6 @@
       }
 
       @media (prefers-reduced-motion: reduce) {
-        .snap-shell {
-          scroll-behavior: auto;
-        }
-
         *,
         *::before,
         *::after {
@@ -471,216 +528,311 @@
     </style>
   </head>
   <body>
-    <main class="snap-shell">
-      <section class="screen hero" aria-label="Introduction">
-        <div class="name-block">
-          <h1>
-            <span class="first-name">CONOR</span>
-            <span class="last-name">McMANAMON</span>
-          </h1>
-          <p class="subtitle">
-            Building software in
-            <a href="#" target="_blank" rel="noopener">NYC</a>.
-          </p>
-        </div>
-
-        <a
-          href="#details"
-          class="scroll-indicator"
-          aria-label="Scroll to the second screen"
-        >
-          <span>Swipe Up</span>
-          <svg
-            width="22"
-            height="18"
-            viewBox="0 0 22 18"
-            fill="none"
-            aria-hidden="true"
+    <main class="site-shell">
+      <div class="site-viewport" data-site-viewport>
+        <div class="scene-track" data-scene-track>
+          <section
+            class="screen scene hero is-active"
+            data-scene-root
+            aria-label="Introduction"
+            tabindex="-1"
+            aria-hidden="false"
           >
-            <polyline
-              points="2,2 11,10 20,2"
-              stroke="currentColor"
-              stroke-width="2.2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-            <polyline
-              points="2,8 11,16 20,8"
-              stroke="currentColor"
-              stroke-width="2.2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-          </svg>
-        </a>
-      </section>
+            <div class="name-block">
+              <h1>
+                <span class="first-name">CONOR</span>
+                <span class="last-name">McMANAMON</span>
+              </h1>
+              <p class="subtitle">
+                Building software in
+                <a href="#" target="_blank" rel="noopener">NYC</a>.
+              </p>
+            </div>
 
-      <section class="screen details" id="details" aria-label="Work and links">
-        <div class="details-card">
-          <div class="tabs" role="tablist" aria-label="Sections">
             <button
               type="button"
-              class="tab active"
-              id="tab-work"
-              role="tab"
-              aria-selected="true"
-              aria-controls="panel-work"
+              class="scroll-indicator"
+              data-scene-target="1"
+              aria-controls="details"
+              aria-label="Go to work and links"
             >
-              Work
+              <span>Swipe Up</span>
+              <svg
+                width="22"
+                height="18"
+                viewBox="0 0 22 18"
+                fill="none"
+                aria-hidden="true"
+              >
+                <polyline
+                  points="2,2 11,10 20,2"
+                  stroke="currentColor"
+                  stroke-width="2.2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <polyline
+                  points="2,8 11,16 20,8"
+                  stroke="currentColor"
+                  stroke-width="2.2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
             </button>
-            <button
-              type="button"
-              class="tab"
-              id="tab-about"
-              role="tab"
-              aria-selected="false"
-              aria-controls="panel-about"
-              tabindex="-1"
-            >
-              About
-            </button>
-            <button
-              type="button"
-              class="tab"
-              id="tab-meet"
-              role="tab"
-              aria-selected="false"
-              aria-controls="panel-meet"
-              tabindex="-1"
-            >
-              Meet
-            </button>
-          </div>
+          </section>
 
-          <div class="panel-region">
-            <section
-              class="panel"
-              id="panel-work"
-              role="tabpanel"
-              aria-labelledby="tab-work"
-            >
-              <div class="project-grid">
-                <article class="project">
-                  <div class="project-body">
-                    <h3>Harbor Watch</h3>
-                    <p class="project-desc">
-                      A real-time animated visualization of the New York Harbor
-                      with live AIS ship tracking, rendered in Three.js.
+          <section
+            class="screen scene details"
+            id="details"
+            data-scene-root
+            aria-label="Work and links"
+            tabindex="-1"
+            aria-hidden="true"
+            inert
+          >
+            <div class="details-card">
+              <div class="tabs" role="tablist" aria-label="Sections">
+                <button
+                  type="button"
+                  class="tab active"
+                  id="tab-work"
+                  role="tab"
+                  aria-selected="true"
+                  aria-controls="panel-work"
+                >
+                  Work
+                </button>
+                <button
+                  type="button"
+                  class="tab"
+                  id="tab-about"
+                  role="tab"
+                  aria-selected="false"
+                  aria-controls="panel-about"
+                  tabindex="-1"
+                >
+                  About
+                </button>
+                <button
+                  type="button"
+                  class="tab"
+                  id="tab-meet"
+                  role="tab"
+                  aria-selected="false"
+                  aria-controls="panel-meet"
+                  tabindex="-1"
+                >
+                  Meet
+                </button>
+              </div>
+
+              <div class="panel-region">
+                <section
+                  class="panel"
+                  id="panel-work"
+                  role="tabpanel"
+                  aria-labelledby="tab-work"
+                >
+                  <div class="project-grid">
+                    <article class="project">
+                      <div class="project-body">
+                        <h3>Harbor Watch</h3>
+                        <p class="project-desc">
+                          A real-time animated visualization of the New York
+                          Harbor with live AIS ship tracking, rendered in
+                          Three.js.
+                        </p>
+                      </div>
+                      <div class="project-meta">
+                        <a
+                          href="https://github.com/flatspider/harbor-view"
+                          target="_blank"
+                          rel="noopener"
+                          >Code</a
+                        >
+                      </div>
+                    </article>
+
+                    <article class="project">
+                      <div class="project-body">
+                        <h3>Bauhaus Bus</h3>
+                        <p class="project-desc">
+                          A bus stop display app that treats arrival times like
+                          a poster, without transit-dashboard clutter.
+                        </p>
+                      </div>
+                      <div class="project-meta">
+                        <a
+                          href="https://bauhausbus.com/stop/402854"
+                          target="_blank"
+                          rel="noopener"
+                          >View Live</a
+                        >
+                        <a
+                          href="https://github.com/flatspider/my-bus-stop"
+                          target="_blank"
+                          rel="noopener"
+                          >Code</a
+                        >
+                      </div>
+                    </article>
+
+                    <article class="project">
+                      <div class="project-body">
+                        <h3>Weekly Update</h3>
+                        <p class="project-desc">
+                          An automated weekly digest that turns calendar
+                          activity into a single readable Monday-morning email.
+                        </p>
+                      </div>
+                      <div class="project-meta">
+                        <a
+                          href="https://www.getaweeklyupdate.com/"
+                          target="_blank"
+                          rel="noopener"
+                          >View Live</a
+                        >
+                      </div>
+                    </article>
+                  </div>
+                </section>
+
+                <section
+                  class="panel"
+                  id="panel-about"
+                  role="tabpanel"
+                  aria-labelledby="tab-about"
+                  hidden
+                >
+                  <div class="about-body">
+                    <p>
+                      I'm a software engineer in New York, currently in the
+                      Fractal Tech accelerator. Before software, I spent years
+                      as a quality engineer scaling medical devices from
+                      prototype to production.
+                    </p>
+                    <p>
+                      I like the 0-to-1 phase: the ambiguous part where nobody
+                      has the answer yet. Manufacturing taught me to stop the
+                      line, find root causes, and carry that instinct into code.
                     </p>
                   </div>
-                  <div class="project-meta">
-                    <a
-                      href="https://github.com/flatspider/harbor-view"
-                      target="_blank"
-                      rel="noopener"
-                      >Code</a
-                    >
-                  </div>
-                </article>
+                </section>
 
-                <article class="project">
-                  <div class="project-body">
-                    <h3>Bauhaus Bus</h3>
-                    <p class="project-desc">
-                      A bus stop display app that treats arrival times like a
-                      poster, without transit-dashboard clutter.
+                <section
+                  class="panel"
+                  id="panel-meet"
+                  role="tabpanel"
+                  aria-labelledby="tab-meet"
+                  hidden
+                >
+                  <div class="meet-stack">
+                    <p class="meet-copy">
+                      Reach out if you want to talk product, maps, transit, or
+                      early-stage software in New York.
                     </p>
+                    <div class="meet-links">
+                      <a href="mailto:you@example.com">Email</a>
+                      <a
+                        href="https://github.com/flatspider"
+                        target="_blank"
+                        rel="noopener"
+                        >GitHub</a
+                      >
+                      <a href="#" target="_blank" rel="noopener">LinkedIn</a>
+                      <a href="#" target="_blank" rel="noopener">X / Twitter</a>
+                    </div>
                   </div>
-                  <div class="project-meta">
-                    <a
-                      href="https://bauhausbus.com/stop/402854"
-                      target="_blank"
-                      rel="noopener"
-                      >View Live</a
-                    >
-                    <a
-                      href="https://github.com/flatspider/my-bus-stop"
-                      target="_blank"
-                      rel="noopener"
-                      >Code</a
-                    >
-                  </div>
-                </article>
-
-                <article class="project">
-                  <div class="project-body">
-                    <h3>Weekly Update</h3>
-                    <p class="project-desc">
-                      An automated weekly digest that turns calendar activity
-                      into a single readable Monday-morning email.
-                    </p>
-                  </div>
-                  <div class="project-meta">
-                    <a
-                      href="https://www.getaweeklyupdate.com/"
-                      target="_blank"
-                      rel="noopener"
-                      >View Live</a
-                    >
-                  </div>
-                </article>
+                </section>
               </div>
-            </section>
 
-            <section
-              class="panel"
-              id="panel-about"
-              role="tabpanel"
-              aria-labelledby="tab-about"
-              hidden
-            >
-              <div class="about-body">
-                <p>
-                  I'm a software engineer in New York, currently in the Fractal
-                  Tech accelerator. Before software, I spent years as a quality
-                  engineer scaling medical devices from prototype to production.
-                </p>
-                <p>
-                  I like the 0-to-1 phase: the ambiguous part where nobody has
-                  the answer yet. Manufacturing taught me to stop the line,
-                  find root causes, and carry that instinct into code.
-                </p>
-              </div>
-            </section>
-
-            <section
-              class="panel"
-              id="panel-meet"
-              role="tabpanel"
-              aria-labelledby="tab-meet"
-              hidden
-            >
-              <div class="meet-stack">
-                <p class="meet-copy">
-                  Reach out if you want to talk product, maps, transit, or
-                  early-stage software in New York.
-                </p>
-                <div class="meet-links">
-                  <a href="mailto:you@example.com">Email</a>
-                  <a
-                    href="https://github.com/flatspider"
-                    target="_blank"
-                    rel="noopener"
-                    >GitHub</a
-                  >
-                  <a href="#" target="_blank" rel="noopener">LinkedIn</a>
-                  <a href="#" target="_blank" rel="noopener">X / Twitter</a>
-                </div>
-              </div>
-            </section>
-          </div>
-
-          <footer class="details-footer">
-            <p>&copy; 2026 Conor McManamon</p>
-          </footer>
+              <footer class="details-footer">
+                <p>&copy; 2026 Conor McManamon</p>
+              </footer>
+            </div>
+          </section>
         </div>
-      </section>
+      </div>
     </main>
 
     <script>
       (function () {
+        const siteViewport = document.querySelector("[data-site-viewport]");
+        const sceneTrack = document.querySelector("[data-scene-track]");
+        const sceneRoots = Array.from(
+          document.querySelectorAll("[data-scene-root]"),
+        );
+        const heroScene = sceneRoots[0];
+        const detailsScene = sceneRoots[1];
+        const sceneJumpButton = document.querySelector(
+          "[data-scene-target='1']",
+        );
         const tabs = Array.from(document.querySelectorAll('[role="tab"]'));
-        const panels = Array.from(document.querySelectorAll('[role="tabpanel"]'));
+        const panels = Array.from(
+          document.querySelectorAll('[role="tabpanel"]'),
+        );
+        const reduceMotionQuery = window.matchMedia(
+          "(prefers-reduced-motion: reduce)",
+        );
+
+        const config = {
+          wheelNoisePx: 4,
+          wheelIntentPx: 110,
+          wheelGestureGapMs: 180,
+          wheelReverseHysteresisPx: 42,
+          wheelCooldownMs: 240,
+          touchAxisLockPx: 12,
+          touchTriggerDistancePx: 64,
+          touchTriggerVelocity: 0.25,
+          transitionDurationMs: 315,
+        };
+        const debugMode = new URLSearchParams(window.location.search).has(
+          "sceneDebug",
+        );
+        const debugState = {
+          overlay: null,
+          lastTriggerSource: "none",
+          lastIntentLatencyMs: 0,
+          lastRequestedScene: 0,
+          lastSettledScene: 0,
+          lastTransitionElapsedMs: 0,
+          lastTransitionFirstFrameDelayMs: 0,
+          lastTransitionFrames: 0,
+          lastWheelAccumulator: 0,
+          lastWheelDirection: 0,
+          lastTouchDistancePx: 0,
+          lastTouchVelocity: 0,
+        };
+
+        const state = {
+          activeScene: 0,
+          targetScene: 0,
+          currentY: 0,
+          targetY: 0,
+          startY: 0,
+          sceneHeight: 0,
+          isTransitioning: false,
+          rafId: 0,
+          transitionStartedAt: 0,
+          cooldownUntil: 0,
+          focusAfterTransition: null,
+          wheelAccumulator: 0,
+          wheelDirection: 0,
+          wheelLastEventAt: 0,
+          wheelGestureStartedAt: 0,
+          wheelThreshold: config.wheelIntentPx,
+          touch: {
+            tracking: false,
+            startX: 0,
+            startY: 0,
+            lastX: 0,
+            lastY: 0,
+            startTime: 0,
+            verticalLock: false,
+            cancelled: false,
+          },
+        };
 
         function activateTab(nextTab, options) {
           const moveFocus = options && options.moveFocus;
@@ -698,8 +850,563 @@
           });
 
           if (moveFocus) {
-            nextTab.focus();
+            nextTab.focus({ preventScroll: true });
           }
+        }
+
+        function clampSceneIndex(index) {
+          return Math.max(0, Math.min(sceneRoots.length - 1, index));
+        }
+
+        function normalizeDelta(delta, deltaMode) {
+          if (deltaMode === 1) {
+            return delta * 16;
+          }
+
+          if (deltaMode === 2) {
+            return delta * state.sceneHeight;
+          }
+
+          return delta;
+        }
+
+        function createUnitBezier(x1, y1, x2, y2) {
+          const cx = 3 * x1;
+          const bx = 3 * (x2 - x1) - cx;
+          const ax = 1 - cx - bx;
+          const cy = 3 * y1;
+          const by = 3 * (y2 - y1) - cy;
+          const ay = 1 - cy - by;
+
+          function sampleCurveX(t) {
+            return ((ax * t + bx) * t + cx) * t;
+          }
+
+          function sampleCurveY(t) {
+            return ((ay * t + by) * t + cy) * t;
+          }
+
+          function sampleDerivativeX(t) {
+            return (3 * ax * t + 2 * bx) * t + cx;
+          }
+
+          function solveCurveX(x) {
+            let t = x;
+
+            for (let index = 0; index < 6; index += 1) {
+              const currentX = sampleCurveX(t) - x;
+              const derivative = sampleDerivativeX(t);
+
+              if (Math.abs(currentX) < 0.0001) {
+                return t;
+              }
+
+              if (Math.abs(derivative) < 0.0001) {
+                break;
+              }
+
+              t -= currentX / derivative;
+            }
+
+            let lower = 0;
+            let upper = 1;
+            t = x;
+
+            while (lower < upper) {
+              const currentX = sampleCurveX(t);
+
+              if (Math.abs(currentX - x) < 0.0001) {
+                return t;
+              }
+
+              if (x > currentX) {
+                lower = t;
+              } else {
+                upper = t;
+              }
+
+              t = (upper - lower) * 0.5 + lower;
+            }
+
+            return t;
+          }
+
+          return function solve(x) {
+            if (x <= 0) {
+              return 0;
+            }
+
+            if (x >= 1) {
+              return 1;
+            }
+
+            return sampleCurveY(solveCurveX(x));
+          };
+        }
+
+        const authoredEase = createUnitBezier(0.22, 1, 0.36, 1);
+
+        function updateTrackPosition(nextY) {
+          state.currentY = nextY;
+          sceneTrack.style.transform = `translate3d(0, ${nextY.toFixed(3)}px, 0)`;
+          renderDebugOverlay();
+        }
+
+        function resetWheelGesture() {
+          state.wheelAccumulator = 0;
+          state.wheelDirection = 0;
+          state.wheelLastEventAt = 0;
+          state.wheelGestureStartedAt = 0;
+          state.wheelThreshold = config.wheelIntentPx;
+          debugState.lastWheelAccumulator = 0;
+          debugState.lastWheelDirection = 0;
+          renderDebugOverlay();
+        }
+
+        function resetTouchGesture() {
+          state.touch.tracking = false;
+          state.touch.startX = 0;
+          state.touch.startY = 0;
+          state.touch.lastX = 0;
+          state.touch.lastY = 0;
+          state.touch.startTime = 0;
+          state.touch.verticalLock = false;
+          state.touch.cancelled = false;
+        }
+
+        function createDebugOverlay() {
+          if (!debugMode) {
+            return;
+          }
+
+          const overlay = document.createElement("pre");
+          overlay.setAttribute("aria-hidden", "true");
+          overlay.style.position = "fixed";
+          overlay.style.top = "12px";
+          overlay.style.right = "12px";
+          overlay.style.zIndex = "9999";
+          overlay.style.minWidth = "260px";
+          overlay.style.padding = "12px 14px";
+          overlay.style.borderRadius = "12px";
+          overlay.style.background = "rgba(15, 18, 16, 0.82)";
+          overlay.style.color = "#f0ece3";
+          overlay.style.fontFamily =
+            "ui-monospace, SFMono-Regular, Menlo, monospace";
+          overlay.style.fontSize = "12px";
+          overlay.style.lineHeight = "1.45";
+          overlay.style.pointerEvents = "none";
+          overlay.style.whiteSpace = "pre-wrap";
+          overlay.style.boxShadow = "0 12px 34px rgba(0, 0, 0, 0.24)";
+          document.body.appendChild(overlay);
+          debugState.overlay = overlay;
+          renderDebugOverlay();
+        }
+
+        function renderDebugOverlay() {
+          if (!debugState.overlay) {
+            return;
+          }
+
+          debugState.overlay.textContent = [
+            `scene ${state.activeScene} -> ${state.targetScene} | transitioning: ${state.isTransitioning}`,
+            `y ${state.currentY.toFixed(1)} / ${state.targetY.toFixed(1)} | h ${state.sceneHeight.toFixed(1)}`,
+            `duration ${config.transitionDurationMs}ms | reduced-motion: ${reduceMotionQuery.matches}`,
+            `wheel acc ${state.wheelAccumulator.toFixed(1)} | dir ${state.wheelDirection} | threshold ${state.wheelThreshold.toFixed(1)}`,
+            `last source ${debugState.lastTriggerSource} | intent ${debugState.lastIntentLatencyMs.toFixed(1)}ms`,
+            `first frame ${debugState.lastTransitionFirstFrameDelayMs.toFixed(1)}ms | tween ${debugState.lastTransitionElapsedMs.toFixed(1)}ms | frames ${debugState.lastTransitionFrames}`,
+            `touch dist ${debugState.lastTouchDistancePx.toFixed(1)} | vel ${debugState.lastTouchVelocity.toFixed(2)}`,
+          ].join("\n");
+        }
+
+        function getSceneFocusTarget(sceneIndex) {
+          if (sceneIndex === 1) {
+            return (
+              tabs.find(
+                (tab) => tab.getAttribute("aria-selected") === "true",
+              ) ||
+              tabs[0] ||
+              detailsScene
+            );
+          }
+
+          return heroScene || sceneJumpButton;
+        }
+
+        function activeElementWillBeHidden(targetScene) {
+          const activeElement = document.activeElement;
+
+          if (
+            !(activeElement instanceof Element) ||
+            activeElement === document.body ||
+            activeElement === document.documentElement
+          ) {
+            return false;
+          }
+
+          return sceneRoots.some(function (scene, index) {
+            return index !== targetScene && scene.contains(activeElement);
+          });
+        }
+
+        function resolveFocusTarget(targetScene, source) {
+          if (
+            source === "button" ||
+            source === "keyboard" ||
+            activeElementWillBeHidden(targetScene)
+          ) {
+            return getSceneFocusTarget(targetScene);
+          }
+
+          return null;
+        }
+
+        function applySceneActivation(activeScene) {
+          sceneRoots.forEach(function (scene, index) {
+            const isActive = index === activeScene;
+            scene.classList.toggle("is-active", isActive);
+            scene.setAttribute("aria-hidden", String(!isActive));
+
+            if (isActive) {
+              scene.removeAttribute("inert");
+            } else {
+              scene.setAttribute("inert", "");
+            }
+          });
+        }
+
+        function finishTransition() {
+          cancelAnimationFrame(state.rafId);
+          state.rafId = 0;
+          updateTrackPosition(state.targetY);
+          state.activeScene = state.targetScene;
+          debugState.lastSettledScene = state.activeScene;
+          debugState.lastTransitionElapsedMs =
+            performance.now() - state.transitionStartedAt;
+          applySceneActivation(state.activeScene);
+          sceneTrack.classList.remove("is-transitioning");
+          state.isTransitioning = false;
+          state.cooldownUntil = performance.now() + config.wheelCooldownMs;
+
+          if (state.focusAfterTransition) {
+            state.focusAfterTransition.focus({ preventScroll: true });
+          }
+
+          state.focusAfterTransition = null;
+          resetWheelGesture();
+          renderDebugOverlay();
+        }
+
+        function stepTransition(timestamp) {
+          const durationMs = Math.max(0, config.transitionDurationMs);
+          const elapsed = timestamp - state.transitionStartedAt;
+          const progress =
+            durationMs === 0 ? 1 : Math.min(1, elapsed / durationMs);
+          const easedProgress = reduceMotionQuery.matches
+            ? 1
+            : authoredEase(progress);
+          const nextY =
+            state.startY + (state.targetY - state.startY) * easedProgress;
+
+          if (debugState.lastTransitionFrames === 0) {
+            debugState.lastTransitionFirstFrameDelayMs =
+              timestamp - state.transitionStartedAt;
+          }
+
+          debugState.lastTransitionFrames += 1;
+          updateTrackPosition(nextY);
+
+          if (progress < 1) {
+            state.rafId = requestAnimationFrame(stepTransition);
+            return;
+          }
+
+          finishTransition();
+        }
+
+        function startTransition(nextScene, source) {
+          state.focusAfterTransition = resolveFocusTarget(nextScene, source);
+          state.targetScene = nextScene;
+          state.startY = state.currentY;
+          state.targetY = -nextScene * state.sceneHeight;
+          state.isTransitioning = true;
+          debugState.lastTriggerSource = source;
+          debugState.lastRequestedScene = nextScene;
+          debugState.lastTransitionFrames = 0;
+          debugState.lastTransitionElapsedMs = 0;
+          debugState.lastTransitionFirstFrameDelayMs = 0;
+          sceneTrack.classList.add("is-transitioning");
+          cancelAnimationFrame(state.rafId);
+
+          if (reduceMotionQuery.matches) {
+            finishTransition();
+            return;
+          }
+
+          state.transitionStartedAt = performance.now();
+          state.rafId = requestAnimationFrame(stepTransition);
+          renderDebugOverlay();
+        }
+
+        function goToScene(index, options) {
+          const nextScene = clampSceneIndex(index);
+          const source = (options && options.source) || "programmatic";
+
+          if (state.isTransitioning || nextScene === state.activeScene) {
+            return false;
+          }
+
+          resetWheelGesture();
+          startTransition(nextScene, source);
+          return true;
+        }
+
+        function navigateByDirection(direction, options) {
+          return goToScene(state.activeScene + direction, options);
+        }
+
+        function syncToActiveScene() {
+          const sceneInPlay = state.isTransitioning
+            ? state.targetScene
+            : state.activeScene;
+
+          state.sceneHeight = siteViewport.getBoundingClientRect().height || 0;
+
+          if (!state.sceneHeight) {
+            return;
+          }
+
+          cancelAnimationFrame(state.rafId);
+          state.rafId = 0;
+          state.isTransitioning = false;
+          state.activeScene = sceneInPlay;
+          state.targetScene = sceneInPlay;
+          state.startY = -sceneInPlay * state.sceneHeight;
+          state.targetY = state.startY;
+          state.focusAfterTransition = null;
+          sceneTrack.classList.remove("is-transitioning");
+          updateTrackPosition(state.targetY);
+          applySceneActivation(sceneInPlay);
+          resetWheelGesture();
+          renderDebugOverlay();
+        }
+
+        function isSceneKeyBlocked(target) {
+          if (!(target instanceof Element)) {
+            return false;
+          }
+
+          if (target.closest('[role="tablist"]')) {
+            return true;
+          }
+
+          return Boolean(
+            target.closest(
+              'a, button, input, select, textarea, summary, [contenteditable=""], [contenteditable="true"], [contenteditable="plaintext-only"]',
+            ),
+          );
+        }
+
+        function handleWheel(event) {
+          const now = performance.now();
+
+          if (state.isTransitioning || now < state.cooldownUntil) {
+            resetWheelGesture();
+
+            if (event.cancelable) {
+              event.preventDefault();
+            }
+
+            return;
+          }
+
+          const deltaY = normalizeDelta(event.deltaY, event.deltaMode);
+          const deltaX = normalizeDelta(event.deltaX, event.deltaMode);
+
+          if (Math.abs(deltaY) < config.wheelNoisePx) {
+            return;
+          }
+
+          if (Math.abs(deltaY) <= Math.abs(deltaX) * 1.1) {
+            return;
+          }
+
+          if (event.cancelable) {
+            event.preventDefault();
+          }
+
+          if (now - state.wheelLastEventAt > config.wheelGestureGapMs) {
+            resetWheelGesture();
+          }
+
+          const direction = deltaY > 0 ? 1 : -1;
+
+          if (state.wheelGestureStartedAt === 0) {
+            state.wheelGestureStartedAt = now;
+          }
+
+          if (state.wheelDirection === 0) {
+            state.wheelDirection = direction;
+          }
+
+          if (direction !== state.wheelDirection) {
+            state.wheelDirection = direction;
+            state.wheelAccumulator = deltaY;
+            state.wheelThreshold =
+              config.wheelIntentPx + config.wheelReverseHysteresisPx;
+          } else {
+            state.wheelAccumulator += deltaY;
+            state.wheelThreshold = config.wheelIntentPx;
+          }
+
+          state.wheelLastEventAt = now;
+          debugState.lastWheelAccumulator = state.wheelAccumulator;
+          debugState.lastWheelDirection = state.wheelDirection;
+          renderDebugOverlay();
+
+          if (Math.abs(state.wheelAccumulator) < state.wheelThreshold) {
+            return;
+          }
+
+          debugState.lastIntentLatencyMs = now - state.wheelGestureStartedAt;
+          resetWheelGesture();
+          navigateByDirection(direction, { source: "wheel" });
+        }
+
+        function handleTouchStart(event) {
+          if (event.touches.length !== 1) {
+            resetTouchGesture();
+            return;
+          }
+
+          const touch = event.touches[0];
+          state.touch.tracking = true;
+          state.touch.startX = touch.clientX;
+          state.touch.startY = touch.clientY;
+          state.touch.lastX = touch.clientX;
+          state.touch.lastY = touch.clientY;
+          state.touch.startTime = performance.now();
+          state.touch.verticalLock = false;
+          state.touch.cancelled = false;
+        }
+
+        function handleTouchMove(event) {
+          if (!state.touch.tracking) {
+            return;
+          }
+
+          if (state.isTransitioning) {
+            if (event.cancelable) {
+              event.preventDefault();
+            }
+
+            return;
+          }
+
+          if (event.touches.length !== 1) {
+            state.touch.cancelled = true;
+            return;
+          }
+
+          const touch = event.touches[0];
+          const deltaX = touch.clientX - state.touch.startX;
+          const deltaY = touch.clientY - state.touch.startY;
+
+          state.touch.lastX = touch.clientX;
+          state.touch.lastY = touch.clientY;
+
+          if (!state.touch.verticalLock) {
+            if (
+              Math.abs(deltaY) >= config.touchAxisLockPx &&
+              Math.abs(deltaY) > Math.abs(deltaX) * 1.2
+            ) {
+              state.touch.verticalLock = true;
+            } else if (
+              Math.abs(deltaX) >= config.touchAxisLockPx &&
+              Math.abs(deltaX) > Math.abs(deltaY)
+            ) {
+              state.touch.cancelled = true;
+              return;
+            }
+          }
+
+          if (state.touch.verticalLock && event.cancelable) {
+            event.preventDefault();
+          }
+        }
+
+        function handleTouchEnd() {
+          if (!state.touch.tracking) {
+            return;
+          }
+
+          const now = performance.now();
+          const deltaX = state.touch.lastX - state.touch.startX;
+          const deltaY = state.touch.lastY - state.touch.startY;
+          const elapsed = Math.max(1, now - state.touch.startTime);
+          const absX = Math.abs(deltaX);
+          const absY = Math.abs(deltaY);
+          const velocityY = absY / elapsed;
+          debugState.lastTouchDistancePx = absY;
+          debugState.lastTouchVelocity = velocityY;
+          const isIntentionalSwipe =
+            !state.touch.cancelled &&
+            absY > absX * 1.15 &&
+            (absY >= config.touchTriggerDistancePx ||
+              velocityY >= config.touchTriggerVelocity);
+
+          resetTouchGesture();
+
+          if (
+            !isIntentionalSwipe ||
+            state.isTransitioning ||
+            now < state.cooldownUntil
+          ) {
+            return;
+          }
+
+          debugState.lastIntentLatencyMs = elapsed;
+          navigateByDirection(deltaY < 0 ? 1 : -1, { source: "touch" });
+        }
+
+        function handleKeydown(event) {
+          let nextScene;
+
+          if (
+            event.defaultPrevented ||
+            event.metaKey ||
+            event.ctrlKey ||
+            event.altKey ||
+            isSceneKeyBlocked(event.target)
+          ) {
+            return;
+          }
+
+          switch (event.key) {
+            case "ArrowDown":
+            case "PageDown":
+            case "End":
+              nextScene = 1;
+              break;
+            case "ArrowUp":
+            case "PageUp":
+            case "Home":
+              nextScene = 0;
+              break;
+            case " ":
+            case "Spacebar":
+              nextScene = event.shiftKey ? 0 : 1;
+              break;
+            default:
+              return;
+          }
+
+          event.preventDefault();
+
+          if (state.isTransitioning) {
+            return;
+          }
+
+          goToScene(nextScene, { source: "keyboard" });
         }
 
         tabs.forEach((tab, index) => {
@@ -712,10 +1419,7 @@
 
             if (event.key === "ArrowRight" || event.key === "ArrowDown") {
               nextIndex = (index + 1) % tabs.length;
-            } else if (
-              event.key === "ArrowLeft" ||
-              event.key === "ArrowUp"
-            ) {
+            } else if (event.key === "ArrowLeft" || event.key === "ArrowUp") {
               nextIndex = (index - 1 + tabs.length) % tabs.length;
             } else if (event.key === "Home") {
               nextIndex = 0;
@@ -729,6 +1433,138 @@
             activateTab(tabs[nextIndex], { moveFocus: true });
           });
         });
+
+        sceneJumpButton.addEventListener("click", function () {
+          goToScene(1, { source: "button" });
+        });
+
+        siteViewport.addEventListener("wheel", handleWheel, { passive: false });
+        siteViewport.addEventListener("touchstart", handleTouchStart, {
+          passive: true,
+        });
+        siteViewport.addEventListener("touchmove", handleTouchMove, {
+          passive: false,
+        });
+        siteViewport.addEventListener("touchend", handleTouchEnd);
+        siteViewport.addEventListener("touchcancel", resetTouchGesture);
+        document.addEventListener("keydown", handleKeydown);
+
+        let resizeFrame = 0;
+
+        function scheduleSyncToActiveScene() {
+          cancelAnimationFrame(resizeFrame);
+          resizeFrame = requestAnimationFrame(syncToActiveScene);
+        }
+
+        function waitForSettled() {
+          return new Promise(function (resolve) {
+            function check() {
+              if (!state.isTransitioning) {
+                resolve({
+                  activeScene: state.activeScene,
+                  currentY: state.currentY,
+                  transitionMs: debugState.lastTransitionElapsedMs,
+                  firstFrameDelayMs: debugState.lastTransitionFirstFrameDelayMs,
+                  frames: debugState.lastTransitionFrames,
+                });
+                return;
+              }
+
+              requestAnimationFrame(check);
+            }
+
+            check();
+          });
+        }
+
+        async function runTransitionProbe(options) {
+          const count =
+            options && typeof options.count === "number" ? options.count : 4;
+          const originalDuration = config.transitionDurationMs;
+
+          if (
+            options &&
+            typeof options.durationMs === "number" &&
+            Number.isFinite(options.durationMs)
+          ) {
+            config.transitionDurationMs = Math.max(0, options.durationMs);
+          }
+
+          const results = [];
+          let nextScene = state.activeScene === 0 ? 1 : 0;
+
+          for (let index = 0; index < count; index += 1) {
+            const startedAt = performance.now();
+            const didStart = goToScene(nextScene, { source: "probe" });
+
+            if (!didStart) {
+              nextScene = nextScene === 0 ? 1 : 0;
+              continue;
+            }
+
+            const settled = await waitForSettled();
+            results.push({
+              step: index + 1,
+              targetScene: nextScene,
+              totalMs: Number((performance.now() - startedAt).toFixed(1)),
+              tweenMs: Number(settled.transitionMs.toFixed(1)),
+              firstFrameDelayMs: Number(settled.firstFrameDelayMs.toFixed(1)),
+              frames: settled.frames,
+            });
+            nextScene = nextScene === 0 ? 1 : 0;
+          }
+
+          config.transitionDurationMs = originalDuration;
+          renderDebugOverlay();
+          console.table(results);
+          return results;
+        }
+
+        window.addEventListener("resize", scheduleSyncToActiveScene, {
+          passive: true,
+        });
+        window.addEventListener("orientationchange", scheduleSyncToActiveScene);
+
+        if (typeof reduceMotionQuery.addEventListener === "function") {
+          reduceMotionQuery.addEventListener("change", syncToActiveScene);
+        } else if (typeof reduceMotionQuery.addListener === "function") {
+          reduceMotionQuery.addListener(syncToActiveScene);
+        }
+
+        window.sceneDebug = {
+          state,
+          config,
+          debugState,
+          goTo: function (sceneIndex) {
+            return goToScene(sceneIndex, { source: "debug" });
+          },
+          next: function () {
+            return navigateByDirection(1, { source: "debug" });
+          },
+          prev: function () {
+            return navigateByDirection(-1, { source: "debug" });
+          },
+          setConfig: function (patch) {
+            if (patch && typeof patch === "object") {
+              Object.assign(config, patch);
+              if (typeof config.transitionDurationMs === "number") {
+                config.transitionDurationMs = Math.max(
+                  0,
+                  config.transitionDurationMs,
+                );
+              }
+            }
+
+            renderDebugOverlay();
+            return { ...config };
+          },
+          runTransitionProbe,
+          render: renderDebugOverlay,
+        };
+
+        activateTab(tabs[0]);
+        createDebugOverlay();
+        syncToActiveScene();
       })();
     </script>
   </body>
