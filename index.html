@@ -215,12 +215,27 @@
         }
       }
 
-      /* Mobile: name as a banner anchored near the top */
+      /* Mobile: TikTok-style snap scrolling between hero & content */
       @media (max-width: 768px) {
+        html,
+        body {
+          scroll-snap-type: y mandatory;
+          scroll-behavior: auto;  /* kill the smooth glide — snap should be instant */
+          -webkit-overflow-scrolling: touch;
+        }
+
         .hero {
+          scroll-snap-align: start;
+          height: 100dvh;
+          min-height: 0;     /* override base min-height */
+          overflow: hidden;
           justify-content: flex-start;
           padding-top: 13vh;
           padding-bottom: 6rem;
+        }
+
+        .content {
+          scroll-snap-align: start;
         }
 
         .first-name {
