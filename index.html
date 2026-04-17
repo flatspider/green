@@ -954,6 +954,11 @@
           return Math.max(0, Math.min(sceneRoots.length - 1, index));
         }
 
+        function getSceneOffset(index) {
+          const scene = sceneRoots[clampSceneIndex(index)];
+          return scene ? scene.offsetTop : 0;
+        }
+
         function normalizeDelta(delta, deltaMode) {
           if (deltaMode === 1) {
             return delta * 16;
@@ -1223,7 +1228,7 @@
           state.focusAfterTransition = resolveFocusTarget(nextScene, source);
           state.targetScene = nextScene;
           state.startY = state.currentY;
-          state.targetY = -nextScene * state.sceneHeight;
+          state.targetY = -getSceneOffset(nextScene);
           state.isTransitioning = true;
           debugState.lastTriggerSource = source;
           debugState.lastRequestedScene = nextScene;
@@ -1276,7 +1281,7 @@
           state.isTransitioning = false;
           state.activeScene = sceneInPlay;
           state.targetScene = sceneInPlay;
-          state.startY = -sceneInPlay * state.sceneHeight;
+          state.startY = -getSceneOffset(sceneInPlay);
           state.targetY = state.startY;
           state.focusAfterTransition = null;
           sceneTrack.classList.remove("is-transitioning");
@@ -1620,6 +1625,19 @@
           passive: true,
         });
         window.addEventListener("orientationchange", scheduleSyncToActiveScene);
+
+        if (window.visualViewport) {
+          window.visualViewport.addEventListener(
+            "resize",
+            scheduleSyncToActiveScene,
+            { passive: true },
+          );
+          window.visualViewport.addEventListener(
+            "scroll",
+            scheduleSyncToActiveScene,
+            { passive: true },
+          );
+        }
 
         if (typeof reduceMotionQuery.addEventListener === "function") {
           reduceMotionQuery.addEventListener("change", syncToActiveScene);
