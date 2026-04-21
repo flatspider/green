@@ -329,6 +329,18 @@
         margin-bottom: 0.25rem;
       }
 
+      .project-body h3 a {
+        text-decoration: none;
+        color: inherit;
+        border-bottom: 1.5px solid transparent;
+        padding-bottom: 1px;
+        transition: border-color 0.2s ease;
+      }
+
+      .project-body h3 a:hover {
+        border-bottom-color: var(--green-dark);
+      }
+
       .project-desc,
       .about-body,
       .meet-copy {
@@ -678,7 +690,7 @@
                   <div class="project-grid">
                     <article class="project">
                       <div class="project-body">
-                        <h3>Bauhaus Bus</h3>
+                        <h3><a href="https://bauhausbus.com/stop/402854" target="_blank" rel="noopener">Bauhaus Bus</a></h3>
                         <p class="project-desc">
                           I was tired of getting ghosted at the bus stop, so I
                           built a site wired directly into the GPS data from the
@@ -707,7 +719,7 @@
                     </article>
                     <article class="project">
                       <div class="project-body">
-                        <h3>Harbor Watch</h3>
+                        <h3><a href="https://harbor-view-production.up.railway.app/" target="_blank" rel="noopener">Harbor Watch</a></h3>
                         <p class="project-desc">
                           A real-time animated visualization of the New York
                           Harbor with live AIS ship tracking, rendered in
@@ -737,7 +749,7 @@
 
                     <article class="project">
                       <div class="project-body">
-                        <h3>Weekly Update</h3>
+                        <h3><a href="https://www.getaweeklyupdate.com/" target="_blank" rel="noopener">Weekly Update</a></h3>
                         <p class="project-desc">
                           An automated weekly digest that turns Google Calendar
                           activities into a single Monday-morning email.
