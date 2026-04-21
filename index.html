@@ -340,7 +340,9 @@
 
       .panel-region {
         min-block-size: 0;
-        overflow: hidden;
+        overflow-y: auto;
+        overflow-x: hidden;
+        -webkit-overflow-scrolling: touch;
       }
 
       .panel {
@@ -1522,7 +1524,28 @@
           }
 
           if (state.touch.verticalLock && event.cancelable) {
-            event.preventDefault();
+            const panelRegion = document.querySelector(".panel-region");
+            const isInPanel =
+              panelRegion && panelRegion.contains(event.target);
+            const canScrollInPanel =
+              isInPanel && panelRegion.scrollHeight > panelRegion.clientHeight;
+
+            if (canScrollInPanel) {
+              const atTop = panelRegion.scrollTop <= 0;
+              const atBottom =
+                panelRegion.scrollTop + panelRegion.clientHeight >=
+                panelRegion.scrollHeight - 1;
+              const swipingUp = deltaY < 0;
+              const swipingDown = deltaY > 0;
+
+              if ((atTop && swipingDown) || (atBottom && swipingUp)) {
+                event.preventDefault();
+              } else {
+                state.touch.cancelled = true;
+              }
+            } else {
+              event.preventDefault();
+            }
           }
         }
 
