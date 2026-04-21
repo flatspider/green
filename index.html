@@ -4,7 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#f0ece3" />
-    <meta name="description" content="Software engineer based in New York City. Portfolio of Conor McManamon." />
+    <meta
+      name="description"
+      content="Software engineer based in New York City. Portfolio of Conor McManamon."
+    />
     <link rel="canonical" href="https://conormcmanamon.com" />
 
     <!-- Favicon -->
@@ -13,8 +16,14 @@
 
     <!-- Open Graph -->
     <meta property="og:title" content="Conor McManamon" />
-    <meta property="og:description" content="Software engineer based in New York City." />
-    <meta property="og:image" content="https://conormcmanamon.com/assets/og/hero-screenshot.png" />
+    <meta
+      property="og:description"
+      content="Software engineer based in New York City."
+    />
+    <meta
+      property="og:image"
+      content="https://conormcmanamon.com/assets/og/hero-screenshot.png"
+    />
     <meta property="og:image:width" content="826" />
     <meta property="og:image:height" content="544" />
     <meta property="og:image:alt" content="Conor McManamon portfolio site" />
@@ -24,8 +33,14 @@
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Conor McManamon" />
-    <meta name="twitter:description" content="Software engineer based in New York City." />
-    <meta name="twitter:image" content="https://conormcmanamon.com/assets/og/hero-screenshot.png" />
+    <meta
+      name="twitter:description"
+      content="Software engineer based in New York City."
+    />
+    <meta
+      name="twitter:image"
+      content="https://conormcmanamon.com/assets/og/hero-screenshot.png"
+    />
 
     <title>Conor McManamon</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -41,6 +56,14 @@
         --green-bright: #44a03f;
         --ink: #1a1a1a;
         --cream: #f0ece3;
+      }
+
+      @font-face {
+        font-family: "Hero";
+        src: url("font.woff2") format("woff2");
+        font-weight: normal;
+        font-style: normal;
+        font-display: swap;
       }
 
       * {
@@ -292,7 +315,7 @@
         border-radius: 999px;
         color: rgba(26, 26, 26, 0.46);
         cursor: pointer;
-        font-family: "Bebas Neue", sans-serif;
+        font-family: "Hero", "Bebas Neue", sans-serif;
         font-size: clamp(1.35rem, 5vw, 3.5rem);
         letter-spacing: 0.08em;
         line-height: 1;
@@ -324,23 +347,36 @@
         block-size: 100%;
       }
 
+      .work-intro {
+        max-inline-size: 540px;
+        margin-bottom: 1.6rem;
+        font-size: clamp(1.05rem, 1.8vw, 1.18rem);
+        line-height: 1.5;
+        color: rgba(26, 26, 26, 0.72);
+      }
+
       .project-grid {
         display: grid;
-        gap: 0.7rem;
+        gap: 1.1rem;
+        max-inline-size: 540px;
       }
 
       .project {
         display: grid;
-        grid-template-columns: minmax(0, 1fr) auto;
-        gap: 0.85rem 1rem;
-        align-items: center;
-        padding: 0.9rem 0;
-        border-bottom: 1px solid rgba(26, 26, 26, 0.12);
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+        padding: 1.25rem 1.4rem;
+        background: rgba(255, 255, 255, 0.45);
+        border: 1px solid rgba(26, 26, 26, 0.07);
+        border-radius: 10px;
+        transition:
+          box-shadow 0.25s ease,
+          border-color 0.25s ease;
       }
 
-      .project:first-child {
-        border-top: none;
-        padding-top: 0.4rem;
+      .project:hover {
+        border-color: rgba(44, 110, 41, 0.22);
+        box-shadow: 0 2px 12px rgba(44, 110, 41, 0.08);
       }
 
       .project-body h3 {
@@ -384,9 +420,8 @@
       }
 
       .project-meta {
-        justify-content: flex-end;
-        padding-top: 0.25rem;
-        padding-right: 4px;
+        justify-content: flex-start;
+        padding-top: 0.15rem;
       }
 
       .project-meta a,
@@ -507,13 +542,6 @@
       }
 
       @media (max-width: 820px) {
-        .project {
-          grid-template-columns: 1fr;
-        }
-
-        .project-meta {
-          justify-content: flex-start;
-        }
       }
 
       @media (max-width: 700px) {
@@ -539,20 +567,17 @@
         .tab {
           flex: 1;
           text-align: center;
-          font-size: 1.5rem;
-          letter-spacing: 0.1em;
+          font-size: 8.5vw;
+          letter-spacing: 0.08em;
+          padding: 0.2rem 0.25rem;
         }
 
         .project {
           gap: 0.5rem;
-          padding: 0.75rem 0;
+          padding: 1rem 1.1rem;
         }
 
         .project-desc {
-          display: -webkit-box;
-          -webkit-box-orient: vertical;
-          -webkit-line-clamp: 2;
-          overflow: hidden;
         }
 
         .scroll-indicator {
@@ -710,6 +735,10 @@
                   role="tabpanel"
                   aria-labelledby="tab-work"
                 >
+                  <p class="work-intro">
+                    I like building tools that interact with the real world.
+                    Bus, boat, and calendar are shown here:
+                  </p>
                   <div class="project-grid">
                     <article class="project">
                       <div class="project-body">
@@ -758,9 +787,9 @@
                           >
                         </h3>
                         <p class="project-desc">
-                          A real-time animated visualization of the New York
-                          Harbor with live AIS ship tracking, rendered in
-                          Three.js.
+                          I love watching boats. This site has 3-D objects
+                          representing cargo ships, ferries, pleasure boats, as
+                          well as a fun surprise for airplanes.
                         </p>
                       </div>
                       <div class="project-meta">
@@ -795,8 +824,9 @@
                           >
                         </h3>
                         <p class="project-desc">
-                          An automated weekly digest that turns Google Calendar
-                          activities into a single Monday-morning email.
+                          Astonishingly, Google Calendar cannot provide you a
+                          summary of your week. I built an automated weekly
+                          digest that does that.
                         </p>
                       </div>
                       <div class="project-meta">
