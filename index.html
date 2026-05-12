@@ -486,21 +486,19 @@
       }
 
       .writing-entry {
+        appearance: none;
+        background: none;
+        border: none;
+        padding: 0;
+        margin: 0;
         cursor: pointer;
-      }
-
-      .writing-entry > summary {
-        list-style: none;
+        color: inherit;
+        font: inherit;
+        text-align: start;
         display: flex;
         flex-direction: column;
         gap: 0.45rem;
-        padding: 0;
-        outline: none;
-      }
-
-      .writing-entry > summary::-webkit-details-marker,
-      .writing-entry > summary::marker {
-        display: none;
+        inline-size: 100%;
       }
 
       .writing-date {
@@ -522,19 +520,63 @@
         transition: border-color 0.2s ease;
       }
 
-      .writing-entry:hover .writing-title,
-      .writing-entry[open] .writing-title {
+      .writing-entry:hover .writing-title {
         border-bottom-color: var(--green-dark);
       }
 
-      .writing-entry > summary:focus-visible {
+      .writing-entry:focus-visible {
         outline: 2px solid var(--green-dark);
         outline-offset: 4px;
         border-radius: 2px;
       }
 
+      .writing-reader {
+        max-inline-size: 62ch;
+        display: flex;
+        flex-direction: column;
+        gap: 0.6rem;
+      }
+
+      .writing-reader[hidden] {
+        display: none;
+      }
+
+      .writing-back {
+        appearance: none;
+        background: none;
+        border: none;
+        padding: 0.25rem 0;
+        margin-bottom: 0.6rem;
+        cursor: pointer;
+        color: rgba(26, 26, 26, 0.6);
+        font-family: "Bebas Neue", sans-serif;
+        font-size: 0.85rem;
+        letter-spacing: 0.18em;
+        align-self: flex-start;
+        transition: color 0.2s ease;
+      }
+
+      .writing-back:hover {
+        color: var(--green-dark);
+      }
+
+      .writing-back:focus-visible {
+        outline: 2px solid var(--green-dark);
+        outline-offset: 4px;
+        border-radius: 2px;
+      }
+
+      .writing-reader-title {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: clamp(1.6rem, 3.2vw, 2.25rem);
+        letter-spacing: 0.04em;
+        line-height: 1.1;
+        color: var(--green-dark);
+        font-weight: normal;
+      }
+
       .writing-body {
-        margin-top: 1rem;
+        margin-top: 0.6rem;
         font-family: "Crimson Pro", Georgia, serif;
         font-size: clamp(1.02rem, 1.6vw, 1.12rem);
         line-height: 1.55;
@@ -1168,16 +1210,20 @@
                   aria-labelledby="tab-writing"
                   hidden
                 >
-                  <ol class="writing-list">
-                    <li>
-                      <details class="writing-entry">
-                        <summary>
+                  <div data-writing-view="list">
+                    <ol class="writing-list">
+                      <li>
+                        <button
+                          type="button"
+                          class="writing-entry"
+                          data-writing-open
+                        >
                           <span class="writing-date">2026 May 10</span>
                           <span class="writing-title"
                             >On Shipping Sloppily</span
                           >
-                        </summary>
-                        <div class="writing-body">
+                        </button>
+                        <template data-writing-body>
                           <p>
                             Placeholder body for the first post. Replace this
                             with the real essay once it&rsquo;s written.
@@ -1186,34 +1232,59 @@
                             A second paragraph showing how multi-paragraph posts
                             will read inside this panel.
                           </p>
-                        </div>
-                      </details>
-                    </li>
-                    <li>
-                      <details class="writing-entry">
-                        <summary>
+                        </template>
+                      </li>
+                      <li>
+                        <button
+                          type="button"
+                          class="writing-entry"
+                          data-writing-open
+                        >
                           <span class="writing-date">2026 Apr 22</span>
                           <span class="writing-title">Stop The Line</span>
-                        </summary>
-                        <div class="writing-body">
+                        </button>
+                        <template data-writing-body>
                           <p>Placeholder body for the second post.</p>
-                        </div>
-                      </details>
-                    </li>
-                    <li>
-                      <details class="writing-entry">
-                        <summary>
+                        </template>
+                      </li>
+                      <li>
+                        <button
+                          type="button"
+                          class="writing-entry"
+                          data-writing-open
+                        >
                           <span class="writing-date">2026 Mar 28</span>
                           <span class="writing-title"
                             >Panic Loop, Examined</span
                           >
-                        </summary>
-                        <div class="writing-body">
+                        </button>
+                        <template data-writing-body>
                           <p>Placeholder body for the third post.</p>
-                        </div>
-                      </details>
-                    </li>
-                  </ol>
+                        </template>
+                      </li>
+                    </ol>
+                  </div>
+
+                  <article
+                    class="writing-reader"
+                    data-writing-view="reader"
+                    hidden
+                  >
+                    <button
+                      type="button"
+                      class="writing-back"
+                      data-writing-back
+                      aria-label="Back to all writing"
+                    >
+                      &larr; All writing
+                    </button>
+                    <span class="writing-date" data-reader-date></span>
+                    <h2
+                      class="writing-reader-title"
+                      data-reader-title
+                    ></h2>
+                    <div class="writing-body" data-reader-body></div>
+                  </article>
                 </section>
               </div>
 
@@ -2069,6 +2140,85 @@
           runTransitionProbe,
           render: renderDebugOverlay,
         };
+
+        const writingListView = document.querySelector(
+          '[data-writing-view="list"]',
+        );
+        const writingReaderView = document.querySelector(
+          '[data-writing-view="reader"]',
+        );
+        const writingReaderDate = document.querySelector("[data-reader-date]");
+        const writingReaderTitle =
+          document.querySelector("[data-reader-title]");
+        const writingReaderBody = document.querySelector("[data-reader-body]");
+        const writingBackButton = document.querySelector("[data-writing-back]");
+        const writingPanelRegion = document.querySelector(".panel-region");
+
+        function openWritingEntry(entryButton) {
+          const dateEl = entryButton.querySelector(".writing-date");
+          const titleEl = entryButton.querySelector(".writing-title");
+          const bodyTemplate = entryButton.parentElement.querySelector(
+            "[data-writing-body]",
+          );
+
+          writingReaderDate.textContent = dateEl ? dateEl.textContent : "";
+          writingReaderTitle.textContent = titleEl ? titleEl.textContent : "";
+          writingReaderBody.replaceChildren();
+
+          if (bodyTemplate) {
+            writingReaderBody.appendChild(
+              bodyTemplate.content.cloneNode(true),
+            );
+          }
+
+          writingListView.hidden = true;
+          writingReaderView.hidden = false;
+
+          if (writingPanelRegion) {
+            writingPanelRegion.scrollTop = 0;
+          }
+
+          writingBackButton.focus({ preventScroll: true });
+        }
+
+        function closeWritingEntry() {
+          writingReaderView.hidden = true;
+          writingListView.hidden = false;
+          writingReaderBody.replaceChildren();
+
+          if (writingPanelRegion) {
+            writingPanelRegion.scrollTop = 0;
+          }
+
+          const firstEntry = writingListView.querySelector(
+            "[data-writing-open]",
+          );
+          if (firstEntry) {
+            firstEntry.focus({ preventScroll: true });
+          }
+        }
+
+        document
+          .querySelectorAll("[data-writing-open]")
+          .forEach(function (button) {
+            button.addEventListener("click", function () {
+              openWritingEntry(button);
+            });
+          });
+
+        if (writingBackButton) {
+          writingBackButton.addEventListener("click", closeWritingEntry);
+        }
+
+        tabs.forEach(function (tab) {
+          tab.addEventListener("click", function () {
+            if (tab.id !== "tab-writing" && writingReaderView) {
+              writingReaderView.hidden = true;
+              writingListView.hidden = false;
+              writingReaderBody.replaceChildren();
+            }
+          });
+        });
 
         activateTab(tabs[0]);
         createDebugOverlay();
