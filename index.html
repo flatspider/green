@@ -1346,6 +1346,15 @@
 
     <script>
       (function () {
+        // Flip to true once the Writing tab has real content to ship.
+        const SHOW_WRITING_TAB = false;
+        if (!SHOW_WRITING_TAB) {
+          const writingTab = document.getElementById("tab-writing");
+          const writingPanel = document.getElementById("panel-writing");
+          if (writingTab) writingTab.hidden = true;
+          if (writingPanel) writingPanel.hidden = true;
+        }
+
         const siteViewport = document.querySelector("[data-site-viewport]");
         const sceneTrack = document.querySelector("[data-scene-track]");
         const sceneRoots = Array.from(
@@ -1356,10 +1365,12 @@
         const sceneJumpButton = document.querySelector(
           "[data-scene-target='1']",
         );
-        const tabs = Array.from(document.querySelectorAll('[role="tab"]'));
+        const tabs = Array.from(
+          document.querySelectorAll('[role="tab"]'),
+        ).filter((el) => !el.hidden);
         const panels = Array.from(
           document.querySelectorAll('[role="tabpanel"]'),
-        );
+        ).filter((el) => !el.hidden);
         const reduceMotionQuery = window.matchMedia(
           "(prefers-reduced-motion: reduce)",
         );
