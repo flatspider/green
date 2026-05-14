@@ -1027,7 +1027,7 @@
                     <article class="project">
                       <a
                         class="project-body"
-                        href="https://usebannercast.com"
+                        href="https://www.usebannercast.com"
                         target="_blank"
                         rel="noopener"
                       >
@@ -1038,7 +1038,7 @@
                       </a>
                       <div class="project-meta">
                         <a
-                          href="https://usebannercast.com"
+                          href="https://www.usebannercast.com"
                           target="_blank"
                           rel="noopener"
                           >Live</a
@@ -1279,10 +1279,7 @@
                       &larr; All writing
                     </button>
                     <span class="writing-date" data-reader-date></span>
-                    <h2
-                      class="writing-reader-title"
-                      data-reader-title
-                    ></h2>
+                    <h2 class="writing-reader-title" data-reader-title></h2>
                     <div class="writing-body" data-reader-body></div>
                   </article>
                 </section>
@@ -2148,8 +2145,9 @@
           '[data-writing-view="reader"]',
         );
         const writingReaderDate = document.querySelector("[data-reader-date]");
-        const writingReaderTitle =
-          document.querySelector("[data-reader-title]");
+        const writingReaderTitle = document.querySelector(
+          "[data-reader-title]",
+        );
         const writingReaderBody = document.querySelector("[data-reader-body]");
         const writingBackButton = document.querySelector("[data-writing-back]");
         const writingPanelRegion = document.querySelector(".panel-region");
@@ -2166,9 +2164,7 @@
           writingReaderBody.replaceChildren();
 
           if (bodyTemplate) {
-            writingReaderBody.appendChild(
-              bodyTemplate.content.cloneNode(true),
-            );
+            writingReaderBody.appendChild(bodyTemplate.content.cloneNode(true));
           }
 
           writingListView.hidden = true;
