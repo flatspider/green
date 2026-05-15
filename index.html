@@ -1367,10 +1367,10 @@
         );
         const tabs = Array.from(
           document.querySelectorAll('[role="tab"]'),
-        ).filter((el) => !el.hidden);
+        ).filter((el) => el.id !== "tab-writing" || SHOW_WRITING_TAB);
         const panels = Array.from(
           document.querySelectorAll('[role="tabpanel"]'),
-        ).filter((el) => !el.hidden);
+        ).filter((el) => el.id !== "panel-writing" || SHOW_WRITING_TAB);
         const reduceMotionQuery = window.matchMedia(
           "(prefers-reduced-motion: reduce)",
         );
