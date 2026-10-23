@@ -387,51 +387,50 @@
   }
 
   /* ------------------------------------------------------------------ */
-  /* Tab wiring                                                          */
+  /* Pane wiring: a visual runs only while its pane is the active scene  */
   /* ------------------------------------------------------------------ */
   const journey = setupJourney();
-  const aboutPanel = document.getElementById("panel-about");
+  const mapPane = map && map.closest("[data-scene-root]");
+  const kincisePane = kinciseHost && kinciseHost.closest("[data-scene-root]");
+  const meshPane = meshCanvas && meshCanvas.closest("[data-scene-root]");
   const resumePanel = document.getElementById("panel-resume");
-  const detailsScene = document.getElementById("details");
 
-  function shown(panel) {
-    return panel && !panel.hidden && detailsScene && !detailsScene.hasAttribute("inert");
+  function active(pane) {
+    return Boolean(pane) && pane.classList.contains("is-active") && !document.hidden;
   }
 
-  let aboutWasShown = false;
+  let mapWasActive = false;
 
   function syncVisuals() {
-    const aboutNow = shown(aboutPanel);
-    if (aboutNow && !aboutWasShown && journey) journey.play();
-    aboutWasShown = aboutNow;
+    const mapNow = active(mapPane);
+    if (mapNow && !mapWasActive && journey) journey.play();
+    mapWasActive = mapNow;
 
-    if (shown(resumePanel)) {
-      setupKincise().then((k) => k && shown(resumePanel) && k.start());
+    if (active(kincisePane)) {
+      setupKincise().then((k) => k && active(kincisePane) && k.start());
+    } else if (kincise) {
+      kincise.stop();
+    }
+
+    if (active(meshPane)) {
       const m = setupMesh();
       if (m) m.start();
-      resumePanel.classList.add("is-live");
-    } else {
-      if (kincise) kincise.stop();
-      if (mesh) mesh.stop();
-      if (resumePanel) resumePanel.classList.remove("is-live");
+    } else if (mesh) {
+      mesh.stop();
+    }
+
+    if (resumePanel) {
+      resumePanel.classList.toggle("is-live", !resumePanel.hidden && !document.hidden);
     }
   }
 
-  // Tabs toggle `hidden`; the scene toggles `inert`. Watch both.
   const observer = new MutationObserver(syncVisuals);
-  [aboutPanel, resumePanel].forEach((p) => {
-    if (p) observer.observe(p, { attributes: true, attributeFilter: ["hidden"] });
+  document.querySelectorAll("[data-scene-root]").forEach((pane) => {
+    observer.observe(pane, { attributes: true, attributeFilter: ["class"] });
   });
-  if (detailsScene) {
-    observer.observe(detailsScene, { attributes: true, attributeFilter: ["inert"] });
+  if (resumePanel) {
+    observer.observe(resumePanel, { attributes: true, attributeFilter: ["hidden"] });
   }
-  document.addEventListener("visibilitychange", function () {
-    if (document.hidden) {
-      if (kincise) kincise.stop();
-      if (mesh) mesh.stop();
-    } else {
-      syncVisuals();
-    }
-  });
+  document.addEventListener("visibilitychange", syncVisuals);
   syncVisuals();
 })();

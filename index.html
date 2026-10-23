@@ -323,10 +323,85 @@
         display: none;
       }
 
-      .details {
+      /* ---------- Fixed tab bar + panes ---------- */
+      .tab-bar {
+        position: absolute;
+        inset-inline: 0;
+        top: 0;
+        z-index: 5;
+        padding: clamp(1.5rem, 3vw, 2.5rem) clamp(1.5rem, 3vw, 2.5rem) 0;
+        opacity: 0;
+        transform: translateY(-8px);
+        pointer-events: none;
+        transition:
+          opacity 0.25s ease,
+          transform 0.25s ease;
+      }
+
+      .tab-bar > .tabs {
+        inline-size: min(1100px, 100%);
+        margin-inline: auto;
+      }
+
+      .site-viewport.is-past-hero .tab-bar {
+        opacity: 1;
+        transform: none;
+        pointer-events: auto;
+      }
+
+      .pane-dots {
+        position: absolute;
+        inset-inline-end: clamp(0.6rem, 1.5vw, 1.4rem);
+        top: 50%;
+        z-index: 5;
+        display: flex;
+        flex-direction: column;
+        gap: 0.55rem;
+        transform: translateY(-50%);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.25s ease;
+      }
+
+      .site-viewport.is-past-hero .pane-dots.has-many {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .pane-dot {
+        appearance: none;
+        border: 1.5px solid rgba(44, 110, 41, 0.55);
+        background: transparent;
+        inline-size: 10px;
+        block-size: 10px;
+        border-radius: 50%;
+        padding: 0;
+        cursor: pointer;
+        transition:
+          background-color 0.2s ease,
+          transform 0.2s ease;
+      }
+
+      .pane-dot.active {
+        background: var(--green-dark);
+        border-color: var(--green-dark);
+        transform: scale(1.25);
+      }
+
+      .pane-dot:focus-visible {
+        outline: 2px solid var(--green-dark);
+        outline-offset: 3px;
+      }
+
+      .panel[hidden] {
+        display: none;
+      }
+
+      .pane {
         display: grid;
         align-items: center;
-        padding: clamp(1.5rem, 3vw, 2.5rem);
+        padding: var(--bar-h, 6rem) clamp(1.5rem, 3vw, 2.5rem)
+          clamp(1.5rem, 3vw, 2.5rem);
         background:
           linear-gradient(
             180deg,
@@ -334,16 +409,13 @@
             rgba(255, 255, 255, 0)
           ),
           linear-gradient(180deg, #f7f7f3 0%, var(--cream) 100%);
+        overflow: hidden;
       }
 
-      .details-card {
+      .pane-inner {
         inline-size: min(1100px, 100%);
-        block-size: 100%;
         margin-inline: auto;
-        padding: clamp(1rem, 1.8vw, 1.5rem) 0;
-        display: grid;
-        grid-template-rows: auto 1fr auto;
-        gap: clamp(0.9rem, 1.8vw, 1.35rem);
+        min-block-size: 0;
       }
 
       .tabs {
@@ -383,17 +455,6 @@
       .tab:focus-visible {
         outline: 2px solid var(--green-dark);
         outline-offset: 3px;
-      }
-
-      .panel-region {
-        min-block-size: 0;
-        overflow-y: auto;
-        overflow-x: hidden;
-        -webkit-overflow-scrolling: touch;
-      }
-
-      .panel {
-        block-size: 100%;
       }
 
       .work-intro {
@@ -639,16 +700,6 @@
         margin-top: 0.8rem;
       }
 
-      .details-footer {
-        border-top: 1px solid rgba(26, 26, 26, 0.12);
-        padding-top: 0.85rem;
-        color: rgba(26, 26, 26, 0.52);
-        font-family: "Bebas Neue", sans-serif;
-        font-size: 0.8rem;
-        letter-spacing: 0.24em;
-      }
-
-
       /* ---------- About: journey map ---------- */
       .about-layout {
         display: grid;
@@ -764,60 +815,13 @@
         }
       }
 
-      /* ---------- Resume: timeline ---------- */
-      .eras {
-        list-style: none;
-        position: relative;
-        display: flex;
-        flex-direction: column;
-        gap: clamp(1.4rem, 3vw, 2.4rem);
-        padding-inline-start: 2rem;
-        max-inline-size: 900px;
-      }
-
-      .eras::before {
-        content: "";
-        position: absolute;
-        inset-inline-start: 0.4rem;
-        top: 0.5rem;
-        bottom: 0.5rem;
-        inline-size: 2px;
-        background: linear-gradient(
-          180deg,
-          var(--green-dark),
-          rgba(44, 110, 41, 0.45),
-          rgba(26, 26, 26, 0.08)
-        );
-      }
-
+      /* ---------- Resume: one company per pane ---------- */
       .era {
-        position: relative;
         display: grid;
-        grid-template-columns: minmax(0, 340px) minmax(0, 1fr);
-        gap: clamp(1rem, 2.4vw, 1.8rem);
+        grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+        gap: clamp(1.2rem, 3.5vw, 3rem);
         align-items: center;
         min-inline-size: 0;
-      }
-
-      .era::before {
-        content: "";
-        position: absolute;
-        top: 50%;
-        inset-inline-start: -2rem;
-        inline-size: 14px;
-        block-size: 14px;
-        border-radius: 50%;
-        background: var(--green);
-        border: 3px solid var(--cream);
-        box-shadow: 0 0 0 1.5px rgba(44, 110, 41, 0.5);
-        transform: translate(0.1rem, -50%);
-      }
-
-      .era--now::before {
-        background: var(--green-dark);
-        box-shadow:
-          0 0 0 1.5px var(--green-dark),
-          0 0 0 7px rgba(58, 139, 55, 0.14);
       }
 
       .era-text {
@@ -832,6 +836,8 @@
         margin: 0;
         aspect-ratio: 4 / 3;
         inline-size: 100%;
+        max-block-size: calc(100dvh - var(--bar-h, 6rem) - 6rem);
+        margin-inline: auto;
         overflow: hidden;
         border-radius: 10px;
         border: 1px solid rgba(26, 26, 26, 0.08);
@@ -934,9 +940,17 @@
 
       .era-desc {
         color: rgba(26, 26, 26, 0.84);
-        font-size: clamp(0.98rem, 1.6vw, 1.08rem);
-        line-height: 1.45;
+        font-size: clamp(1.02rem, 1.7vw, 1.18rem);
+        line-height: 1.5;
         max-inline-size: 48ch;
+      }
+
+      .era-step {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: 0.8rem;
+        letter-spacing: 0.24em;
+        color: rgba(26, 26, 26, 0.38);
+        margin-bottom: 0.2rem;
       }
 
       /* Poly-Med wound scaffold */
@@ -1172,13 +1186,23 @@
           margin-top: 1rem;
         }
 
-        .details {
-          padding: clamp(1rem, 2.5vw, 1.5rem);
+        .tab-bar {
+          padding: clamp(1rem, 2.5vw, 1.5rem) clamp(1rem, 2.5vw, 1.5rem) 0;
         }
 
-        .details-card {
-          padding: 0.6rem 0;
-          gap: 0.6rem;
+        .pane {
+          padding: var(--bar-h, 4.5rem) clamp(1rem, 2.5vw, 1.5rem)
+            clamp(1rem, 2.5vw, 1.5rem);
+        }
+
+        .pane-dots {
+          inset-inline-end: 0.35rem;
+          gap: 0.45rem;
+        }
+
+        .pane-dot {
+          inline-size: 8px;
+          block-size: 8px;
         }
 
         .tabs {
@@ -1202,7 +1226,11 @@
 
         .project-grid {
           grid-template-columns: 1fr;
-          gap: 0.6rem;
+          gap: 0.55rem;
+        }
+
+        .work-intro {
+          display: none;
         }
 
         .project {
@@ -1243,8 +1271,12 @@
 
         .about-body,
         .meet-copy {
-          font-size: 1.2rem;
-          line-height: 1.55;
+          font-size: 1.05rem;
+          line-height: 1.45;
+        }
+
+        .about-layout {
+          gap: 0.8rem;
         }
 
         .meet-links {
@@ -1274,36 +1306,23 @@
           stroke-width: 4;
         }
 
-        .eras {
-          gap: 1.6rem;
-          padding-inline-start: 1.6rem;
-        }
-
-        .eras::before {
-          inset-inline-start: 0.35rem;
-        }
-
         .era {
           grid-template-columns: 1fr;
-          gap: 0.6rem;
-        }
-
-        .era::before {
-          top: 0.25rem;
-          inset-inline-start: -1.6rem;
-          transform: none;
+          gap: 0.8rem;
+          align-content: center;
         }
 
         .era-visual {
           aspect-ratio: 16 / 10;
-        }
-
-        .era h3 {
-          font-size: 1.5rem;
+          max-block-size: 38dvh;
         }
 
         .era-desc {
           font-size: 1.05rem;
+        }
+
+        .era h3 {
+          font-size: 1.6rem;
         }
 
         .scroll-indicator {
@@ -1350,6 +1369,67 @@
   <body>
     <main class="site-shell">
       <div class="site-viewport" data-site-viewport>
+        <header class="tab-bar" data-tab-bar>
+            <div class="tabs" role="tablist" aria-label="Sections">
+              <button
+                type="button"
+                class="tab active"
+                id="tab-work"
+                role="tab"
+                aria-selected="true"
+                aria-controls="panel-work"
+              >
+                Work
+              </button>
+              <button
+                type="button"
+                class="tab"
+                id="tab-resume"
+                role="tab"
+                aria-selected="false"
+                aria-controls="panel-resume"
+                tabindex="-1"
+              >
+                Resume
+              </button>
+              <button
+                type="button"
+                class="tab"
+                id="tab-about"
+                role="tab"
+                aria-selected="false"
+                aria-controls="panel-about"
+                tabindex="-1"
+              >
+                About
+              </button>
+              <button
+                type="button"
+                class="tab"
+                id="tab-meet"
+                role="tab"
+                aria-selected="false"
+                aria-controls="panel-meet"
+                tabindex="-1"
+              >
+                Meet
+              </button>
+              <button
+                type="button"
+                class="tab"
+                id="tab-writing"
+                role="tab"
+                aria-selected="false"
+                aria-controls="panel-writing"
+                tabindex="-1"
+              >
+                Writing
+              </button>
+            </div>
+        </header>
+
+        <nav class="pane-dots" data-pane-dots aria-label="Panes"></nav>
+
         <div class="scene-track" data-scene-track>
           <section
             class="screen scene hero is-active"
@@ -1388,7 +1468,7 @@
               type="button"
               class="scroll-indicator"
               data-scene-target="1"
-              aria-controls="details"
+              aria-controls="panel-work"
               aria-label="Go to work and links"
             >
               <span>Swipe Up</span>
@@ -1417,80 +1497,14 @@
             </button>
           </section>
 
-          <section
-            class="screen scene details"
-            id="details"
-            data-scene-root
-            aria-label="Work and links"
-            tabindex="-1"
-            aria-hidden="true"
-            inert
-          >
-            <div class="details-card">
-              <div class="tabs" role="tablist" aria-label="Sections">
-                <button
-                  type="button"
-                  class="tab active"
-                  id="tab-work"
-                  role="tab"
-                  aria-selected="true"
-                  aria-controls="panel-work"
-                >
-                  Work
-                </button>
-                <button
-                  type="button"
-                  class="tab"
-                  id="tab-resume"
-                  role="tab"
-                  aria-selected="false"
-                  aria-controls="panel-resume"
-                  tabindex="-1"
-                >
-                  Resume
-                </button>
-                <button
-                  type="button"
-                  class="tab"
-                  id="tab-about"
-                  role="tab"
-                  aria-selected="false"
-                  aria-controls="panel-about"
-                  tabindex="-1"
-                >
-                  About
-                </button>
-                <button
-                  type="button"
-                  class="tab"
-                  id="tab-meet"
-                  role="tab"
-                  aria-selected="false"
-                  aria-controls="panel-meet"
-                  tabindex="-1"
-                >
-                  Meet
-                </button>
-                <button
-                  type="button"
-                  class="tab"
-                  id="tab-writing"
-                  role="tab"
-                  aria-selected="false"
-                  aria-controls="panel-writing"
-                  tabindex="-1"
-                >
-                  Writing
-                </button>
-              </div>
-
-              <div class="panel-region">
-                <section
-                  class="panel"
-                  id="panel-work"
-                  role="tabpanel"
-                  aria-labelledby="tab-work"
-                >
+            <div
+              class="panel"
+              id="panel-work"
+              role="tabpanel"
+              aria-labelledby="tab-work"
+            >
+              <section class="screen pane pane--work" data-scene-root tabindex="-1" aria-hidden="true" inert>
+                <div class="pane-inner">
                   <p class="work-intro">
                     I like building tools that interact with the real world.
                     Bus, boat, and calendar are shown here:
@@ -1564,7 +1578,6 @@
                         /></a>
                       </div>
                     </article>
-
                     <article class="project">
                       <a
                         class="project-body"
@@ -1588,7 +1601,13 @@
                         >
                       </div>
                     </article>
-
+                  </div>
+                </div>
+              </section>
+              <section class="screen pane pane--work" data-scene-root tabindex="-1" aria-hidden="true" inert>
+                <div class="pane-inner">
+                  <p class="work-intro">A few more:</p>
+                  <div class="project-grid">
                     <article class="project">
                       <a
                         class="project-body"
@@ -1611,7 +1630,6 @@
                         >
                       </div>
                     </article>
-
                     <article class="project">
                       <a
                         class="project-body"
@@ -1644,7 +1662,6 @@
                         /></a>
                       </div>
                     </article>
-
                     <article class="project">
                       <a
                         class="project-body"
@@ -1678,21 +1695,19 @@
                       </div>
                     </article>
                   </div>
-                </section>
+                </div>
+              </section>
+            </div>
 
-                <section
-                  class="panel"
-                  id="panel-resume"
-                  role="tabpanel"
-                  aria-labelledby="tab-resume"
-                  hidden
-                >
-                  <p class="work-intro">
-                    Four companies, three industries, newest first. I like
-                    being early.
-                  </p>
-                  <ol class="eras">
-                    <li class="era era--now">
+            <div
+              class="panel"
+              id="panel-resume"
+              role="tabpanel"
+              aria-labelledby="tab-resume" hidden
+            >
+              <section class="screen pane pane--era" data-scene-root tabindex="-1" aria-hidden="true" inert>
+                <div class="pane-inner">
+                  <div class="era era--now" data-era-index="0">
                       <figure
                         class="era-visual era-visual--dark"
                         aria-label="Illustration of a planet horizon seen from orbit with the Elendil ring mark."
@@ -1742,6 +1757,7 @@
                         </svg>
                       </figure>
                       <div class="era-text">
+                        <span class="era-step" data-era-step></span>
                         <span class="era-years">2026 &ndash; now</span>
                         <h3>
                           <a
@@ -1758,9 +1774,12 @@
                           production inside their tenant.
                         </p>
                       </div>
-                    </li>
-
-                    <li class="era">
+                  </div>
+                </div>
+              </section>
+              <section class="screen pane pane--era" data-scene-root tabindex="-1" aria-hidden="true" inert>
+                <div class="pane-inner">
+                  <div class="era" data-era-index="1">
                       <figure
                         class="era-visual"
                         aria-label="Animated mesh of connected points shaped like a dome, in the style of the Agulus network graphic."
@@ -1768,6 +1787,7 @@
                         <canvas data-agulus-mesh></canvas>
                       </figure>
                       <div class="era-text">
+                        <span class="era-step" data-era-step></span>
                         <span class="era-years">2023 &ndash; 2025</span>
                         <h3>
                           <a href="https://agulus.com/" target="_blank" rel="noopener"
@@ -1782,9 +1802,12 @@
                           SQL behind every new trade scenario.
                         </p>
                       </div>
-                    </li>
-
-                    <li class="era">
+                  </div>
+                </div>
+              </section>
+              <section class="screen pane pane--era" data-scene-root tabindex="-1" aria-hidden="true" inert>
+                <div class="pane-inner">
+                  <div class="era" data-era-index="2">
                       <figure
                         class="era-visual"
                         aria-label="Line drawing of a wound closing over a nanofibrous tissue scaffold."
@@ -1826,6 +1849,7 @@
                         </svg>
                       </figure>
                       <div class="era-text">
+                        <span class="era-step" data-era-step></span>
                         <span class="era-years">2018 &ndash; 2022</span>
                         <h3>
                           <a
@@ -1842,9 +1866,12 @@
                           and built the software validation framework.
                         </p>
                       </div>
-                    </li>
-
-                    <li class="era">
+                  </div>
+                </div>
+              </section>
+              <section class="screen pane pane--era" data-scene-root tabindex="-1" aria-hidden="true" inert>
+                <div class="pane-inner">
+                  <div class="era" data-era-index="3">
                       <figure
                         class="era-visual era-visual--3d"
                         data-kincise-3d
@@ -1867,6 +1894,7 @@
                         <span class="era-hint">Drag to spin</span>
                       </figure>
                       <div class="era-text">
+                        <span class="era-step" data-era-step></span>
                         <span class="era-years">2015 &ndash; 2018</span>
                         <h3>
                           <a
@@ -1884,17 +1912,19 @@
                           &amp; Johnson.
                         </p>
                       </div>
-                    </li>
-                  </ol>
-                </section>
+                  </div>
+                </div>
+              </section>
+            </div>
 
-                <section
-                  class="panel"
-                  id="panel-about"
-                  role="tabpanel"
-                  aria-labelledby="tab-about"
-                  hidden
-                >
+            <div
+              class="panel"
+              id="panel-about"
+              role="tabpanel"
+              aria-labelledby="tab-about" hidden
+            >
+              <section class="screen pane pane--about" data-scene-root tabindex="-1" aria-hidden="true" inert>
+                <div class="pane-inner">
                   <div class="about-layout">
                     <div class="about-body">
                       <p>
@@ -1945,15 +1975,18 @@
                       </svg>
                     </figure>
                   </div>
-                </section>
+                </div>
+              </section>
+            </div>
 
-                <section
-                  class="panel"
-                  id="panel-meet"
-                  role="tabpanel"
-                  aria-labelledby="tab-meet"
-                  hidden
-                >
+            <div
+              class="panel"
+              id="panel-meet"
+              role="tabpanel"
+              aria-labelledby="tab-meet" hidden
+            >
+              <section class="screen pane pane--meet" data-scene-root tabindex="-1" aria-hidden="true" inert>
+                <div class="pane-inner">
                   <div class="meet-stack">
                     <p class="meet-copy">
                       Reach out if you want to talk product, maps, transit, or
@@ -2010,15 +2043,18 @@
                       /></a>
                     </div>
                   </div>
-                </section>
+                </div>
+              </section>
+            </div>
 
-                <section
-                  class="panel"
-                  id="panel-writing"
-                  role="tabpanel"
-                  aria-labelledby="tab-writing"
-                  hidden
-                >
+            <div
+              class="panel"
+              id="panel-writing"
+              role="tabpanel"
+              aria-labelledby="tab-writing" hidden
+            >
+              <section class="screen pane pane--writing" data-scene-root tabindex="-1" aria-hidden="true" inert>
+                <div class="pane-inner">
                   <div data-writing-view="list">
                     <ol class="writing-list">
                       <li>
@@ -2091,17 +2127,30 @@
                     <h2 class="writing-reader-title" data-reader-title></h2>
                     <div class="writing-body" data-reader-body></div>
                   </article>
-                </section>
-              </div>
-
-              <footer class="details-footer">
-                <p>&copy; 2026 Conor McManamon</p>
-              </footer>
+                  <article
+                    class="writing-reader"
+                    data-writing-view="reader"
+                    hidden
+                  >
+                    <button
+                      type="button"
+                      class="writing-back"
+                      data-writing-back
+                      aria-label="Back to all writing"
+                    >
+                      &larr; All writing
+                    </button>
+                    <span class="writing-date" data-reader-date></span>
+                    <h2 class="writing-reader-title" data-reader-title></h2>
+                    <div class="writing-body" data-reader-body></div>
+                  </article>
+                </div>
+              </section>
             </div>
-          </section>
         </div>
       </div>
     </main>
+
 
     <script>
       (function () {
@@ -2116,11 +2165,43 @@
 
         const siteViewport = document.querySelector("[data-site-viewport]");
         const sceneTrack = document.querySelector("[data-scene-track]");
-        const sceneRoots = Array.from(
+        const tabBar = document.querySelector("[data-tab-bar]");
+        const paneDots = document.querySelector("[data-pane-dots]");
+        const allSceneRoots = Array.from(
           document.querySelectorAll("[data-scene-root]"),
         );
-        const heroScene = sceneRoots[0];
-        const detailsScene = sceneRoots[1];
+        const heroScene = allSceneRoots[0];
+        // Scenes are the hero plus every pane of the currently shown tab.
+        let sceneRoots = [];
+        function refreshSceneRoots() {
+          sceneRoots = allSceneRoots.filter(function (scene) {
+            const panel = scene.closest('[role="tabpanel"]');
+            return !panel || !panel.hidden;
+          });
+          renderPaneDots();
+        }
+        function renderPaneDots() {
+          if (!paneDots) return;
+          const count = sceneRoots.length - 1;
+          paneDots.classList.toggle("has-many", count > 1);
+          while (paneDots.children.length > count) {
+            paneDots.removeChild(paneDots.lastChild);
+          }
+          while (paneDots.children.length < count) {
+            const dot = document.createElement("button");
+            dot.type = "button";
+            dot.className = "pane-dot";
+            const index = paneDots.children.length + 1;
+            dot.setAttribute("aria-label", "Pane " + index);
+            dot.addEventListener("click", function () {
+              goToScene(index, { source: "button" });
+            });
+            paneDots.appendChild(dot);
+          }
+          Array.from(paneDots.children).forEach(function (dot, i) {
+            dot.classList.toggle("active", i + 1 === state.activeScene);
+          });
+        }
         const sceneJumpButton = document.querySelector(
           "[data-scene-target='1']",
         );
@@ -2206,6 +2287,12 @@
           panels.forEach((panel) => {
             panel.hidden = panel.id !== targetPanelId;
           });
+
+          refreshSceneRoots();
+          // A new tab always opens on its first pane.
+          if (state.activeScene !== 0 || state.isTransitioning) {
+            syncToActiveScene(1);
+          }
 
           if (moveFocus) {
             nextTab.focus({ preventScroll: true });
@@ -2382,14 +2469,8 @@
         }
 
         function getSceneFocusTarget(sceneIndex) {
-          if (sceneIndex === 1) {
-            return (
-              tabs.find(
-                (tab) => tab.getAttribute("aria-selected") === "true",
-              ) ||
-              tabs[0] ||
-              detailsScene
-            );
+          if (sceneIndex >= 1) {
+            return sceneRoots[sceneIndex] || heroScene;
           }
 
           return heroScene || sceneJumpButton;
@@ -2424,7 +2505,8 @@
         }
 
         function applySceneActivation(activeScene) {
-          sceneRoots.forEach(function (scene, index) {
+          allSceneRoots.forEach(function (scene) {
+            const index = sceneRoots.indexOf(scene);
             const isActive = index === activeScene;
             scene.classList.toggle("is-active", isActive);
             scene.setAttribute("aria-hidden", String(!isActive));
@@ -2435,6 +2517,8 @@
               scene.setAttribute("inert", "");
             }
           });
+          siteViewport.classList.toggle("is-past-hero", activeScene > 0);
+          renderPaneDots();
         }
 
         function finishTransition() {
@@ -2527,10 +2611,14 @@
           return goToScene(state.activeScene + direction, options);
         }
 
-        function syncToActiveScene() {
-          const sceneInPlay = state.isTransitioning
-            ? state.targetScene
-            : state.activeScene;
+        function syncToActiveScene(forceScene) {
+          const sceneInPlay = clampSceneIndex(
+            typeof forceScene === "number"
+              ? forceScene
+              : state.isTransitioning
+                ? state.targetScene
+                : state.activeScene,
+          );
 
           state.sceneHeight = siteViewport.getBoundingClientRect().height || 0;
 
@@ -2701,27 +2789,7 @@
           }
 
           if (state.touch.verticalLock && event.cancelable) {
-            const panelRegion = document.querySelector(".panel-region");
-            const isInPanel = panelRegion && panelRegion.contains(event.target);
-            const canScrollInPanel =
-              isInPanel && panelRegion.scrollHeight > panelRegion.clientHeight;
-
-            if (canScrollInPanel) {
-              const atTop = panelRegion.scrollTop <= 0;
-              const atBottom =
-                panelRegion.scrollTop + panelRegion.clientHeight >=
-                panelRegion.scrollHeight - 1;
-              const swipingUp = deltaY < 0;
-              const swipingDown = deltaY > 0;
-
-              if ((atTop && swipingDown) || (atBottom && swipingUp)) {
-                event.preventDefault();
-              } else {
-                state.touch.cancelled = true;
-              }
-            } else {
-              event.preventDefault();
-            }
+            event.preventDefault();
           }
         }
 
@@ -2775,17 +2843,21 @@
           switch (event.key) {
             case "ArrowDown":
             case "PageDown":
+              nextScene = state.activeScene + 1;
+              break;
             case "End":
-              nextScene = 1;
+              nextScene = sceneRoots.length - 1;
               break;
             case "ArrowUp":
             case "PageUp":
+              nextScene = state.activeScene - 1;
+              break;
             case "Home":
               nextScene = 0;
               break;
             case " ":
             case "Spacebar":
-              nextScene = event.shiftKey ? 0 : 1;
+              nextScene = state.activeScene + (event.shiftKey ? -1 : 1);
               break;
             default:
               return;
@@ -2978,7 +3050,7 @@
         );
         const writingReaderBody = document.querySelector("[data-reader-body]");
         const writingBackButton = document.querySelector("[data-writing-back]");
-        const writingPanelRegion = document.querySelector(".panel-region");
+        const writingPanelRegion = null;
 
         function openWritingEntry(entryButton) {
           const dateEl = entryButton.querySelector(".writing-date");
@@ -3044,6 +3116,27 @@
           });
         });
 
+        function measureTabBar() {
+          if (!tabBar) return;
+          const h = tabBar.getBoundingClientRect().height;
+          siteViewport.style.setProperty("--bar-h", h.toFixed(1) + "px");
+        }
+        if (window.ResizeObserver && tabBar) {
+          new ResizeObserver(function () {
+            measureTabBar();
+            scheduleSyncToActiveScene();
+          }).observe(tabBar);
+        }
+        measureTabBar();
+
+        // Number the resume panes ("01 / 04").
+        const eraSteps = Array.from(document.querySelectorAll("[data-era-step]"));
+        eraSteps.forEach(function (el, i) {
+          el.textContent =
+            String(i + 1).padStart(2, "0") + " / " + String(eraSteps.length).padStart(2, "0");
+        });
+
+        refreshSceneRoots();
         activateTab(tabs[0]);
         createDebugOverlay();
         syncToActiveScene();
