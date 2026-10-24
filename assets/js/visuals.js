@@ -240,7 +240,7 @@
       camera.aspect = w / h;
       camera.updateProjectionMatrix();
       // Keep the 40-unit-long tool inside the frame at any aspect.
-      const fit = 46 * Math.max(1, 1.33 / camera.aspect);
+      const fit = 66 * Math.max(1, 1.33 / camera.aspect);
       camera.position.set(0, fit * 0.13, fit);
       camera.lookAt(0, 0, 0);
     }
@@ -287,112 +287,11 @@
   }
 
   /* ------------------------------------------------------------------ */
-  /* Resume: Agulus dome mesh                                            */
-  /* ------------------------------------------------------------------ */
-  const meshCanvas = document.querySelector("[data-agulus-mesh]");
-  let mesh = null;
-
-  function setupMesh() {
-    if (!meshCanvas || mesh) return mesh;
-    const ctx = meshCanvas.getContext("2d");
-    let points = [];
-    let links = [];
-    let raf = 0;
-    let running = false;
-    let w = 0;
-    let h = 0;
-
-    function seed() {
-      w = meshCanvas.clientWidth || 300;
-      h = meshCanvas.clientHeight || 225;
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
-      meshCanvas.width = Math.round(w * dpr);
-      meshCanvas.height = Math.round(h * dpr);
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-
-      // Points scattered under a dome: dense near the arc, sparse below.
-      points = [];
-      const N = 170;
-      for (let i = 0; i < N; i += 1) {
-        const u = Math.random();
-        const x = w * (0.04 + u * 0.92);
-        const dome = h * 0.3 + Math.pow((x - w / 2) / (w / 2), 2) * h * 0.28;
-        const depth = Math.pow(Math.random(), 2.2) * h * 0.55;
-        points.push({
-          x,
-          y: dome + depth,
-          ox: x,
-          oy: dome + depth,
-          p: Math.random() * Math.PI * 2,
-          r: 0.6 + Math.random() * 1.1,
-        });
-      }
-      // Link each point to its nearest few neighbours.
-      links = [];
-      const maxD = Math.min(w, h) * 0.2;
-      points.forEach((a, i) => {
-        const near = points
-          .map((b, j) => ({ j, d: Math.hypot(a.ox - b.ox, a.oy - b.oy) }))
-          .filter((n) => n.j !== i && n.d < maxD)
-          .sort((p, q) => p.d - q.d)
-          .slice(0, 3);
-        near.forEach((n) => {
-          if (n.j > i) links.push([i, n.j, n.d / maxD]);
-        });
-      });
-    }
-    new ResizeObserver(seed).observe(meshCanvas);
-    seed();
-
-    function draw(now) {
-      if (!running) return;
-      const t = now / 1000;
-      ctx.clearRect(0, 0, w, h);
-      const drift = reduceMotion.matches ? 0 : 1;
-      points.forEach((p) => {
-        p.x = p.ox + Math.sin(t * 0.5 + p.p) * 2.2 * drift;
-        p.y = p.oy + Math.cos(t * 0.4 + p.p * 1.3) * 1.6 * drift;
-      });
-      ctx.lineWidth = 0.8;
-      links.forEach(([i, j, k]) => {
-        const a = points[i];
-        const b = points[j];
-        ctx.strokeStyle = `rgba(44,110,41,${(0.75 - k * 0.55).toFixed(3)})`;
-        ctx.beginPath();
-        ctx.moveTo(a.x, a.y);
-        ctx.lineTo(b.x, b.y);
-        ctx.stroke();
-      });
-      ctx.fillStyle = "rgba(26,26,26,0.75)";
-      points.forEach((p) => {
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fill();
-      });
-      raf = requestAnimationFrame(draw);
-    }
-
-    mesh = {
-      start() {
-        if (running) return;
-        running = true;
-        raf = requestAnimationFrame(draw);
-      },
-      stop() {
-        running = false;
-        cancelAnimationFrame(raf);
-      },
-    };
-    return mesh;
-  }
-
-  /* ------------------------------------------------------------------ */
   /* Pane wiring: a visual runs only while its pane is the active scene  */
   /* ------------------------------------------------------------------ */
   const journey = setupJourney();
   const mapPane = map && map.closest("[data-scene-root]");
   const kincisePane = kinciseHost && kinciseHost.closest("[data-scene-root]");
-  const meshPane = meshCanvas && meshCanvas.closest("[data-scene-root]");
   const resumePanel = document.getElementById("panel-resume");
 
   function active(pane) {
@@ -410,13 +309,6 @@
       setupKincise().then((k) => k && active(kincisePane) && k.start());
     } else if (kincise) {
       kincise.stop();
-    }
-
-    if (active(meshPane)) {
-      const m = setupMesh();
-      if (m) m.start();
-    } else if (mesh) {
-      mesh.stop();
     }
 
     if (resumePanel) {

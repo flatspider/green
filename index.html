@@ -840,19 +840,8 @@
         margin-inline: auto;
         overflow: hidden;
         border-radius: 10px;
-        border: 1px solid rgba(26, 26, 26, 0.08);
-        background:
-          radial-gradient(
-            circle at 50% 35%,
-            rgba(68, 160, 63, 0.14),
-            transparent 65%
-          ),
-          rgba(255, 255, 255, 0.45);
-      }
-
-      .era-visual--dark {
-        background: #07090b;
-        border-color: rgba(26, 26, 26, 0.5);
+        border: 1px solid rgba(26, 26, 26, 0.1);
+        background: rgba(255, 255, 255, 0.55);
       }
 
       .era-visual canvas,
@@ -953,39 +942,127 @@
         margin-bottom: 0.2rem;
       }
 
-      /* Poly-Med wound scaffold */
+      /* ---------- Era tiles: ink line art, one green accent ---------- */
+      .tile .ink,
+      .tile g.ink > path {
+        fill: none;
+        stroke: var(--ink);
+        stroke-width: 3;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      .tile .ink--thin {
+        stroke-width: 1.5;
+        opacity: 0.55;
+      }
+
+      .tile .fill-green {
+        fill: var(--green-dark);
+      }
+
+      .tile-word {
+        font-family: "Crimson Pro", Georgia, serif;
+        font-size: 20px;
+        letter-spacing: 0.42em;
+        fill: var(--ink);
+      }
+
+      /* Elendil: orbiting dot */
+      .el-orbiter {
+        fill: var(--green-dark);
+        transform-box: view-box;
+        transform-origin: 200px 138px;
+      }
+
+      .is-live .el-orbiter {
+        animation: el-orbit 14s linear infinite;
+      }
+
+      @keyframes el-orbit {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      /* Agulus: wheat */
+      .tile-ag .grain ellipse {
+        fill: rgba(58, 139, 55, 0.22);
+        stroke: var(--green-dark);
+        stroke-width: 2;
+      }
+
+      .ag-stalk {
+        transform-box: fill-box;
+        transform-origin: 50% 100%;
+      }
+
+      .is-live .ag-stalk {
+        animation: ag-sway 5.5s ease-in-out infinite;
+      }
+
+      .is-live .ag-stalk--l {
+        animation-delay: -1.2s;
+      }
+
+      .is-live .ag-stalk--r {
+        animation-delay: -2.6s;
+      }
+
+      @keyframes ag-sway {
+        0%,
+        100% {
+          transform: rotate(-2.2deg);
+        }
+        50% {
+          transform: rotate(2.2deg);
+        }
+      }
+
+      /* Poly-Med: wound closing */
       .pm-wound {
         transform-box: fill-box;
         transform-origin: 50% 0;
       }
 
-      .is-live .pm-wound {
-        animation: pm-heal 4.5s ease-in-out infinite;
-      }
-
       .pm-arrow {
+        fill: none;
+        stroke: var(--green-dark);
+        stroke-width: 3;
+        stroke-linecap: round;
+        stroke-linejoin: round;
         transform-box: fill-box;
         transform-origin: center;
       }
 
+      .pm-cells circle {
+        fill: none;
+        stroke: var(--ink);
+        stroke-width: 2.5;
+      }
+
+      .is-live .pm-wound {
+        animation: pm-heal 5s ease-in-out infinite;
+      }
+
       .is-live .pm-arrow--left {
-        animation: pm-push-left 4.5s ease-in-out infinite;
+        animation: pm-push-left 5s ease-in-out infinite;
       }
 
       .is-live .pm-arrow--right {
-        animation: pm-push-right 4.5s ease-in-out infinite;
+        animation: pm-push-right 5s ease-in-out infinite;
       }
 
       .is-live .pm-cells circle {
-        animation: pm-cell 4.5s ease-in-out infinite;
+        animation: pm-cell 5s ease-in-out infinite;
       }
 
       .is-live .pm-cells circle:nth-child(2n) {
-        animation-delay: 0.6s;
+        animation-delay: 0.5s;
       }
 
       .is-live .pm-cells circle:nth-child(3n) {
-        animation-delay: 1.2s;
+        animation-delay: 1s;
       }
 
       @keyframes pm-heal {
@@ -995,7 +1072,7 @@
         }
         60%,
         85% {
-          transform: scaleX(0.18);
+          transform: scaleX(0.14);
         }
         100% {
           transform: scaleX(1);
@@ -1005,34 +1082,28 @@
       @keyframes pm-push-left {
         0%,
         15% {
-          transform: translateX(-12px);
-          opacity: 0.4;
+          transform: translateX(-10px);
         }
         60%,
         85% {
-          transform: translateX(14px);
-          opacity: 1;
+          transform: translateX(12px);
         }
         100% {
-          transform: translateX(-12px);
-          opacity: 0.4;
+          transform: translateX(-10px);
         }
       }
 
       @keyframes pm-push-right {
         0%,
         15% {
-          transform: translateX(12px);
-          opacity: 0.4;
+          transform: translateX(10px);
         }
         60%,
         85% {
-          transform: translateX(-14px);
-          opacity: 1;
+          transform: translateX(-12px);
         }
         100% {
-          transform: translateX(12px);
-          opacity: 0.4;
+          transform: translateX(10px);
         }
       }
 
@@ -1042,74 +1113,8 @@
           fill: rgba(58, 139, 55, 0);
         }
         50% {
-          fill: rgba(58, 139, 55, 0.45);
+          fill: rgba(58, 139, 55, 0.4);
         }
-      }
-
-      /* Elendil orbit tile */
-      .el-wordmark {
-        font-family: "Crimson Pro", Georgia, serif;
-        font-size: 15px;
-        letter-spacing: 0.42em;
-        fill: #f5f5f0;
-      }
-
-      .el-orbiter {
-        transform-box: view-box;
-        transform-origin: 44px 44px;
-      }
-
-      .is-live .el-orbiter {
-        animation: el-orbit 9s linear infinite;
-      }
-
-      .is-live .el-atmo {
-        animation: el-breathe 6s ease-in-out infinite;
-      }
-
-      .is-live .el-stars circle {
-        animation: el-twinkle 3.5s ease-in-out infinite;
-      }
-
-      .is-live .el-stars circle:nth-child(3n) {
-        animation-delay: 1.1s;
-      }
-
-      .is-live .el-stars circle:nth-child(2n) {
-        animation-delay: 2.2s;
-      }
-
-      @keyframes el-orbit {
-        to {
-          transform: rotate(360deg);
-        }
-      }
-
-      @keyframes el-breathe {
-        0%,
-        100% {
-          stroke-opacity: 0.5;
-        }
-        50% {
-          stroke-opacity: 1;
-        }
-      }
-
-      @keyframes el-twinkle {
-        0%,
-        100% {
-          opacity: 0.35;
-        }
-        50% {
-          opacity: 1;
-        }
-      }
-
-      .el-label {
-        font-family: "Bebas Neue", sans-serif;
-        font-size: 11px;
-        letter-spacing: 0.15em;
-        fill: rgba(26, 26, 26, 0.5);
       }
 
       @keyframes stamp {
@@ -1709,51 +1714,17 @@
                 <div class="pane-inner">
                   <div class="era era--now" data-era-index="0">
                       <figure
-                        class="era-visual era-visual--dark"
-                        aria-label="Illustration of a planet horizon seen from orbit with the Elendil ring mark."
+                        class="era-visual"
+                        aria-label="The Elendil ring mark with a dot slowly orbiting it."
                       >
-                        <svg viewBox="0 0 400 300" aria-hidden="true">
-                          <defs>
-                            <radialGradient id="el-glow" cx="50%" cy="100%" r="75%">
-                              <stop offset="0" stop-color="#9fd9ff" stop-opacity="0.55" />
-                              <stop offset="0.45" stop-color="#3a8b37" stop-opacity="0.18" />
-                              <stop offset="1" stop-color="#000" stop-opacity="0" />
-                            </radialGradient>
-                            <linearGradient id="el-limb" x1="0" y1="0" x2="0" y2="1">
-                              <stop offset="0" stop-color="#cfefff" stop-opacity="0.95" />
-                              <stop offset="0.12" stop-color="#5aa0d8" stop-opacity="0.6" />
-                              <stop offset="1" stop-color="#0a1a2a" stop-opacity="0.9" />
-                            </linearGradient>
-                            <clipPath id="el-clip">
-                              <rect width="400" height="300" />
-                            </clipPath>
-                          </defs>
-                          <rect width="400" height="300" fill="#07090b" />
-                          <g class="el-stars" fill="#f5f5f0">
-                            <circle cx="40" cy="42" r="1.1" />
-                            <circle cx="96" cy="88" r="0.8" />
-                            <circle cx="150" cy="30" r="1" />
-                            <circle cx="214" cy="70" r="0.7" />
-                            <circle cx="262" cy="24" r="1.2" />
-                            <circle cx="318" cy="96" r="0.8" />
-                            <circle cx="356" cy="48" r="1" />
-                            <circle cx="372" cy="130" r="0.7" />
-                            <circle cx="120" cy="140" r="0.7" />
-                            <circle cx="300" cy="150" r="0.9" />
-                            <circle cx="60" cy="178" r="0.8" />
-                            <circle cx="190" cy="120" r="0.6" />
+                        <svg viewBox="0 0 400 300" aria-hidden="true" class="tile tile-el">
+                          <g transform="translate(200 138)">
+                            <circle r="78" class="ink" />
+                            <circle r="52" class="ink ink--thin" />
+                            <circle r="6" class="fill-green" />
+                            <circle class="el-orbiter" cx="78" cy="0" r="6" />
                           </g>
-                          <g clip-path="url(#el-clip)">
-                            <rect width="400" height="300" fill="url(#el-glow)" />
-                            <circle cx="200" cy="640" r="430" fill="url(#el-limb)" />
-                            <circle class="el-atmo" cx="200" cy="640" r="432" fill="none" stroke="#bfe8ff" stroke-opacity="0.8" stroke-width="2" />
-                          </g>
-                          <g class="el-mark" transform="translate(44 44)">
-                            <circle r="16" fill="none" stroke="#f5f5f0" stroke-width="1.4" />
-                            <circle r="10" fill="none" stroke="#f5f5f0" stroke-opacity="0.5" stroke-width="1" />
-                            <circle class="el-orbiter" cx="16" cy="0" r="2.6" fill="#f5f5f0" />
-                          </g>
-                          <text x="76" y="49" class="el-wordmark">ELENDIL</text>
+                          <text x="200" y="262" text-anchor="middle" class="tile-word">ELENDIL</text>
                         </svg>
                       </figure>
                       <div class="era-text">
@@ -1782,9 +1753,48 @@
                   <div class="era" data-era-index="1">
                       <figure
                         class="era-visual"
-                        aria-label="Animated mesh of connected points shaped like a dome, in the style of the Agulus network graphic."
+                        aria-label="Line drawing of three wheat stalks swaying."
                       >
-                        <canvas data-agulus-mesh></canvas>
+                        <svg viewBox="0 0 400 300" aria-hidden="true" class="tile tile-ag">
+                          <g class="ag-stalk ag-stalk--l">
+                            <path class="ink" d="M135 270 C135 230 128 190 118 150" />
+                            <g class="grain">
+                              <ellipse cx="112" cy="150" rx="7" ry="13" transform="rotate(-24 112 150)" />
+                              <ellipse cx="128" cy="140" rx="7" ry="13" transform="rotate(-4 128 140)" />
+                              <ellipse cx="108" cy="128" rx="7" ry="13" transform="rotate(-30 108 128)" />
+                              <ellipse cx="124" cy="118" rx="7" ry="13" transform="rotate(-8 124 118)" />
+                              <ellipse cx="106" cy="106" rx="7" ry="13" transform="rotate(-34 106 106)" />
+                              <ellipse cx="120" cy="96" rx="7" ry="13" transform="rotate(-12 120 96)" />
+                            </g>
+                            <path class="ink ink--thin" d="M118 150 L100 112 M124 118 L112 76 M120 96 L116 60" />
+                          </g>
+                          <g class="ag-stalk ag-stalk--r">
+                            <path class="ink" d="M265 270 C265 230 272 190 282 150" />
+                            <g class="grain">
+                              <ellipse cx="288" cy="150" rx="7" ry="13" transform="rotate(24 288 150)" />
+                              <ellipse cx="272" cy="140" rx="7" ry="13" transform="rotate(4 272 140)" />
+                              <ellipse cx="292" cy="128" rx="7" ry="13" transform="rotate(30 292 128)" />
+                              <ellipse cx="276" cy="118" rx="7" ry="13" transform="rotate(8 276 118)" />
+                              <ellipse cx="294" cy="106" rx="7" ry="13" transform="rotate(34 294 106)" />
+                              <ellipse cx="280" cy="96" rx="7" ry="13" transform="rotate(12 280 96)" />
+                            </g>
+                            <path class="ink ink--thin" d="M282 150 L300 112 M276 118 L288 76 M280 96 L284 60" />
+                          </g>
+                          <g class="ag-stalk ag-stalk--c">
+                            <path class="ink" d="M200 270 C200 220 200 170 200 120" />
+                            <g class="grain">
+                              <ellipse cx="190" cy="120" rx="7" ry="13" transform="rotate(-22 190 120)" />
+                              <ellipse cx="210" cy="110" rx="7" ry="13" transform="rotate(22 210 110)" />
+                              <ellipse cx="190" cy="98" rx="7" ry="13" transform="rotate(-22 190 98)" />
+                              <ellipse cx="210" cy="88" rx="7" ry="13" transform="rotate(22 210 88)" />
+                              <ellipse cx="190" cy="76" rx="7" ry="13" transform="rotate(-22 190 76)" />
+                              <ellipse cx="210" cy="66" rx="7" ry="13" transform="rotate(22 210 66)" />
+                              <ellipse cx="200" cy="52" rx="7" ry="13" />
+                            </g>
+                            <path class="ink ink--thin" d="M190 120 L172 84 M210 110 L228 74 M190 76 L178 40 M210 66 L222 30 M200 52 L200 18" />
+                          </g>
+                          <path class="ink" d="M60 270 H340" />
+                        </svg>
                       </figure>
                       <div class="era-text">
                         <span class="era-step" data-era-step></span>
@@ -1810,42 +1820,35 @@
                   <div class="era" data-era-index="2">
                       <figure
                         class="era-visual"
-                        aria-label="Line drawing of a wound closing over a nanofibrous tissue scaffold."
+                        aria-label="Line drawing of a wound closing over a scaffold of cells."
                       >
-                        <svg viewBox="0 0 400 300" aria-hidden="true" class="pm">
-                          <g class="pm-fibers" fill="none" stroke="rgba(44,110,41,0.35)" stroke-width="1.2">
-                            <path d="M40 190c20-10 40 10 60 0s40-10 60 0 40 10 60 0 40-10 60 0 40 10 60 0" />
-                            <path d="M30 215c20 10 40-10 60 0s40 10 60 0 40-10 60 0 40 10 60 0 40-10 60 0" />
-                            <path d="M46 240c20-10 40 10 60 0s40-10 60 0 40 10 60 0 40-10 60 0 40 10 60 0" />
-                          </g>
-                          <g class="pm-cells" fill="none" stroke="#2c6e29" stroke-width="2">
-                            <circle cx="70" cy="190" r="6" />
-                            <circle cx="130" cy="214" r="6" />
-                            <circle cx="190" cy="192" r="6" />
-                            <circle cx="250" cy="216" r="6" />
-                            <circle cx="310" cy="190" r="6" />
-                            <circle cx="100" cy="246" r="6" />
-                            <circle cx="220" cy="248" r="6" />
-                            <circle cx="340" cy="244" r="6" />
-                          </g>
-                          <g class="pm-skin" fill="none" stroke="#1a1a1a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M30 120H176" />
-                            <path d="M224 120H370" />
+                        <svg viewBox="0 0 400 300" aria-hidden="true" class="tile tile-pm">
+                          <g class="ink">
+                            <path d="M50 140 H176" />
+                            <path d="M224 140 H350" />
                             <g class="pm-wound">
-                              <path d="M176 120l24 42 24-42" />
+                              <path d="M176 140 l24 40 24-40" />
                             </g>
                           </g>
-                          <g class="pm-arrows" fill="none" stroke="#3a8b37" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
-                            <g class="pm-arrow pm-arrow--left">
-                              <path d="M60 96h86" />
-                              <path d="M128 78l18 18-18 18" />
-                            </g>
-                            <g class="pm-arrow pm-arrow--right">
-                              <path d="M340 96h-86" />
-                              <path d="M272 78l-18 18 18 18" />
-                            </g>
+                          <g class="pm-arrow pm-arrow--left">
+                            <path d="M78 108 H150" />
+                            <path d="M132 90 l18 18 -18 18" />
                           </g>
-                          <text x="30" y="54" class="el-label">TISSUE SCAFFOLD</text>
+                          <g class="pm-arrow pm-arrow--right">
+                            <path d="M322 108 H250" />
+                            <path d="M268 90 l-18 18 18 18" />
+                          </g>
+                          <g class="pm-cells">
+                            <circle cx="90" cy="196" r="7" />
+                            <circle cx="150" cy="196" r="7" />
+                            <circle cx="210" cy="196" r="7" />
+                            <circle cx="270" cy="196" r="7" />
+                            <circle cx="330" cy="196" r="7" />
+                            <circle cx="120" cy="232" r="7" />
+                            <circle cx="180" cy="232" r="7" />
+                            <circle cx="240" cy="232" r="7" />
+                            <circle cx="300" cy="232" r="7" />
+                          </g>
                         </svg>
                       </figure>
                       <div class="era-text">
