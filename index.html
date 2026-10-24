@@ -1360,7 +1360,12 @@
         }
 
         .pane--meet {
-          align-content: center;
+          align-content: start;
+          padding-top: calc(var(--bar-h, 4.5rem) + 2.5rem);
+        }
+
+        .pane--meet .meet-copy {
+          font-size: 1.5rem;
         }
 
         .pane--meet .meet-links {
@@ -1369,7 +1374,7 @@
         }
 
         .pane--meet .meet-links a {
-          --ball: min(17vw, 72px);
+          --ball: min(17.5vw, 76px);
         }
 
         .work-intro {
@@ -1377,9 +1382,26 @@
           font-size: 1.05rem;
         }
 
+        .pane--work,
+        .pane--era {
+          grid-template-rows: minmax(0, 1fr);
+        }
+
+        .pane--work .pane-inner,
+        .pane--era .pane-inner {
+          block-size: 100%;
+          min-block-size: 0;
+        }
+
         .project-grid {
           grid-template-columns: 1fr;
-          gap: 0.55rem;
+          grid-auto-rows: 1fr;
+          gap: 0.7rem;
+          block-size: 100%;
+        }
+
+        .project {
+          align-content: center;
         }
 
         .work-intro {
@@ -1469,14 +1491,19 @@
         }
 
         .era {
-          grid-template-columns: 1fr;
-          gap: 0.8rem;
-          align-content: center;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          gap: 1.2rem;
+          block-size: 100%;
         }
 
         .era-visual {
-          aspect-ratio: 16 / 10;
-          max-block-size: 38dvh;
+          flex: 0 1 auto;
+          aspect-ratio: auto;
+          block-size: 54dvh;
+          min-block-size: 0;
+          max-block-size: none;
         }
 
         .era-desc {
@@ -2083,7 +2110,7 @@
                       <svg
                         class="journey-map"
                         data-journey-map
-                        viewBox="-12 0 1010 610"
+                        viewBox="-12 0 1030 610"
                         role="img"
                         aria-label="Map of the United States tracing moves from California to Virginia, Maryland, Pennsylvania, South Carolina, and finally New York City."
                       >
@@ -2102,7 +2129,7 @@
                         <g data-stop transform="translate(834 261.5)"><circle r="7" /><text x="16" y="-2">Maryland</text></g>
                         <g data-stop transform="translate(805.1 227.6)"><circle r="7" /><text x="-176" y="-12">Pennsylvania</text></g>
                         <g data-stop transform="translate(748.3 375.3)"><circle r="7" /><text x="-68" y="36">South Carolina</text></g>
-                        <g data-stop data-stop-final transform="translate(869.8 215.8)"><circle r="7" /><text x="30" y="-20" text-anchor="middle">New York City</text></g>
+                        <g data-stop data-stop-final transform="translate(869.8 215.8)"><circle r="7" /><text x="0" y="-22" text-anchor="middle">New York City</text></g>
                         </g>
                       </svg>
                     </figure>
@@ -2126,22 +2153,14 @@
                     </p>
                     <div class="meet-links">
                       <a
-                        href="mailto:c.s.mcmanamon@gmail.com"
-                        aria-label="Email"
-                        ><img
-                          class="social-icon"
-                          src="assets/icons/email.svg"
-                          alt="Email"
-                      /></a>
-                      <a
-                        href="https://github.com/flatspider"
+                        href="https://x.com/iamconormac"
                         target="_blank"
                         rel="noopener"
-                        aria-label="GitHub"
+                        aria-label="X"
                         ><img
                           class="social-icon"
-                          src="assets/icons/github.svg"
-                          alt="GitHub"
+                          src="assets/icons/x.svg"
+                          alt="X"
                       /></a>
                       <a
                         href="https://www.linkedin.com/in/conor-s-mcmanamon/"
@@ -2164,14 +2183,22 @@
                           alt="Instagram"
                       /></a>
                       <a
-                        href="https://x.com/iamconormac"
+                        href="https://github.com/flatspider"
                         target="_blank"
                         rel="noopener"
-                        aria-label="X"
+                        aria-label="GitHub"
                         ><img
                           class="social-icon"
-                          src="assets/icons/x.svg"
-                          alt="X"
+                          src="assets/icons/github.svg"
+                          alt="GitHub"
+                      /></a>
+                      <a
+                        href="mailto:c.s.mcmanamon@gmail.com"
+                        aria-label="Email"
+                        ><img
+                          class="social-icon"
+                          src="assets/icons/email.svg"
+                          alt="Email"
                       /></a>
                     </div>
                   </div>

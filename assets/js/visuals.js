@@ -355,6 +355,14 @@
     meetPane.classList.add("is-dropping");
   }
 
+  // A mailto hands off to the mail app and leaves the link focused, so
+  // the ring shows when the tab regains focus. Drop focus on activation.
+  if (meetPane) {
+    meetPane.querySelectorAll(".meet-links a").forEach((a) => {
+      a.addEventListener("click", () => a.blur());
+    });
+  }
+
   function syncVisuals() {
     if (meetPane) {
       const meetNow = active(meetPane);
