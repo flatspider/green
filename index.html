@@ -671,17 +671,12 @@
 
       .project-grid {
         display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 1rem;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 1.1rem;
       }
 
-      .pane--work .pane-inner {
-        max-inline-size: 900px;
-      }
-
-      /* Two cards on the last pane: keep them card-sized, not half-width. */
-      .pane--work:last-child .project-grid {
-        grid-template-columns: repeat(2, minmax(0, 420px));
+      .pane--mobile-only {
+        display: none;
       }
 
       .project {
@@ -1416,10 +1411,17 @@
           align-content: center;
         }
 
-        .project-grid,
-        .pane--work:last-child .project-grid {
+        .project-grid {
           grid-template-columns: 1fr;
           gap: 0.75rem;
+        }
+
+        .pane--work:not(.pane--mobile-only) .project:nth-child(n + 5) {
+          display: none;
+        }
+
+        .pane--mobile-only {
+          display: grid;
         }
 
         .work-intro {
@@ -1807,10 +1809,65 @@
                       </div>
                       <p class="project-desc">The only way to get your employees to update their LinkedIn banners.</p>
                     </article>
+                    <article class="project">
+                      <div class="project-head">
+                        <h3>
+                          <a href="https://www.editoriai.com/" target="_blank" rel="noopener">Editori</a>
+                        </h3>
+                        <div class="project-meta">
+                        <a
+                          href="https://www.editoriai.com/"
+                          target="_blank"
+                          rel="noopener"
+                          >Live</a
+                        >
+                        <a
+                          class="icon-link"
+                          href="https://github.com/flatspider/ccs-final-project"
+                          target="_blank"
+                          rel="noopener"
+                          aria-label="View code on GitHub"
+                          ><img
+                            class="social-icon"
+                            src="assets/icons/github.svg"
+                            alt="GitHub"
+                        /></a>
+                      </div>
+                      </div>
+                      <p class="project-desc">Generate a letter to the editor of the New York Times.</p>
+                    </article>
+                    <article class="project">
+                      <div class="project-head">
+                        <h3>
+                          <a href="https://chatbot.conormcmanamon.com/" target="_blank" rel="noopener">Chatbot</a>
+                        </h3>
+                        <div class="project-meta">
+                        <a
+                          href="https://chatbot.conormcmanamon.com/"
+                          target="_blank"
+                          rel="noopener"
+                          >Live</a
+                        >
+                        <a
+                          class="icon-link"
+                          href="https://github.com/flatspider/chatbot-conor"
+                          target="_blank"
+                          rel="noopener"
+                          aria-label="View code on GitHub"
+                          ><img
+                            class="social-icon"
+                            src="assets/icons/github.svg"
+                            alt="GitHub"
+                        /></a>
+                      </div>
+                      </div>
+                      <p class="project-desc">Don't let the AI out of the box.</p>
+                    </article>
                   </div>
                 </div>
               </section>
-              <section class="screen pane pane--work" data-scene-root tabindex="-1" aria-hidden="true" inert>
+              <!-- Mobile only: the first pane shows four, these two overflow here. -->
+              <section class="screen pane pane--work pane--mobile-only" data-scene-root tabindex="-1" aria-hidden="true" inert>
                 <div class="pane-inner">
                   <p class="work-intro">A couple more:</p>
                   <div class="project-grid">
@@ -2320,7 +2377,9 @@
         function refreshSceneRoots() {
           sceneRoots = allSceneRoots.filter(function (scene) {
             const panel = scene.closest('[role="tabpanel"]');
-            return !panel || !panel.hidden;
+            if (panel && panel.hidden) return false;
+            // Panes can be hidden by CSS at some widths (mobile-only panes).
+            return getComputedStyle(scene).display !== "none";
           });
           renderPaneDots();
         }
@@ -2405,6 +2464,7 @@
           wheelLastEventAt: 0,
           wheelGestureStartedAt: 0,
           wheelThreshold: config.wheelIntentPx,
+          wheelLockedUntilGap: false,
           touch: {
             tracking: false,
             startX: 0,
@@ -2549,7 +2609,7 @@
         function resetWheelGesture() {
           state.wheelAccumulator = 0;
           state.wheelDirection = 0;
-          state.wheelLastEventAt = 0;
+          if (!state.wheelLockedUntilGap) state.wheelLastEventAt = 0;
           state.wheelGestureStartedAt = 0;
           state.wheelThreshold = config.wheelIntentPx;
           debugState.lastWheelAccumulator = 0;
@@ -2761,6 +2821,7 @@
         }
 
         function syncToActiveScene(forceScene) {
+          refreshSceneRoots();
           const sceneInPlay = clampSceneIndex(
             typeof forceScene === "number"
               ? forceScene
@@ -2809,8 +2870,21 @@
         function handleWheel(event) {
           const now = performance.now();
 
+          // After a flip, swallow the rest of the same gesture (trackpad
+          // momentum keeps firing) until there is a real pause in events.
+          if (state.wheelLockedUntilGap) {
+            if (now - state.wheelLastEventAt <= config.wheelGestureGapMs) {
+              state.wheelLastEventAt = now;
+              if (event.cancelable) event.preventDefault();
+              return;
+            }
+            state.wheelLockedUntilGap = false;
+          }
+
           if (state.isTransitioning || now < state.cooldownUntil) {
             resetWheelGesture();
+            state.wheelLockedUntilGap = true;
+            state.wheelLastEventAt = now;
 
             if (event.cancelable) {
               event.preventDefault();
@@ -2869,6 +2943,8 @@
 
           debugState.lastIntentLatencyMs = now - state.wheelGestureStartedAt;
           resetWheelGesture();
+          state.wheelLockedUntilGap = true;
+          state.wheelLastEventAt = now;
           navigateByDirection(direction, { source: "wheel" });
         }
 
