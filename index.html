@@ -784,6 +784,11 @@
         animation: show-stop 0.3s ease var(--delay, 0s) forwards;
       }
 
+      .journey-stops g[data-stop-final] text {
+        font-size: 36px;
+        stroke-width: 8px;
+      }
+
       .journey-map.is-playing .journey-stops circle {
         animation: pop-stop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) var(--delay, 0s) both;
       }
@@ -1301,6 +1306,11 @@
         .journey-stops text {
           font-size: 34px;
           stroke-width: 8px;
+        }
+
+        .journey-stops g[data-stop-final] text {
+          font-size: 46px;
+          stroke-width: 10px;
         }
 
         .journey-legs path {
@@ -1973,7 +1983,7 @@
                         <g data-stop transform="translate(834 261.5)"><circle r="7" /><text x="16" y="-2">Maryland</text></g>
                         <g data-stop transform="translate(805.1 227.6)"><circle r="7" /><text x="-176" y="-12">Pennsylvania</text></g>
                         <g data-stop transform="translate(748.3 375.3)"><circle r="7" /><text x="-68" y="36">South Carolina</text></g>
-                        <g data-stop data-stop-final transform="translate(869.8 215.8)"><circle r="7" /><text x="24" y="-16" text-anchor="middle">New York City</text></g>
+                        <g data-stop data-stop-final transform="translate(869.8 215.8)"><circle r="7" /><text x="30" y="-20" text-anchor="middle">New York City</text></g>
                         </g>
                       </svg>
                     </figure>

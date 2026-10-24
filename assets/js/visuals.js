@@ -15,50 +15,57 @@
     const LEG_SPEED = 0.0028; // seconds per viewBox unit
     const LEG_PAUSE = 0.28; // seconds to rest on each stop
     const HOLD = 1.6; // seconds to hold the finished route
-    const FADE_STEP = 0.32; // seconds between each fade
     let t = 0.9; // initial delay so the tab has settled
 
-    const stopDelays = [];
-    legs.forEach((leg, index) => {
+    // Each leg's path is "M x y Q cx cy x2 y2"; read its start and end.
+    function legEnds(leg) {
+      const n = (leg.getAttribute("d").match(/[-\d.]+/g) || []).map(Number);
+      return { from: n[0] + " " + n[1], to: n[4] + " " + n[5] };
+    }
+    function stopKey(stop) {
+      const n = (stop.getAttribute("transform").match(/[-\d.]+/g) || []).map(Number);
+      return n[0] + " " + n[1];
+    }
+
+    const legEndTimes = []; // when each leg finishes drawing
+    legs.forEach((leg) => {
       const length = leg.getTotalLength();
       const duration = Math.max(0.5, length * LEG_SPEED);
       leg.style.setProperty("--len", length.toFixed(1));
       leg.style.setProperty("--dur", duration.toFixed(2) + "s");
       leg.style.setProperty("--delay", t.toFixed(2) + "s");
-      if (index === 0) stopDelays.push(t - 0.3);
       t += duration;
-      stopDelays.push(t);
+      legEndTimes.push(t);
       t += LEG_PAUSE;
     });
-    stops.forEach((stop, i) => {
-      stop.style.setProperty("--delay", stopDelays[i].toFixed(2) + "s");
+
+    // A stop appears the first time a leg arrives at it. The origin appears
+    // just before the first leg starts drawing.
+    const firstStart = parseFloat(legs[0].style.getPropertyValue("--delay"));
+    stops.forEach((stop) => {
+      const key = stopKey(stop);
+      let when = null;
+      legs.forEach((leg, i) => {
+        const ends = legEnds(leg);
+        if (when === null && i === 0 && ends.from === key) when = firstStart - 0.3;
+        if (when === null && ends.to === key) when = legEndTimes[i];
+      });
+      stop.style.setProperty("--delay", (when === null ? 0 : when).toFixed(2) + "s");
     });
 
-    // After the route is complete, fade out point, then line, then the next
-    // point... in travel order, so only the last stop (NYC) remains.
-    let f = t + HOLD;
-    legs.forEach((leg, index) => {
-      const stop = stops[index];
-      if (stop && !stop.hasAttribute("data-stop-final")) {
-        stop.style.setProperty("--fade", f.toFixed(2) + "s");
-      }
-      f += FADE_STEP;
-      leg.style.setProperty("--fade", f.toFixed(2) + "s");
-      f += FADE_STEP;
+    // After the route is complete, fade in two steps: first the long leg
+    // from California (and its dot), then the whole northeast cluster, so
+    // only the final stop (NYC) remains.
+    const fadeOne = t + HOLD;
+    const fadeTwo = fadeOne + 1.4;
+    legs.forEach((leg, i) => {
+      leg.style.setProperty("--fade", (i === 0 ? fadeOne : fadeTwo).toFixed(2) + "s");
     });
-    // Intermediate repeated stops (PA, SC) are single elements that sit on
-    // several legs; fade them with the last leg that touches them.
+    const originKey = legEnds(legs[0]).from;
     stops.forEach((stop) => {
       if (stop.hasAttribute("data-stop-final")) return;
-      const [x, y] = (stop.getAttribute("transform").match(/[-\d.]+/g) || []).map(Number);
-      let latest = 0;
-      legs.forEach((leg) => {
-        const d = leg.getAttribute("d");
-        if (d.includes(`${x} ${y}`)) {
-          latest = Math.max(latest, parseFloat(leg.style.getPropertyValue("--fade")));
-        }
-      });
-      if (latest) stop.style.setProperty("--fade", (latest - FADE_STEP).toFixed(2) + "s");
+      const isOrigin = stopKey(stop) === originKey;
+      stop.style.setProperty("--fade", (isOrigin ? fadeOne : fadeTwo).toFixed(2) + "s");
     });
 
     function play() {
