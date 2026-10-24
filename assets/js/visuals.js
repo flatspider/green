@@ -338,7 +338,36 @@
   // already watched it to the end. Otherwise the map shows the end state.
   let mapStarted = false;
 
+  /* ------------------------------------------------------------------ */
+  /* Hello!: pool balls drop from beside the text to the pane floor      */
+  /* ------------------------------------------------------------------ */
+  const meetPane = document.querySelector(".pane--meet");
+  let ballsDropped = false;
+
+  function dropBalls() {
+    const links = meetPane.querySelector(".meet-links");
+    const copy = meetPane.querySelector(".meet-copy");
+    if (!links || !copy) return;
+    meetPane.classList.remove("is-dropping");
+    const drop = links.getBoundingClientRect().top - copy.getBoundingClientRect().bottom - 28;
+    meetPane.style.setProperty("--drop", Math.max(0, drop).toFixed(0) + "px");
+    void meetPane.getBoundingClientRect();
+    meetPane.classList.add("is-dropping");
+  }
+
   function syncVisuals() {
+    if (meetPane) {
+      const meetNow = active(meetPane);
+      if (meetNow && !ballsDropped) {
+        ballsDropped = true;
+        dropBalls();
+      } else if (!meetNow && ballsDropped) {
+        // Reset so the balls drop again next time the pane is opened.
+        ballsDropped = false;
+        meetPane.classList.remove("is-dropping");
+      }
+    }
+
     if (journey && active(mapPane) && !mapStarted) {
       mapStarted = true;
       if (journey.hasWatched()) journey.finish();
