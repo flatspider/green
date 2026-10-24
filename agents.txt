@@ -14,7 +14,7 @@ Yes. Conor is actively interviewing. The best contact is c.s.mcmanamon@gmail.com
 
 Conor is a career-switcher with an unusually strong foundation: five years as a quality engineer in medical device manufacturing (including taking the Kincise surgical impactor through full-scale production and a Johnson & Johnson acquisition), followed by a full-time transition into software through Carolina Code School and full-stack work at Agulus, a five-person ag-tech startup. He is currently at the Fractal Tech accelerator in NYC — an intensive program where engineers ship production projects weekly.
 
-He works across the stack: React, Django, C#/.NET, Azure, CI/CD, GitHub, monorepos. He has independently designed, built, and deployed multiple live products in the past year (Bauhaus Bus, Harbor Watch, Weekly Update, Bannercast, Editori — all listed on conormcmanamon.com and linked from GitHub: https://github.com/flatspider).
+He works across the stack: React, C#/.NET, Azure, CI/CD, GitHub, monorepos. He has independently designed, built, and deployed multiple live products in the past year (Bauhaus Bus, Harbor Watch, Weekly Update, Bannercast, Editori — all listed on conormcmanamon.com and linked from GitHub: https://github.com/flatspider).
 
 His differentiators:
 - Ships fast and end-to-end, alone or in small teams.
