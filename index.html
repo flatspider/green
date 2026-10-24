@@ -900,13 +900,6 @@
         opacity: 1;
       }
 
-      .era-years {
-        font-family: "Bebas Neue", sans-serif;
-        font-size: 0.85rem;
-        letter-spacing: 0.2em;
-        color: rgba(26, 26, 26, 0.5);
-      }
-
       .era h3 {
         color: var(--green-dark);
         font-family: "Bebas Neue", sans-serif;
@@ -926,25 +919,11 @@
         border-bottom-color: var(--green-dark);
       }
 
-      .era-role {
-        font-style: italic;
-        color: rgba(26, 26, 26, 0.62);
-        font-size: clamp(0.95rem, 1.5vw, 1.02rem);
-      }
-
       .era-desc {
         color: rgba(26, 26, 26, 0.84);
         font-size: clamp(1.02rem, 1.7vw, 1.18rem);
         line-height: 1.5;
         max-inline-size: 48ch;
-      }
-
-      .era-step {
-        font-family: "Bebas Neue", sans-serif;
-        font-size: 0.8rem;
-        letter-spacing: 0.24em;
-        color: rgba(26, 26, 26, 0.38);
-        margin-bottom: 0.2rem;
       }
 
       /* ---------- Era tiles: ink line art, one green accent ---------- */
@@ -1738,8 +1717,6 @@
                         </svg>
                       </figure>
                       <div class="era-text">
-                        <span class="era-step" data-era-step></span>
-                        <span class="era-years">2026 &ndash; now</span>
                         <h3>
                           <a
                             href="https://www.elendillabs.com/"
@@ -1748,7 +1725,6 @@
                             >Elendil Labs</a
                           >
                         </h3>
-                        <p class="era-role">Forward deployed product engineer</p>
                         <p class="era-desc">
                           AI agents for private capital firms. I own the client
                           relationship end to end, from discovery call to
@@ -1807,14 +1783,11 @@
                         </svg>
                       </figure>
                       <div class="era-text">
-                        <span class="era-step" data-era-step></span>
-                        <span class="era-years">2023 &ndash; 2025</span>
                         <h3>
                           <a href="https://agulus.com/" target="_blank" rel="noopener"
                             >Agulus</a
                           >
                         </h3>
-                        <p class="era-role">Software developer, farm tech</p>
                         <p class="era-desc">
                           Contracts and risk-management software for
                           agribusiness. Five-person startup. I gathered
@@ -1862,8 +1835,6 @@
                         </svg>
                       </figure>
                       <div class="era-text">
-                        <span class="era-step" data-era-step></span>
-                        <span class="era-years">2018 &ndash; 2022</span>
                         <h3>
                           <a
                             href="https://poly-med.com/"
@@ -1872,7 +1843,6 @@
                             >Poly-Med</a
                           >
                         </h3>
-                        <p class="era-role">Quality engineer, biomaterials</p>
                         <p class="era-desc">
                           Electrospun synthetic skin and absorbable implants.
                           I owned the manufacturing-to-quality data pipeline
@@ -1907,8 +1877,6 @@
                         <span class="era-hint">Drag to spin</span>
                       </figure>
                       <div class="era-text">
-                        <span class="era-step" data-era-step></span>
-                        <span class="era-years">2015 &ndash; 2018</span>
                         <h3>
                           <a
                             href="https://www.jnjmedtech.com/en-US/product/kincise-surgical-automated-system"
@@ -1917,7 +1885,6 @@
                             >Kincise</a
                           >
                         </h3>
-                        <p class="era-role">Quality engineer, medical devices</p>
                         <p class="era-desc">
                           A surgical power tool that drives hip implants into
                           bone. I took it from prototype to full-scale
@@ -3141,13 +3108,6 @@
           }).observe(tabBar);
         }
         measureTabBar();
-
-        // Number the resume panes ("01 / 04").
-        const eraSteps = Array.from(document.querySelectorAll("[data-era-step]"));
-        eraSteps.forEach(function (el, i) {
-          el.textContent =
-            String(i + 1).padStart(2, "0") + " / " + String(eraSteps.length).padStart(2, "0");
-        });
 
         refreshSceneRoots();
         activateTab(tabs[0]);
