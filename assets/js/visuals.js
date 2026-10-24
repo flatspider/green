@@ -53,20 +53,23 @@
       stop.style.setProperty("--delay", (when === null ? 0 : when).toFixed(2) + "s");
     });
 
-    // After the route is complete, fade in two steps: first the long leg
-    // from California (and its dot), then the whole northeast cluster, so
-    // only the final stop (NYC) remains.
-    const fadeOne = t + HOLD;
-    const fadeTwo = fadeOne + 0.5;
-    legs.forEach((leg, i) => {
-      leg.style.setProperty("--fade", (i === 0 ? fadeOne : fadeTwo).toFixed(2) + "s");
+    // After the route is complete, fade leg by leg in travel order: each
+    // stop goes with the leg that leaves it, so only the final stop (NYC)
+    // remains.
+    const FADE_STEP = 0.4;
+    let f = t + HOLD;
+    const fadeAt = {};
+    legs.forEach((leg) => {
+      leg.style.setProperty("--fade", f.toFixed(2) + "s");
+      fadeAt[legEnds(leg).from] = f;
+      f += FADE_STEP;
     });
-    const originKey = legEnds(legs[0]).from;
     stops.forEach((stop) => {
       if (stop.hasAttribute("data-stop-final")) return;
-      const isOrigin = stopKey(stop) === originKey;
-      stop.style.setProperty("--fade", (isOrigin ? fadeOne : fadeTwo).toFixed(2) + "s");
+      const when = fadeAt[stopKey(stop)];
+      if (when !== undefined) stop.style.setProperty("--fade", when.toFixed(2) + "s");
     });
+    const fadeTwo = f; // when the last leg starts fading
 
     const STORAGE_KEY = "journey-watched";
     const totalMs = (fadeTwo + 0.6) * 1000;
