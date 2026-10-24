@@ -68,13 +68,39 @@
       stop.style.setProperty("--fade", (isOrigin ? fadeOne : fadeTwo).toFixed(2) + "s");
     });
 
-    function play() {
-      map.classList.remove("is-playing");
-      void map.getBoundingClientRect(); // restart animations from zero
-      map.classList.add("is-playing");
+    const STORAGE_KEY = "journey-watched";
+    const totalMs = (fadeTwo + 0.6) * 1000;
+
+    function hasWatched() {
+      try {
+        return localStorage.getItem(STORAGE_KEY) === "1";
+      } catch (error) {
+        return false;
+      }
     }
 
-    return { play };
+    function remember() {
+      try {
+        localStorage.setItem(STORAGE_KEY, "1");
+      } catch (error) {
+        /* private mode or blocked storage: just replay next visit */
+      }
+    }
+
+    // Jump straight to the end state: only the final stop showing.
+    function finish() {
+      map.classList.remove("is-playing");
+      map.classList.add("is-done");
+    }
+
+    function play() {
+      map.classList.remove("is-done", "is-playing");
+      void map.getBoundingClientRect(); // restart animations from zero
+      map.classList.add("is-playing");
+      window.setTimeout(remember, totalMs);
+    }
+
+    return { play, finish, hasWatched };
   }
 
   /* ------------------------------------------------------------------ */
@@ -305,12 +331,16 @@
     return Boolean(pane) && pane.classList.contains("is-active") && !document.hidden;
   }
 
-  let mapWasActive = false;
+  // The route plays once per page load, and only if this browser has not
+  // already watched it to the end. Otherwise the map shows the end state.
+  let mapStarted = false;
 
   function syncVisuals() {
-    const mapNow = active(mapPane);
-    if (mapNow && !mapWasActive && journey) journey.play();
-    mapWasActive = mapNow;
+    if (journey && active(mapPane) && !mapStarted) {
+      mapStarted = true;
+      if (journey.hasWatched()) journey.finish();
+      else journey.play();
+    }
 
     if (active(kincisePane)) {
       setupKincise().then((k) => k && active(kincisePane) && k.start());
