@@ -435,7 +435,10 @@
 
       .pane {
         display: grid;
-        align-items: center;
+        /* Centre when the content fits; fall back to the top when it is
+           taller than the space, instead of clipping both ends. */
+        align-items: safe center;
+        align-content: safe center;
         padding: var(--bar-h, 6rem) clamp(1.5rem, 3vw, 2.5rem)
           clamp(1.5rem, 3vw, 2.5rem);
         background:
@@ -663,7 +666,7 @@
 
       .work-intro {
         max-inline-size: 540px;
-        margin-bottom: 1.6rem;
+        margin-bottom: 1rem;
         font-size: clamp(1.05rem, 1.8vw, 1.18rem);
         line-height: 1.5;
         color: rgba(26, 26, 26, 0.72);
