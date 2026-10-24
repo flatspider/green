@@ -14,7 +14,7 @@
     const stops = Array.from(map.querySelectorAll("[data-stop]"));
     const LEG_SPEED = 0.0028; // seconds per viewBox unit
     const LEG_PAUSE = 0.28; // seconds to rest on each stop
-    const HOLD = 0.9; // seconds to hold the finished route
+    const HOLD = 0.6; // seconds to hold the finished route
     let t = 0.9; // initial delay so the tab has settled
 
     // Each leg's path is "M x y Q cx cy x2 y2"; read its start and end.
@@ -57,7 +57,7 @@
     // from California (and its dot), then the whole northeast cluster, so
     // only the final stop (NYC) remains.
     const fadeOne = t + HOLD;
-    const fadeTwo = fadeOne + 0.7;
+    const fadeTwo = fadeOne + 0.5;
     legs.forEach((leg, i) => {
       leg.style.setProperty("--fade", (i === 0 ? fadeOne : fadeTwo).toFixed(2) + "s");
     });
