@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#f5f5f0" />
+    <meta name="theme-color" content="#fbfaf6" />
     <meta
       name="description"
       content="Software engineer based in New York City."
@@ -101,7 +101,9 @@
         --green-dark: #2c6e29;
         --green-bright: #44a03f;
         --ink: #1a1a1a;
-        --cream: #f5f5f0;
+        --cream: #fbfaf6;
+        --paper: #ffffff;
+        --green-line: rgba(44, 110, 41, 0.28);
       }
 
       @font-face {
@@ -141,9 +143,13 @@
             rgba(68, 160, 63, 0.2),
             transparent 38%
           ),
-          linear-gradient(180deg, #f7f7f3 0%, var(--cream) 100%);
+          linear-gradient(180deg, #fdfcf9 0%, var(--cream) 100%);
         color: var(--ink);
         font-family: "Crimson Pro", Georgia, serif;
+      }
+
+      ::selection {
+        background: rgba(58, 139, 55, 0.25);
       }
 
       a {
@@ -349,6 +355,32 @@
         pointer-events: auto;
       }
 
+      /* Tabs and dots flip to cream while a green pane is showing. */
+      .site-viewport.is-on-green .tabs {
+        border-bottom-color: rgba(251, 250, 246, 0.55);
+      }
+
+      .site-viewport.is-on-green .tab {
+        color: rgba(251, 250, 246, 0.55);
+      }
+
+      .site-viewport.is-on-green .tab:hover,
+      .site-viewport.is-on-green .tab.active {
+        color: var(--cream);
+      }
+
+      .site-viewport.is-on-green .tab:focus-visible {
+        outline-color: var(--cream);
+      }
+
+      .site-viewport.is-on-green .pane-dot {
+        border-color: var(--cream);
+      }
+
+      .site-viewport.is-on-green .pane-dot.active {
+        background: var(--cream);
+      }
+
       .pane-dots {
         position: absolute;
         inset-inline-end: clamp(0.6rem, 1.5vw, 1.4rem);
@@ -370,7 +402,7 @@
 
       .pane-dot {
         appearance: none;
-        border: 1.5px solid rgba(44, 110, 41, 0.55);
+        border: 1.5px solid var(--green);
         background: transparent;
         inline-size: 10px;
         block-size: 10px;
@@ -408,8 +440,52 @@
             rgba(255, 255, 255, 0.25),
             rgba(255, 255, 255, 0)
           ),
-          linear-gradient(180deg, #f7f7f3 0%, var(--cream) 100%);
+          linear-gradient(180deg, #fdfcf9 0%, var(--cream) 100%);
         overflow: hidden;
+      }
+
+      .pane--meet {
+        background: radial-gradient(
+          ellipse 120% 100% at 50% 44%,
+          var(--green-bright) 0%,
+          var(--green) 40%,
+          var(--green-dark) 100%
+        );
+        color: var(--cream);
+      }
+
+      .pane--meet .meet-copy {
+        color: var(--cream);
+        font-size: clamp(1.3rem, 2.4vw, 1.8rem);
+        line-height: 1.4;
+      }
+
+      .pane--meet .meet-links {
+        margin-top: 1.4rem;
+      }
+
+      .pane--meet .meet-links a {
+        display: grid;
+        place-items: center;
+        inline-size: 52px;
+        block-size: 52px;
+        border-radius: 50%;
+        background: var(--cream);
+        transition: transform 0.2s ease;
+      }
+
+      .pane--meet .meet-links a:hover {
+        transform: translateY(-2px);
+      }
+
+      .pane--meet .meet-links a:focus-visible {
+        outline: 2px solid var(--cream);
+        outline-offset: 3px;
+      }
+
+      .pane--meet .social-icon {
+        width: 24px;
+        height: 24px;
       }
 
       .pane-inner {
@@ -423,7 +499,7 @@
         flex-wrap: wrap;
         gap: 0.7rem clamp(1rem, 3vw, 2.5rem);
         align-items: center;
-        border-bottom: 1px solid rgba(26, 26, 26, 0.14);
+        border-bottom: 2px solid var(--green);
         padding-bottom: 0.9rem;
       }
 
@@ -449,7 +525,7 @@
       }
 
       .tab.active {
-        color: var(--ink);
+        color: var(--green-dark);
       }
 
       .tab:focus-visible {
@@ -476,8 +552,8 @@
         grid-template-columns: 1fr;
         gap: 0.5rem;
         padding: 1.25rem 1.4rem;
-        background: rgba(255, 255, 255, 0.45);
-        border: 1px solid rgba(26, 26, 26, 0.07);
+        background: var(--paper);
+        border: 1px solid var(--green-line);
         border-radius: 10px;
         transition:
           box-shadow 0.25s ease,
@@ -485,8 +561,8 @@
       }
 
       .project:hover {
-        border-color: rgba(44, 110, 41, 0.22);
-        box-shadow: 0 2px 12px rgba(44, 110, 41, 0.08);
+        border-color: var(--green-dark);
+        box-shadow: 0 2px 14px rgba(44, 110, 41, 0.12);
       }
 
       a.project-body {
@@ -855,8 +931,8 @@
         margin-inline: auto;
         overflow: hidden;
         border-radius: 10px;
-        border: 1px solid rgba(26, 26, 26, 0.1);
-        background: rgba(255, 255, 255, 0.55);
+        border: 1px solid var(--green-line);
+        background: var(--paper);
       }
 
       .era-visual canvas,
@@ -1977,7 +2053,7 @@
               role="tabpanel"
               aria-labelledby="tab-meet" hidden
             >
-              <section class="screen pane pane--meet" data-scene-root tabindex="-1" aria-hidden="true" inert>
+              <section class="screen pane pane--meet pane--green" data-scene-root tabindex="-1" aria-hidden="true" inert>
                 <div class="pane-inner">
                   <div class="meet-stack">
                     <p class="meet-copy">
@@ -2510,6 +2586,11 @@
             }
           });
           siteViewport.classList.toggle("is-past-hero", activeScene > 0);
+          const activePane = sceneRoots[activeScene];
+          siteViewport.classList.toggle(
+            "is-on-green",
+            Boolean(activePane && activePane.classList.contains("pane--green")),
+          );
           renderPaneDots();
         }
 
