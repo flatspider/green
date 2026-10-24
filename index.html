@@ -108,8 +108,12 @@
 
       @font-face {
         font-family: "Hero";
-        src: url("https://pub-8ac32b30902e4ee1b9e2e71899dbf5e7.r2.dev/font.woff2")
-          format("woff2");
+        /* R2 first for production; the local copy (gitignored, licensed)
+           covers dev, where the bucket's CORS rule refuses localhost. */
+        src:
+          url("https://pub-8ac32b30902e4ee1b9e2e71899dbf5e7.r2.dev/font.woff2")
+            format("woff2"),
+          url("font.woff2") format("woff2");
         font-weight: normal;
         font-style: normal;
         font-display: swap;
