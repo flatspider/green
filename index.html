@@ -1211,11 +1211,11 @@
         }
 
         .tab {
-          flex: 1;
+          flex: 0 1 auto;
           text-align: center;
-          font-size: 7.4vw;
+          font-size: 7.2vw;
           letter-spacing: 0.06em;
-          padding: 0.2rem 0.15rem;
+          padding: 0.2rem 0;
         }
 
         .work-intro {
@@ -1290,6 +1290,10 @@
 
         .about-layout {
           grid-template-columns: 1fr;
+        }
+
+        .about-layout .journey {
+          order: -1;
         }
 
         .journey-stops text {
