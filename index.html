@@ -1089,101 +1089,37 @@
         }
       }
 
-      /* Poly-Med: wound closing */
-      .pm-wound {
-        transform-box: fill-box;
-        transform-origin: 50% 0;
-      }
-
-      .pm-arrow {
+      /* Poly-Med: fiber spins out of the needle into a coil */
+      .pm-fiber {
         fill: none;
         stroke: var(--green-dark);
-        stroke-width: 3;
+        stroke-width: 2.2;
         stroke-linecap: round;
         stroke-linejoin: round;
-        transform-box: fill-box;
-        transform-origin: center;
+        stroke-dasharray: 1000;
+        stroke-dashoffset: 0;
       }
 
-      .pm-cells circle {
-        fill: none;
-        stroke: var(--ink);
-        stroke-width: 2.5;
+      .is-live .pm-fiber {
+        animation: pm-spin 7s linear infinite;
       }
 
-      .is-live .pm-wound {
-        animation: pm-heal 5s ease-in-out infinite;
-      }
-
-      .is-live .pm-arrow--left {
-        animation: pm-push-left 5s ease-in-out infinite;
-      }
-
-      .is-live .pm-arrow--right {
-        animation: pm-push-right 5s ease-in-out infinite;
-      }
-
-      .is-live .pm-cells circle {
-        animation: pm-cell 5s ease-in-out infinite;
-      }
-
-      .is-live .pm-cells circle:nth-child(2n) {
-        animation-delay: 0.5s;
-      }
-
-      .is-live .pm-cells circle:nth-child(3n) {
-        animation-delay: 1s;
-      }
-
-      @keyframes pm-heal {
-        0%,
-        15% {
-          transform: scaleX(1);
+      @keyframes pm-spin {
+        0% {
+          stroke-dashoffset: 1000;
+          opacity: 1;
         }
-        60%,
-        85% {
-          transform: scaleX(0.14);
+        78% {
+          stroke-dashoffset: 0;
+          opacity: 1;
+        }
+        92% {
+          stroke-dashoffset: 0;
+          opacity: 0;
         }
         100% {
-          transform: scaleX(1);
-        }
-      }
-
-      @keyframes pm-push-left {
-        0%,
-        15% {
-          transform: translateX(-10px);
-        }
-        60%,
-        85% {
-          transform: translateX(12px);
-        }
-        100% {
-          transform: translateX(-10px);
-        }
-      }
-
-      @keyframes pm-push-right {
-        0%,
-        15% {
-          transform: translateX(10px);
-        }
-        60%,
-        85% {
-          transform: translateX(-12px);
-        }
-        100% {
-          transform: translateX(10px);
-        }
-      }
-
-      @keyframes pm-cell {
-        0%,
-        100% {
-          fill: rgba(58, 139, 55, 0);
-        }
-        50% {
-          fill: rgba(58, 139, 55, 0.4);
+          stroke-dashoffset: 1000;
+          opacity: 0;
         }
       }
 
@@ -1893,34 +1829,19 @@
                   <div class="era" data-era-index="2">
                       <figure
                         class="era-visual"
-                        aria-label="Line drawing of a wound closing over a scaffold of cells."
+                        aria-label="Line drawing of a syringe electrospinning a fiber into a loose coil."
                       >
                         <svg viewBox="0 0 400 300" aria-hidden="true" class="tile tile-pm">
+                          <g transform="translate(200 150) scale(1.4) translate(-200 -148)">
                           <g class="ink">
-                            <path d="M50 140 H176" />
-                            <path d="M224 140 H350" />
-                            <g class="pm-wound">
-                              <path d="M176 140 l24 40 24-40" />
-                            </g>
+                            <path d="M200 30 V44" />
+                            <path d="M190 44 H210" />
+                            <path d="M186 52 h28 v44 h-28 z" />
+                            <path d="M200 96 V112" />
+                            <path d="M196 112 H204" />
+                            <path d="M200 112 V126" />
                           </g>
-                          <g class="pm-arrow pm-arrow--left">
-                            <path d="M78 108 H150" />
-                            <path d="M132 90 l18 18 -18 18" />
-                          </g>
-                          <g class="pm-arrow pm-arrow--right">
-                            <path d="M322 108 H250" />
-                            <path d="M268 90 l-18 18 18 18" />
-                          </g>
-                          <g class="pm-cells">
-                            <circle cx="90" cy="196" r="7" />
-                            <circle cx="150" cy="196" r="7" />
-                            <circle cx="210" cy="196" r="7" />
-                            <circle cx="270" cy="196" r="7" />
-                            <circle cx="330" cy="196" r="7" />
-                            <circle cx="120" cy="232" r="7" />
-                            <circle cx="180" cy="232" r="7" />
-                            <circle cx="240" cy="232" r="7" />
-                            <circle cx="300" cy="232" r="7" />
+                          <path class="pm-fiber" pathLength="1000" d="M200 128 C 204 142, 194 150, 200 164 C 205 176, 196 184, 204.0 222.0 L 204.3 222.2 L 204.5 222.5 L 204.7 222.7 L 204.7 223.0 L 204.6 223.3 L 204.4 223.6 L 204.0 223.9 L 203.5 224.2 L 202.9 224.5 L 202.2 224.7 L 201.3 224.9 L 200.3 225.1 L 199.3 225.2 L 198.1 225.3 L 196.9 225.3 L 195.7 225.2 L 194.4 225.1 L 193.2 224.9 L 192.0 224.6 L 190.9 224.3 L 189.9 223.9 L 189.0 223.4 L 188.3 222.9 L 187.8 222.4 L 187.4 221.8 L 187.2 221.1 L 187.3 220.5 L 187.6 219.8 L 188.1 219.2 L 188.9 218.5 L 189.9 217.9 L 191.2 217.4 L 192.6 216.9 L 194.3 216.4 L 196.1 216.1 L 198.1 215.8 L 200.2 215.6 L 202.3 215.6 L 204.6 215.6 L 206.8 215.7 L 209.0 216.0 L 211.2 216.4 L 213.2 216.9 L 215.1 217.5 L 216.8 218.2 L 218.2 219.0 L 219.4 219.8 L 220.3 220.8 L 220.9 221.8 L 221.2 222.8 L 221.1 223.8 L 220.6 224.9 L 219.8 225.9 L 218.6 226.9 L 217.0 227.9 L 215.2 228.7 L 213.0 229.5 L 210.5 230.2 L 207.8 230.8 L 204.8 231.2 L 201.7 231.5 L 198.5 231.6 L 195.2 231.6 L 191.9 231.4 L 188.7 231.1 L 185.6 230.6 L 182.6 229.9 L 179.8 229.1 L 177.3 228.1 L 175.2 227.0 L 173.3 225.9 L 171.9 224.6 L 171.0 223.2 L 170.5 221.8 L 170.4 220.3 L 170.9 218.9 L 171.9 217.4 L 173.3 216.1 L 175.2 214.7 L 177.6 213.5 L 180.5 212.4 L 183.7 211.4 L 187.2 210.6 L 191.0 209.9 L 195.1 209.5 L 199.3 209.2 L 203.7 209.1 L 208.0 209.3 L 212.3 209.7 L 216.5 210.2 L 220.5 211.0 L 224.3 212.0 L 227.7 213.2 L 230.7 214.5 L 233.3 216.0 L 235.3 217.6 L 236.8 219.4 L 237.8 221.2 L 238.1 223.0 L 237.8 224.9 L 236.9 226.7 L 235.3 228.5 L 233.1 230.2 L 230.3 231.9 L 227.0 233.3 L 223.2 234.7 L 218.9 235.8 L 214.3 236.7 L 209.3 237.4 L 204.1 237.9 L 198.8 238.1 L 193.3 238.0 L 187.9 237.7 L 182.6 237.1 L 177.5 236.2 L 172.7 235.1 L 168.3 233.8 L 164.3 232.3 L 160.9 230.5 L 158.0 228.6 L 155.8 226.6 L 154.3 224.4 L 153.5 222.2 L 153.5 219.9 L 154.2 217.6 L 155.8 215.4 L 158.0 213.3 L 161.0 211.2 L 164.7 209.3 L 169.0 207.6 L 173.9 206.1 L 179.2 204.9 L 185.0 203.9 L 191.2 203.2 L 197.5 202.8 L 204.0 202.7 L 210.5 202.9 L 216.9 203.5 L 223.2 204.3 L 229.1 205.5 L 234.6 206.9 L 239.6 208.6 L 244.1 210.6 L 247.9 212.7 L 250.9 215.1 L 253.2 217.6 L 254.5 220.2 L 255.1 222.8 L 254.7 225.5 L 253.4 228.2 L 251.2 230.7 L 248.2 233.2 L 244.3 235.5 L 239.6 237.7 L 234.3 239.6 L 228.3 241.2 L 221.7 242.5 L 214.8 243.5 L 207.5 244.2 L 200.0 244.5" />
                           </g>
                         </svg>
                       </figure>
