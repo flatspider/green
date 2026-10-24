@@ -1206,7 +1206,9 @@
         }
 
         .pane {
-          padding: var(--bar-h, 4.5rem) clamp(1rem, 2.5vw, 1.5rem)
+          align-items: start;
+          align-content: start;
+          padding: calc(var(--bar-h, 4.5rem) + 1rem) clamp(1rem, 2.5vw, 1.5rem)
             clamp(1rem, 2.5vw, 1.5rem);
         }
 
@@ -1944,7 +1946,7 @@
                       <svg
                         class="journey-map"
                         data-journey-map
-                        viewBox="0 0 1020 610"
+                        viewBox="-12 0 1010 610"
                         role="img"
                         aria-label="Map of the United States tracing moves from California to Virginia, Maryland, Pennsylvania, South Carolina, and finally New York City."
                       >
